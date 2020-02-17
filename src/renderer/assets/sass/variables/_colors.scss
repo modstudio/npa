@@ -1,0 +1,44 @@
+$color-white: #fff;
+
+// Primary colors
+$color-primary-500: #296dfe;
+$color-primary-100: #e6eefe;
+
+// Neutral colors
+$color-neutral-900: #1c1e24;
+$color-neutral-850: #24252c;
+$color-neutral-800: #2e2f38;
+$color-neutral-800p: #272d52; // As dark as 800 but more color (based on primary color, hence the p)
+$color-neutral-600: #6d7997;
+$color-neutral-500: #9da3b5;
+$color-neutral-400: #c6cad6;
+$color-neutral-300: #d9dbe4;
+$color-neutral-200: #e9eaf1;
+$color-neutral-100: #f7f8fc;
+
+
+// Semantic Colors
+
+// Error
+$color-error-500: #ee1148;
+$color-error-100: #ffdee4;
+// Warning
+$color-warning-500: #ffa128; // Currently not used
+$color-warning-100: #ffdfb7; // Currently not used
+//Success
+$color-success-500: #30bd1f; // Currently not used
+$color-success-100: #dbf4e4; // Currently not used
+
+
+// Curriculum Colors
+$color-c-purple: #b65fbd;
+$color-c-red: #e73c3e;
+$color-c-orange: #fea146;
+$color-c-yellow: #fddb2a;
+$color-c-lime: #bdda26;
+$color-c-green: #36ca64;
+$color-c-teal: #53dcca;
+$color-c-blue: #00afd0;
+$color-c-navy: #061a9d;
+$color-c-charcoal: #504f4d;
+$color-c-none: $color-neutral-200;

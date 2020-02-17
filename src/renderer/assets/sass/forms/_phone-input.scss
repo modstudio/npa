@@ -1,0 +1,86 @@
+.vue-tel-input {
+  border-color: $color-neutral-200 !important;
+  box-shadow: none !important;
+  .vti__dropdown {
+    width: auto !important;
+    margin-left: -16px;
+    padding: 18px 0 18px 18px;
+    position: static;
+    &:hover, &:focus, &.open{
+        background: none;
+    }
+    &.open{
+        .vti__dropdown-arrow{
+            &:after{
+                color: $color-neutral-800p;
+                transform: rotate(-180deg);
+            }
+        }
+    }
+  }
+  .vti__flag{
+      margin-left: 0 !important;
+  }
+  .vti__input {
+    @include placeholder {
+      color: $color-neutral-400;
+      opacity: 1;
+    }
+  }
+  .vti__dropdown-arrow{
+      color: transparent;
+      transform: none;
+      position: relative;
+      &:after {
+          border: none;
+          content: '\e80b';
+          font-family: $font-icon;
+          color: $color-neutral-500;
+          margin: 0;
+          vertical-align: inherit;
+          width: 16px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include fsz(14px);
+          top: -1px;
+          left: -2px;
+          position: absolute;
+      }
+  }
+  .vti__dropdown-list{
+      width: 100%;
+      top: 72px;
+      left: 0;
+      padding: 16px;
+      border-color: $color-neutral-200;
+      border-radius: 0 0 $border-radius-default $border-radius-default;
+  }
+  .vti__dropdown-item{
+      @include fsz(14px);
+      color: $color-neutral-800p;
+      padding: 11px 14px;
+      height: 40px;
+      line-height: 1.25;
+      @include truncateText();
+      &:hover, &.highlighted {
+          background: $color-neutral-100;
+      }
+      &.last-preferred{
+          margin-bottom: 32px;
+          border: none;
+          position: relative;
+          overflow: visible;
+          &:after{
+              content: '';
+              width: 100%;
+              height: 1px;
+              background: $color-neutral-200;
+              position: absolute;
+              bottom: -16px;
+              left: 0;
+          }
+      }
+  }
+}

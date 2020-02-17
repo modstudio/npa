@@ -1,0 +1,114 @@
+/*--- Checkbox ---*/
+label.form-checkbox {
+    margin-right: auto;
+    cursor: pointer;
+    margin-bottom: 0;
+    input {
+        display: none;
+        +span {
+            position: relative;
+            padding-left: 24px;
+            transition: 200ms;
+            &:before {
+                content: '';
+                @include center-v();
+                width: 16px;
+                height: 16px;
+                border-radius: $border-radius-default;
+                border: solid 1px $color-neutral-200;
+                background: $color-white;
+                left: 0;
+                transition: 200ms;
+            }
+            &:after {
+                content: '';
+                width: 8px;
+                height: 5px;
+                border-bottom: 2px solid $color-white;
+                border-left: 2px solid $color-white;
+                position: absolute;
+                top: 50%;
+                left: 4px;
+                transform: scale(0) translateY(-50%) rotate(-45deg);
+                transition: 300ms;
+            }
+            &:hover{
+                color: $color-neutral-800p;
+                &:before{
+                    border: solid 1px $color-neutral-500;
+                }
+            }
+        }
+        &:checked {
+            +span {
+                &:before {
+                    background: $color-neutral-800p;
+                    border-color: transparent;
+                }
+                &:after {
+                    transform: scale(1) translateY(-65%) rotate(-45deg);
+                }
+            }
+        }
+    }
+    &--right {
+        input+span {
+            padding-left: 0px;
+            padding-right: 24px;
+            &:before {
+                left: inherit;
+                right: 0px;
+            }
+            &:after {
+                left: inherit;
+                right: 4px;
+            }
+        }
+    }
+    &--no-text{
+        input{
+            + span{
+                display: block;
+                width: 16px;
+                height: 16px;
+                padding-left: 0;
+            }
+        }
+    }
+    &--light{
+        input{
+            &:checked {
+                + span {
+                    &:before {
+                        background: $color-primary-500;
+                        border-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+    &--lg{
+        input{
+            + span{
+                &:before{
+                    width: 24px;
+                    height: 24px;
+                }
+                &:after{
+                    width: 14px;
+                    height: 8px;
+                    left: 5px;
+                    margin-top: -1px;
+                }
+            }
+        }
+        &.form-checkbox--no-text{
+            input{
+                + span{
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+    }
+}

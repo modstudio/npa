@@ -1,0 +1,30 @@
+.success-svg {
+    &__circle {
+        transform: scale(0);
+        transform-origin: center center;
+        animation: scale 450ms linear forwards;
+    }
+    &__circle-outside {
+        transform: scale(0);
+        transform-origin: center center;
+        animation: scale_out 350ms linear forwards, rotate_out 40000ms linear infinite;
+        animation-delay: 150ms;
+    }
+    &__ok {
+        stroke-dashoffset: 600;
+        stroke-dasharray: 200;
+        animation: draw_ok 250ms linear forwards;
+        animation-delay: 350ms;
+    }
+    &__ok-outside {
+        stroke-dashoffset: 4;
+        stroke-dasharray: 4;
+        animation: draw_ok_outside 100ms linear forwards;
+        animation-delay: 600ms;
+    }
+}
+
+.confirm-svg {
+    animation: confirm_svg 700ms linear forwards;
+    transform-origin: 49% 7%;
+}

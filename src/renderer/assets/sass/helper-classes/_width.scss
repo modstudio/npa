@@ -1,0 +1,58 @@
+.w-630 {
+    width: 100% !important;
+    max-width: 630px !important;
+}
+.w-460 {
+    width: 100% !important;
+    max-width: 460px !important;
+}
+.w-300{
+    width: 100% !important;
+    max-width: 300px !important;
+}
+.w-240{
+    width: 100% !important;
+    max-width: 240px !important;
+}
+.w-200{
+    width: 100% !important;
+    max-width: 200px !important;
+}
+.w-160{
+    width: 100% !important;
+    max-width: 160px !important;
+}
+.w-145{
+    width: 100% !important;
+    max-width: 145px !important;
+}
+.w-110{
+    width: 110px !important;
+}
+.w-130{
+    width: 130px !important;
+}
+.w-48{
+    width: 48px !important;
+    min-width: 0 !important;
+}
+.w-sm-48{
+    @include respond-to(sm){
+        width: 48px !important;
+        min-width: 0 !important;
+    }
+}
+.w-40{
+    width: 40px !important;
+    min-width: 0 !important;
+}
+.w-md-110{
+    @include respond-to(sm_up){
+        width: 110px !important;
+    }
+}
+.w-md-140{
+    @include respond-to(sm_up){
+        width: 140px !important;
+    }
+}

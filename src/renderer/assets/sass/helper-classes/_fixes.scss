@@ -1,0 +1,26 @@
+.collapsing{
+    transition: height 100ms linear;
+}
+.overflow-hidden-xs{
+    @include respond-to(xs){
+        overflow: hidden !important;
+    }
+}
+.overflow-hidden{
+    overflow: hidden !important;
+}
+.overflow-visible{
+    overflow: visible !important;
+}
+.flex-fix{
+  min-width: 0;
+}
+i.rotate-90 {
+    &::before {
+        transform: rotate(90deg);
+    }
+}
+.non-selectable{
+  user-select: none;
+  pointer-events: none;
+}

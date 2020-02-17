@@ -1,0 +1,48 @@
+/*--- Loader ---*/
+.loader {
+    width: 100%;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    &__dot {
+        position: absolute;
+        left: 0;
+        z-index: 10;
+        width: 2%;
+        height: 3px;
+        border-radius: $border-radius-default;
+        background-color: $color-primary-500;
+        transform-type: preserve-3d;
+        animation: loader 2.4s cubic-bezier(.5, 0, .5, 1) infinite;
+        &:nth-child(2) {
+            z-index: 9;
+            animation-delay: 0.1s;
+        }
+        &:nth-child(3) {
+            z-index: 8;
+            animation-delay: 0.2s;
+        }
+    }
+    &--top-0 {
+        top: 0;
+    }
+}
+.infinite-loading-container{
+    .loader{
+        bottom: 4px;
+        opacity: 0;
+        animation: loader_fade 0.05s forwards;
+        animation-delay: 1s;
+        .loader__dot{
+            animation-delay: 1.1s;
+            &:nth-child(2) {
+                animation-delay: 1.2s;
+            }
+            &:nth-child(3) {
+                z-index: 8;
+                animation-delay: 1.3s;
+            }
+        }
+    }
+}

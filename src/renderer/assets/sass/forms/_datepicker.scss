@@ -1,0 +1,96 @@
+.vdp-datepicker__calendar{
+    border: 1px solid $color-neutral-200 !important;
+    border-radius: $border-radius-default;
+    margin-top: 7px;
+    min-width: 100%;
+    box-shadow: $shadow-300;
+    padding: 8px;
+    &:after{
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0px 6px 5px 6px;
+        border-color: transparent transparent $color-white transparent;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: -5px;
+    }
+    &:before{
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0px 7px 6px 7px;
+        border-color: transparent transparent $color-neutral-200 transparent;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: -6px;
+    }
+}
+
+.vdp-datepicker__calendar header .prev:not(.disabled),
+.vdp-datepicker__calendar header .next:not(.disabled),
+.vdp-datepicker__calendar header .up:not(.disabled){
+    transition: 200ms;
+    &:hover{
+        background: none !important;
+        color: $color-primary-500;
+    }
+}
+
+.vdp-datepicker__calendar .cell.day, .vdp-datepicker__calendar .cell.month, .vdp-datepicker__calendar .cell.year{
+    border-radius: $border-radius-default;
+    transition: 200ms;
+    &:hover{
+        border: 1px solid $color-primary-500 !important;
+    }
+}
+.vdp-datepicker__calendar .cell.selected{
+    background: $color-primary-500 !important;
+    color: $color-white;
+}
+
+.vdp-datepicker__calendar header .prev{
+    text-indent: 0 !important;
+    color: transparent;
+    &:after{
+        border: none !important;
+        content: '\e801' !important;
+        font-family: $font-icon;
+        color: $color-neutral-600;
+    }
+    &:hover{
+        color: transparent !important;
+        &:after{
+            color: $color-primary-500;
+        }
+    }
+}
+
+.vdp-datepicker__calendar header .next{
+    text-indent: 0 !important;
+    color: transparent;
+    &:after{
+        border: none !important;
+        content: '\e80e' !important;
+        font-family: $font-icon;
+        color: $color-neutral-600;
+    }
+    &:hover{
+        color: transparent !important;
+        &:after{
+            color: $color-primary-500;
+        }
+    }
+}
+
+.vdp-datepicker__calendar-button {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+}

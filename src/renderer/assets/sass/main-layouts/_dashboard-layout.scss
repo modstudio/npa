@@ -1,0 +1,95 @@
+.dashboard-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+.dashboard {
+    width: $dashboard-width-lg;
+    margin-left: auto;
+    @include respond-to(md) {
+        width: $dashboard-width-sm;
+    }
+    @include respond-to(xs) {
+        width: $dashboard-width-xs;
+        padding-bottom: 50px;
+    }
+}
+
+.dashboard-body {
+    padding: 56px 56px 80px;
+    position: relative;
+    @include respond-to(md){
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    @include respond-to(xs){
+        padding: 40px 16px 60px;
+    }
+    h3, .h3 {
+        @include fsz(24px);
+        font-family: $font-heavy;
+        text-align: center;
+        margin-bottom: 32px;
+        @include respond-to(xs) {
+            @include fsz(18px);
+        }
+        &.heading-light{
+            font-family: $font-regular;
+            text-align: left;
+        }
+    }
+}
+
+.dashboard-heading {
+    @include fsz(36px);
+    font-family: $font-heavy;
+    text-align: center;
+    margin-bottom: 40px;
+    @include respond-to(xs) {
+        @include fsz(26px);
+    }
+    &--light{
+        font-family: $font-medium;
+    }
+}
+
+.dashboard-subheading {
+    @include fsz(14px);
+    color: $color-neutral-600;
+    text-align: center;
+    margin-top: -24px;
+    margin-bottom: 40px;
+}
+
+.dashboard-img {
+    display: block;
+    margin: 0 auto 16px;
+    &--lg {
+        margin: 0 auto 32px;
+    }
+}
+
+.container {
+    padding: 0;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    &--xs{
+        max-width: 512px;
+    }
+    &--md {
+        max-width: 800px;
+    }
+    &--lg{
+        max-width: 1040px;
+    }
+    &--xl{
+        max-width: 1152px;
+        &.search-result-block{
+            max-width: 1152px;
+        }
+        @include respond-to(xxl_up){
+            max-width: 1260px;
+        }
+    }
+}

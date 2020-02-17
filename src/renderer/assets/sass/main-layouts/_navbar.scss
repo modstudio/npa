@@ -1,0 +1,56 @@
+// User Bar
+.dashboard-bar {
+    height: $navbar-height;
+    background: $color-white;
+    padding: 0 56px;
+    display: flex;
+    align-items: center;
+    box-shadow: $shadow-100;
+    z-index: 3;
+    position: relative;
+    border-bottom: 1px solid $color-neutral-200;
+    @include respond-to(md) {
+        padding: 0 32px;
+        height: $navbar-height-sm;
+    }
+    @include respond-to(xs) {
+        padding: 0 16px;
+        justify-content: center;
+    }
+    &__heading {
+        @include fsz(24px);
+        font-family: $font-light;
+        @include respond-to(md) {
+            @include fsz(18px);
+        }
+        @include respond-to(sm){
+            &:not(:last-of-type){
+                display: none;
+            }
+        }
+        .btn {
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            padding: 0;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    &__separator{
+        @include fsz(11px);
+        margin: 0 9px;
+        color: $color-neutral-500;
+        @include respond-to(sm){
+            display: none;
+        }
+    }
+}
+
+.top-bar-menu{
+    .dropdown-menu{
+        width: auto;
+        max-width: none;
+    }
+}

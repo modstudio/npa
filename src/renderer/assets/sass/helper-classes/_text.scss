@@ -1,0 +1,53 @@
+/* --- Text Size ---*/
+.text-large{
+  @include fsz(18px);
+}
+.text-regular{
+  @include fsz(14px);
+}
+.text-mid-small{
+  @include fsz(13px);
+}
+.text-small{
+  @include fsz(12px);
+}
+
+/* --- Text Weight ---*/
+b, .font-weight-bold{
+    font-family: $font-heavy !important;
+    font-weight: normal !important;
+    [class*="hebrew"] , &[class*="hebrew"]{
+      font-family: $font-medium-hebrew !important;
+    }
+}
+.font-weight-medium{
+  font-family: $font-medium !important;
+  font-weight: normal !important;
+}
+.font-weight-regular{
+  font-family: $font-regular !important;
+  font-weight: normal !important;
+}
+
+/* --- Text Helper Classes ---*/
+.truncate-text{
+  @include truncateText();
+}
+.truncate-text-2-lines{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+span.subtext {
+    font-size: 12px;
+    line-height: 1.67;
+    color: $color-neutral-500;
+}
+span.subtext-checkbox {
+    @include fsz(10px);
+    color: $color-neutral-600;
+    text-transform: none;
+}

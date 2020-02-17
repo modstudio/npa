@@ -1,0 +1,16 @@
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+@import "variables/all";
+@import "mixins.scss";
+@import "keyframes.scss";
+@import "fonts.scss";
+@import "typography.scss";
+@import "helper-classes/all";
+@import "forms/all";
+@import "elements/all";
+@import 'main-layouts/grid';
+@import 'main-layouts/guest-layout';
+@import 'main-layouts/dashboard-layout';
+@import 'main-layouts/sidebar';
+@import 'main-layouts/navbar';
+@import 'main-layouts/info-sidebar';

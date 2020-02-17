@@ -1,0 +1,334 @@
+/* --- Input Wrapper --- */
+.form-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    &--enter {
+        margin-bottom: 24px;
+    }
+}
+
+/* --- Coupon ---*/
+.input-group {
+    .form-control {
+      border-radius: $border-radius-default 0 0 $border-radius-default !important;
+        @include respond-to(sm) {
+            flex: 1 1 auto;
+            width: 100%;
+            border-radius: $border-radius-default !important;
+        }
+    }
+    .form-control__icon {
+        @include respond-to(sm) {
+            bottom: 68px;
+        }
+        ~.form-control {
+            padding-right: 16px;
+        }
+    }
+}
+
+.input-group-append {
+    .btn {
+        border-radius: 0 $border-radius-default $border-radius-default 0 !important;
+        min-width: 88px;
+        width: 100%;
+        @include respond-to(sm) {
+            border-radius: $border-radius-default !important;
+        }
+    }
+    ~.state-icon {
+        right: 102px;
+        z-index: 6;
+        @include respond-to(sm) {
+            right: 16px;
+        }
+    }
+}
+
+/*--- Label ---*/
+label {
+    @include fsz(12px);
+    font-family: $font-medium;
+    margin-bottom: 8px;
+    color: $color-neutral-600;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    order: 0;
+    transition: 200ms;
+    .tooltip-icon {
+        margin-left: 6px;
+    }
+    &.label-info {
+        color: $color-neutral-800p;
+        @include fsz(14px);
+        letter-spacing: 0;
+        text-transform: none;
+        font-family: $font-heavy;
+        margin-bottom: 16px;
+        span {
+            color: $color-neutral-500;
+            font-family: $font-regular;
+        }
+    }
+}
+
+/*--- Input Field ---*/
+input::-webkit-contacts-auto-fill-button, input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+
+fieldset[disabled] {
+    input {
+        cursor: not-allowed;
+    }
+}
+
+[tabindex="0"]{
+    &:focus:not([readonly]){
+        outline: none;
+    }
+}
+
+.form-control {
+    height: 48px;
+    box-shadow: none;
+    padding: 0 16px;
+    color: $color-neutral-800p;
+    line-height: normal;
+    order: 1;
+    caret-color: $color-primary-500;
+    transition: 200ms;
+    background: $color-white;
+    font-family: $font-regular;
+    @include fsz(14px);
+    -webkit-appearance: none;
+    border-radius: $border-radius-default;
+    border: 1px solid $color-neutral-200;
+    display: flex;
+    align-items: center;
+    @include placeholder {
+        color: $color-neutral-400;
+        opacity: 1;
+    }
+    &--hebrew {
+        font-family: $font-regular-hebrew;
+        font-size: 0.95rem !important;
+    }
+    &:hover {
+        box-shadow: $shadow-50;
+    }
+    @at-root div#{&}{
+        &:hover {
+            box-shadow: none;
+        }
+    }
+    @at-root textarea#{&}{
+        resize: none;
+        height: 100px;
+        padding-top: 10px;
+        line-height: 1.5;
+    }
+    &:focus:not([readonly]), &.StripeElement--focus{
+        border: 1px solid $color-neutral-500;
+        box-shadow: none !important;
+        color: $color-neutral-800p;
+        outline: none;
+        ~label {
+            color: $color-neutral-800p;
+        }
+    }
+    &[tabindex="0"]{
+        &:focus:not([readonly]){
+            border: 1px solid $color-neutral-200;
+        }
+    }
+    &[readonly], &:disabled {
+        cursor: default;
+        color: inherit;
+        border-color: $color-neutral-200;
+        box-shadow: inherit;
+        background: $color-white;
+        &:hover{
+            box-shadow: none;
+        }
+        & ~ .dropdown-toggle{
+            cursor: default;
+        }
+    }
+    &--enter {
+        > div {
+            width: 100%;
+        }
+    }
+    &--info {
+        @include fsz(18px);
+        justify-content: center;
+        text-align: center;
+    }
+    &--large {
+        height: 72px;
+        padding-left: 24px;
+        padding-right: 24px;
+        @include fsz(16px);
+        @include respond-to(xs) {
+            flex-direction: column;
+            padding: 14px !important;
+        }
+    }
+    &[aria-invalid="false"] {
+        ~.state-icon {
+            .icon-ok {
+                display: inline-block;
+            }
+        }
+    }
+    &.is-invalid,
+    &.StripeElement--invalid {
+        border-color: $color-error-100;
+        background: none;
+        background-color: $color-white;
+        &:focus {
+            border-color: $color-error-100;
+        }
+        ~.state-icon {
+            .icon-warning {
+                display: inline-block;
+                color: $color-error-500;
+            }
+        }
+        ~label {
+            color: $color-error-500;
+        }
+        ~ .dropdown-toggle {
+            border-color: $color-error-100;
+            &:focus {
+                border-color: $color-error-100;
+            }
+        }
+        ~.input-group-append {
+            .btn {
+                border-color: $color-error-100;
+            }
+        }
+    }
+    &__icon {
+        @include fsz(24px);
+        color: $color-neutral-600;
+        left: 16px;
+        bottom: 12px;
+        line-height: 1;
+        position: absolute;
+        z-index: 4;
+        &--large {
+            @include fsz(32px);
+            bottom: 20px;
+            left: 24px;
+        }
+        &.icon-right {
+            left: auto;
+            right: 16px;
+            ~.state-icon {
+                right: 56px;
+            }
+        }
+        ~.form-control {
+            padding-left: 48px;
+            padding-right: 48px;
+            &.form-control--large {
+                padding-left: 72px;
+                padding-right: 24px;
+            }
+        }
+        ~.input-group {
+            .form-control {
+                padding-left: 48px;
+                padding-right: 16px;
+            }
+        }
+    }
+    &--search{
+        border-radius: 0;
+        border: none;
+        padding-left: 28px;
+        @include placeholder(){
+            color: $color-neutral-500;
+        }
+        &:focus{
+            border: none !important;
+        }
+        &:hover{
+            box-shadow: none;
+        }
+        &:focus ~ .form-control--search-icon {
+            color: $color-primary-500;
+        }
+    }
+    &--search-icon{
+        @include fsz(16px);
+        @include center-v();
+        left: 0;
+        color: $color-neutral-400;
+        transition: 200ms;
+        &.active{
+            color: $color-primary-500;
+        }
+    }
+}
+
+/*--- Password Field Show/Hide Icon ---*/
+.password {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    line-height: 1;
+    color: $color-neutral-400;
+    display: inline-block;
+    transition: 200ms;
+    &:hover {
+        color: $color-neutral-800p;
+    }
+    &.pw-hide {
+        color: $color-neutral-500;
+        &:hover {
+            color: $color-neutral-800p;
+        }
+    }
+    +i {
+        margin-left: 3px;
+    }
+}
+
+/*--- State (Success/Error) ---*/
+.state-icon {
+    line-height: 1;
+    bottom: 16px;
+    position: absolute;
+    right: 16px;
+    .icon-ok,
+    .icon-warning {
+        display: none;
+    }
+}
+
+.state {
+    @include fsz(11px);
+    font-family: $font-light;
+    position: absolute;
+    bottom: -14px;
+    right: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    &--error {
+        color: $color-error-500 !important;
+    }
+}
+.state-top{
+    @include fsz(12px);
+    line-height: 1.25;
+}

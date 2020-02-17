@@ -1,0 +1,81 @@
+/*--- Typography ---*/
+body {
+    font-family: $font-regular;
+    color: $color-neutral-800p;
+    background: $color-neutral-100;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+a {
+    transition: 250ms;
+    text-decoration: none;
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+}
+
+ol, ul, dl, p{
+    margin-bottom: 0;
+}
+
+.list-styled{
+    padding: 0;
+    li{
+        line-height: 1.4;
+        margin-bottom: 12px;
+        list-style: none;
+        padding-left: 24px;
+        position: relative;
+    }
+    @at-root ul#{&}{
+        li{
+            &:before{
+                content: '';
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: $color-primary-500;
+                left: 4px;
+                top: 7px;
+                position: absolute;
+            }
+        }
+    }
+    @at-root ol#{&}{
+        counter-reset: list_count;
+        li{
+            &:before{
+                counter-increment: list_count;
+                content:counter(list_count)".";
+                color: $color-primary-500;
+                font-family: $font-heavy;
+                left: 0;
+                position: absolute;
+            }
+        }
+    }
+}
+
+.br-or{
+    margin: 24px 0;
+    text-align: center;
+    @include fsz(14px);
+    color: $color-neutral-600;
+}

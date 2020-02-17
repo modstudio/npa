@@ -1,0 +1,9 @@
+//--- Layout Variables
+$guest-container-width: 468px;
+$navbar-height: 80px;
+$navbar-height-sm: 64px;
+$sidebar-width-lg: 280px;
+$sidebar-width-sm: 64px;
+$dashboard-width-lg: calc(100% - #{$sidebar-width-lg});
+$dashboard-width-sm: calc(100% - #{$sidebar-width-sm});
+$dashboard-width-xs: 100%;

@@ -1,0 +1,31 @@
+/*--- Guest Layout ---*/
+.guest-bar {
+    margin-bottom: 30px;
+    @include respond-to(xl_up) {
+        margin-bottom: 3%;
+    }
+    @include respond-to(xs) {
+        margin-bottom: 20px;
+    }
+    &__logo {
+        display: block;
+        img {
+            display: block;
+            width: 142px;
+        }
+    }
+}
+
+.guest-wrapper{
+    padding: 35px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    @include respond-to(xs){
+        padding: 25px 0 0;
+    }
+}
