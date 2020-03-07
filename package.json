@@ -49,7 +49,7 @@
       "icon": "build/icons/app-icon.ico"
     },
     "win": {
-      "icon": "build/icons/app-icon.ico"
+      "icon": "build/icons/app-icon-win.ico"
     },
     "linux": {
       "icon": "build/icons"
