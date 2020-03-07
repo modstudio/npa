@@ -44,8 +44,10 @@ branches:
 deploy:
   provider: releases
   api_key: $GH_TOKEN
+  file_glob: true
   file:
     - "build/npa-*.AppImage"
     - "build/npa-*.dmg"
+    - "build/npa-*-mac.zip"
   skip_cleanup: true
   draft: true
