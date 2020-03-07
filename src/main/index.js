@@ -25,6 +25,7 @@ function createWindow() {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
     },
+    backgroundColor: '#f7f8fc',
   });
 
   mainWindow.setMenuBarVisibility(false);

@@ -1,5 +1,5 @@
 {
-  "name": "npa",
+  "name": "Accounting",
   "version": "0.0.1",
   "author": "Serg Volodko <svolodko@gmail.com>",
   "description": "Non Profit Accounting vuejs-electron project",
@@ -46,19 +46,20 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/app-icon.ico"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/app-icon.ico"
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "build/icons/app-icon.ico"
     }
   },
   "dependencies": {
     "axios": "^0.18.1",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.4.2",
+    "sqlite3": "^4.1.1",
     "vue": "^2.6.11",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.1.5",
