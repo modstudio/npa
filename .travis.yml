@@ -41,3 +41,11 @@ script:
 branches:
   only:
   - master
+deploy:
+  provider: releases
+  api_key: $TOKEN
+  file:
+    - "build/npa-*.AppImage"
+    - "build/npa-*.dmg"
+  skip_cleanup: true
+  draft: true

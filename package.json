@@ -52,8 +52,7 @@
       "icon": "build/icons/app-icon.ico"
     },
     "linux": {
-      "icon": "build/icons/app-icon.ico",
-      "executableName": "npa"
+      "icon": "build/icons"
     }
   },
   "dependencies": {
