@@ -1,5 +1,5 @@
 {
-  "name": "Accounting",
+  "name": "accounting",
   "version": "0.0.1",
   "author": "Serg Volodko <svolodko@gmail.com>",
   "description": "Non Profit Accounting vuejs-electron project",
@@ -52,7 +52,8 @@
       "icon": "build/icons/app-icon.ico"
     },
     "linux": {
-      "icon": "build/icons/app-icon.ico"
+      "icon": "build/icons/app-icon.ico",
+      "executableName": "npa"
     }
   },
   "dependencies": {
