@@ -43,7 +43,7 @@ branches:
   - master
 deploy:
   provider: releases
-  api_key: $TOKEN
+  api_key: $GH_TOKEN
   file:
     - "build/npa-*.AppImage"
     - "build/npa-*.dmg"
