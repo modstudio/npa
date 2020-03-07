@@ -1,6 +1,6 @@
 {
   "name": "accounting",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Serg Volodko <svolodko@gmail.com>",
   "description": "Non Profit Accounting vuejs-electron project",
   "license": "LICENSE",
