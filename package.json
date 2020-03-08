@@ -31,12 +31,13 @@
       "dist/electron/**/*"
     ],
     "dmg": {
+      "icon": "build/icons/app-icon.icns",
       "contents": [
         {
           "x": 410,
           "y": 150,
           "type": "link",
-          "path": "/Applications"
+          "path": "/Accounting"
         },
         {
           "x": 130,
@@ -46,7 +47,7 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/app-icon.ico"
+      "icon": "build/icons/app-icon.icns"
     },
     "win": {
       "icon": "build/icons/app-icon-win.ico"
