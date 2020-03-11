@@ -31,7 +31,7 @@
       "dist/electron/**/*"
     ],
     "dmg": {
-      "icon": "build/icons/app-icon.icns",
+      "icon": "build/icons/app.icns",
       "contents": [
         {
           "x": 410,
