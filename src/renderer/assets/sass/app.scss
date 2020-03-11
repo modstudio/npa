@@ -1,5 +1,7 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-select/sass/bootstrap-select.scss';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
+@import '~malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
 @import "variables/all";
 @import "mixins.scss";
 @import "keyframes.scss";
@@ -14,3 +16,4 @@
 @import 'main-layouts/sidebar';
 @import 'main-layouts/navbar';
 @import 'main-layouts/info-sidebar';
+@import 'components/settings';

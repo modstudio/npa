@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <main class="dashboard-wrapper" id="main">
-      <side-bar></side-bar>
       <div class="dashboard" id="main-content">
         <nav class="nav tabs-top-nav overflow-hidden">
           <router-link class="nav-link" active-class="active" to="register">
@@ -23,13 +22,8 @@
 </template>
 
 <script>
-  import SideBar from './components/SideBar';
-
   export default {
     name: 'npa',
-    components: {
-      SideBar,
-    },
   };
 </script>
 

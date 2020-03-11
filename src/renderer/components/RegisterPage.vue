@@ -1,7 +1,13 @@
 <template>
   <div class="m-4">
-    <h3>Register Page</h3>
+    <aside class="sidebar">
+      <div class="color-neutral-500 m-3">
+        <h4>Sidebar panel</h4>
+        register page
+      </div>
+    </aside>    
 
+    <h3>Register Page</h3>
     <p class="mt-4">List of created tables:</p>
     <div v-for="(table, index) in tables" :key="index">{{table.name}}</div>
   </div>

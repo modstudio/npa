@@ -177,3 +177,12 @@
         right: -100%;
     }
 }
+.profile-photo-preview {
+    display: inline-block;
+    background-position: center;
+    background-size: cover;
+    vertical-align: middle;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}

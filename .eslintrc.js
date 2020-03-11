@@ -25,7 +25,10 @@ module.exports = {
     'no-multi-assign': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': 'off'
+    'no-console': 'off',
+    "no-underscore-dangle": 0,
+    "import/no-unresolved": 0,
+    "no-undef": 0,
   },
   settings: {
     'import/core-modules': ['electron'],

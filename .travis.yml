@@ -41,6 +41,7 @@ script:
 branches:
   only:
   - master
+  - develop
 deploy:
   provider: releases
   api_key: $GH_TOKEN
@@ -51,3 +52,5 @@ deploy:
     - "build/npa-*-mac.zip"
   skip_cleanup: true
   draft: true
+  on:
+    branch: develop

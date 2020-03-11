@@ -22,8 +22,8 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "npa",
-    "appId": "io.modstud.npa",
+    "productName": "accounting",
+    "appId": "io.modstud.accounting",
     "directories": {
       "output": "build"
     },
@@ -37,7 +37,7 @@
           "x": 410,
           "y": 150,
           "type": "link",
-          "path": "/Accounting"
+          "path": "/Applications"
         },
         {
           "x": 130,
@@ -57,13 +57,21 @@
     }
   },
   "dependencies": {
+    "awesome-phonenumber": "^2.27.0",
     "axios": "^0.18.1",
     "bootstrap": "^4.4.1",
+    "bootstrap-select": "^1.13.12",
     "bootstrap-vue": "^2.4.2",
+    "jquery-mousewheel": "^3.1.13",
+    "lodash": "^4.17.15",
+    "malihu-custom-scrollbar-plugin": "^3.1.5",
+    "postcode-validator": "^3.0.0",
     "sqlite3": "^4.1.1",
+    "vee-validate": "^3.2.5",
     "vue": "^2.6.11",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.1.5",
+    "vue-tel-input": "^4.3.0",
     "vuex": "^3.1.2",
     "vuex-electron": "^1.0.3"
   },

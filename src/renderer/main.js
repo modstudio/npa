@@ -1,17 +1,35 @@
 import Vue from 'vue';
 import axios from 'axios';
 
+import _ from 'lodash';
+import * as jQuery from 'jquery';
+import mCustomScrollBar from 'malihu-custom-scrollbar-plugin';
+import VueTelInput from 'vue-tel-input';
+import './validate';
 import App from './App';
 import router from './router';
 import store from './store';
 import db from './db/datastore';
+import config from './config';
 
 import './assets/sass/app.scss';
+
+import './components/common/globals';
+
+mCustomScrollBar(jQuery);
+
+window._ = _;
+window.$ = window.jQuery = jQuery;
+
+require('bootstrap/dist/js/bootstrap');
+require('bootstrap-select/dist/js/bootstrap-select');
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.http = Vue.prototype.$http = axios;
 Vue.db = Vue.prototype.$db = db;
 Vue.config.productionTip = false;
+
+Vue.use(VueTelInput);
 
 /* eslint-disable no-new */
 new Vue({
@@ -19,4 +37,13 @@ new Vue({
   router,
   store,
   template: '<App/>',
+  mixins: [
+    require('./components/mixins/debounce'),
+    require('./components/mixins/scroll-first-error'),
+  ],
+  data() {
+    return {
+      config,
+    };
+  },
 }).$mount('#app');
