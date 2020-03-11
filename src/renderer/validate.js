@@ -1,7 +1,10 @@
 
-import { extend } from 'vee-validate';
+import { extend, setInteractionMode } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import PhoneNumber from 'awesome-phonenumber';
+
+
+setInteractionMode('lazy');
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);

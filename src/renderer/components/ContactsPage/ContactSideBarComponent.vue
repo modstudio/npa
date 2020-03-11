@@ -183,7 +183,7 @@ export default {
       if (this.currentItem.company_name) {
         return this.currentItem.company_name;
       }
-      return `${this.first_name} ${this.last_name}`;
+      return `${this.currentItem.first_name} ${this.currentItem.last_name}`;
     },
 
     countryHasStates() {

@@ -22,7 +22,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "accounting",
+    "productName": "Accounting",
     "appId": "io.modstud.accounting",
     "directories": {
       "output": "build"
