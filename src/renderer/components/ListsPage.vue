@@ -1,12 +1,30 @@
 <template>
   <div class="m-4">
-    <aside class="sidebar">
-      <div class="color-neutral-500 m-3">
-        <h4>Sidebar panel</h4>
-        lists page
+    <layouts-container-lg-component> 
+      <div class="d-flex mb-5">
+        <div class="nav tabs-inner tabs-inner--sm align-self-center d-none d-sm-flex">
+          <router-link to='/cause' tag="button" class="tabs-inner__link">
+            Cause
+          </router-link>
+          <router-link to='/pledge' tag="button" class="tabs-inner__link">
+            Pledge
+          </router-link>
+          <router-link to='/loan' tag="button" class="tabs-inner__link">
+            Loan
+          </router-link>
+          <router-link to='/pikadon' tag="button" class="tabs-inner__link">
+            Pikadon
+          </router-link>
+          <router-link to='/dist-class' tag="button" class="tabs-inner__link">
+            Dist.Class
+          </router-link>
+          <router-link to='/trx-method' tag="button" class="tabs-inner__link">
+            Trx.Method
+          </router-link>                                        
+        </div>
       </div>
-    </aside>
-    <h3> Lists Page </h3>
+      <router-view></router-view>
+    </layouts-container-lg-component> 
   </div>
 </template>
 
