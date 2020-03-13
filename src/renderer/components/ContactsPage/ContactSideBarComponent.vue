@@ -3,6 +3,7 @@
     <right-side-bar-component
       header-image-url="./static/images/contacts.svg"
       header-image-style="background-size: auto;"
+      init-event-name="open-contacts-page"
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>

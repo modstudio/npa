@@ -1,0 +1,61 @@
+.list-components{
+    list-style: none;
+    padding: 0;
+    &__item{
+        position: relative;
+        .form-control{
+            &:hover{
+                box-shadow: $shadow-50;
+            }
+        }
+        &:not(:last-of-type){
+            margin-bottom: 16px;
+            @include respond-to(sm){
+                padding-bottom: 16px;
+                border-bottom: 1px solid rgba($color-neutral-400, 0.8);
+            }
+        }
+        &:not(:first-of-type){
+            label{
+                display: none;
+                @include respond-to(sm){
+                    display: block;
+                }
+            }
+        }
+        &.sortable-chosen{
+            cursor: move;
+            .list-components__item-move{
+                color: $color-neutral-800p;
+            }
+        }
+        &.list-components__item--sortable{
+            padding-left: 24px;
+            @include respond-to(sm){
+                padding-left: 0;
+            }
+        }
+    }
+    &__item-move{
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+        cursor: move;
+        color: $color-neutral-400;
+        transition: 200ms;
+        @include respond-to(sm){
+            display: none;
+        }
+        &:hover{
+            color: $color-neutral-800p;
+        }
+    }
+    &__buttons{
+        display: flex;
+        .btn{
+            &:not(:first-child){
+                margin-left: 8px;
+            }
+        }
+    }
+}

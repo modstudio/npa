@@ -11,7 +11,12 @@
                   :style="'background-image: url(' + headerImageUrl +');' + headerImageStyle">
                 </span>
             </span>
-            <slot name="header"></slot>
+            <div class="flex-grow-1">
+              <slot name="header"></slot>
+            </div>
+            <div class="badge badge-info rounded">
+              <slot name="headerBadge"></slot>
+            </div>
         </div>
         <slot></slot>
         <div class="info-sidebar__footer py-3 px-4">
@@ -22,6 +27,8 @@
 </template>
 
 <script>
+import bus from '../../../shared/EventBus';
+
 const mixinScrollBar = require('../../mixins/scroll-bar');
 
 export default {
@@ -38,6 +45,10 @@ export default {
       type: String,
       default: null,
     },
+    initEventName: {
+      type: String,
+      default: null,
+    },
   },
 
   mixins: [mixinScrollBar],
@@ -51,8 +62,20 @@ export default {
     };
   },
 
+  created() {
+    if (this.initEventName) {
+      bus.$on(this.initEventName, this.$_initPanel);
+    }
+  },
+
+  destroyed() {
+    if (this.initEventName) {
+      bus.$on(this.initEventName, this.$_initPanel);
+    }
+  },
+
   mounted() {
-    this.$_openPanel();
+    this.$_initPanel();
   },
 
   beforeDestroy() {
@@ -66,7 +89,7 @@ export default {
       this.$emit('hidepanel');
     },
 
-    $_openPanel() {
+    $_initPanel() {
       this.$nextTick(() => {
         this.bindScrollBarToEl(this.$refs.rightSideBar, this.scrollBarOptions);
       });

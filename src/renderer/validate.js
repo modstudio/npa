@@ -4,7 +4,7 @@ import * as rules from 'vee-validate/dist/rules';
 import PhoneNumber from 'awesome-phonenumber';
 
 
-setInteractionMode('lazy');
+setInteractionMode('eager');
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
