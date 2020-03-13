@@ -71,6 +71,7 @@
 <script>
 import ContactSideBarComponent from './ContactsPage/ContactSideBarComponent';
 import ContactLeftSideBarComponent from './ContactsPage/ContactLeftSideBarComponent';
+import bus from '../shared/EventBus';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -82,6 +83,11 @@ export default {
   mixins: [
     tableSortColumnMixin,
   ],
+
+  beforeRouteEnter(to, from, next) {
+    next();
+    bus.$emit('open-contacts-page');
+  },
 
   data() {
     return {
@@ -100,7 +106,7 @@ export default {
       let data = this.$store.state.Contacts.contacts;
       if (this.searchText) {
         const searchString = this.searchText.toLowerCase();
-        data = this.$store.state.Contacts.contacts
+        data = data
           .filter(contact => contact.company_name.toLowerCase().indexOf(searchString) !== -1
             || contact.first_name.toLowerCase().indexOf(searchString) !== -1
             || contact.last_name.toLowerCase().indexOf(searchString) !== -1

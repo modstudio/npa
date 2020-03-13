@@ -13,7 +13,6 @@ module.exports = {
       if (opt) {
         options = _.merge(options, opt);
       }
-
       if (this.isBindedScrollBar(el)) {
         $(el).mCustomScrollbar('update');
       } else {
