@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import axios from 'axios';
+import { VBTooltip } from 'bootstrap-vue/esm/directives/tooltip/tooltip';
+import { BTooltip } from 'bootstrap-vue/esm/components/tooltip/tooltip';
+import { CollapsePlugin } from 'bootstrap-vue';
 
 import _ from 'lodash';
 import * as jQuery from 'jquery';
@@ -29,6 +32,9 @@ Vue.http = Vue.prototype.$http = axios;
 Vue.db = Vue.prototype.$db = db;
 Vue.config.productionTip = false;
 
+Vue.directive('b-tooltip', VBTooltip);
+Vue.component('b-tooltip', BTooltip);
+Vue.use(CollapsePlugin);
 Vue.use(VueTelInput);
 
 /* eslint-disable no-new */

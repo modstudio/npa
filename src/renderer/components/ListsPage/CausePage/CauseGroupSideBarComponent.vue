@@ -8,10 +8,11 @@
     >
       <template slot="header">{{ headerName }}</template>
       <template slot="headerBadge">{{ currentItem ? currentItem.id : '' }}</template>
+
       <div>
         <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
           <div class="info-sidebar__block-header">
-              <h4>Distribution Class</h4>
+              <h4>Cause group</h4>
           </div>
             <ValidationObserver ref="observer">
               <!-- Name -->
@@ -30,9 +31,9 @@
 
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
-          item-name="Distribution Class"
-          store-action-name="DistClasses/deleteItem"
-          check-action-name="DistClasses/checkAssociation"
+          item-name="Cause Group"
+          store-action-name="CauseGroups/deleteItem"
+          check-action-name="CauseGroups/checkAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -64,7 +65,7 @@ export default {
 
   computed: {
     headerName() {
-      return this.isNewMode ? 'New Dist. Class' : `${this.name}`;
+      return this.isNewMode ? 'New Cause Group' : `${this.name}`;
     },
 
     name() {
@@ -82,12 +83,12 @@ export default {
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('DistClasses/addData', this.form);
+      const result = await this.$store.dispatch('CauseGroups/addData', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('DistClasses/updateData', this.form);
+      const result = await this.$store.dispatch('CauseGroups/updateData', this.form);
       return result;
     },
   },

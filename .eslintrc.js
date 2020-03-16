@@ -16,6 +16,7 @@ module.exports = {
     'html'
   ],
   'rules': {
+    "linebreak-style": 0,
     'global-require': 0,
     'import/no-unresolved': 0,
     'no-param-reassign': 0,
@@ -29,6 +30,7 @@ module.exports = {
     "no-underscore-dangle": 0,
     "import/no-unresolved": 0,
     "no-undef": 0,
+    "func-names": 0,
   },
   settings: {
     'import/core-modules': ['electron'],
