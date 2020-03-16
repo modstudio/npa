@@ -71,7 +71,7 @@
 <script>
 import ContactSideBarComponent from './ContactsPage/ContactSideBarComponent';
 import ContactLeftSideBarComponent from './ContactsPage/ContactLeftSideBarComponent';
-import bus from '../shared/EventBus';
+import Bus from '../shared/EventBus';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -86,7 +86,7 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next();
-    bus.$emit('open-contacts-page');
+    Bus.$emit('open-contacts-page');
   },
 
   data() {

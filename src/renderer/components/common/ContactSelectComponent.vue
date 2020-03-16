@@ -13,7 +13,7 @@ export default {
       return this.$store.state.Contacts.contacts.map(item => ({
         value: item.id,
         label: (item.company_name ? item.company_name : `${item.first_name} ${item.last_name}`),
-        subtext: (item.company_name ? '' : `${item.first_name} ${item.last_name}`),
+        subtext: (item.company_name ? `${item.first_name} ${item.last_name}` : ''),
         name: `${item.company_name} ${item.first_name} ${item.last_name}`,
         ...item,
       }));

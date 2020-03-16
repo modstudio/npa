@@ -58,6 +58,7 @@ import draggable from 'vuedraggable';
 import SortOrderMixin from '../mixins/sort-order';
 import DistClassLeftSideComponent from './DistClassPage/DistClassLeftSideComponent';
 import DistClassSideBarComponent from './DistClassPage/DistClassSideBarComponent';
+import Bus from '../../shared/EventBus';
 
 export default {
   components: {
@@ -69,6 +70,11 @@ export default {
   mixins: [
     SortOrderMixin,
   ],
+
+  beforeRouteEnter(to, from, next) {
+    next();
+    Bus.$emit('open-dist-class-page');
+  },
 
   data() {
     return {
