@@ -123,7 +123,7 @@ export default {
       this.isDeleteMode = true;
     },
 
-    onDeleteContact() {
+    onDeleteItem() {
       this.$emit('update');
       this.$emit('hidepanel');
       this.isDeleteMode = false;

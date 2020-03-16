@@ -55,9 +55,9 @@
 
 <script>
 import draggable from 'vuedraggable';
+import SortOrderMixin from '../mixins/sort-order';
 import DistClassLeftSideComponent from './DistClassPage/DistClassLeftSideComponent';
 import DistClassSideBarComponent from './DistClassPage/DistClassSideBarComponent';
-import SortOrderMixin from '../mixins/sort-order';
 
 export default {
   components: {
@@ -93,7 +93,6 @@ export default {
         return data;
       },
       async set(data) {
-        console.log('we here', data);
         await this.$store.commit('DistClasses/setData', data);
       },
     },

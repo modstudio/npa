@@ -25,6 +25,7 @@ class DataStore {
           return false;
         }
         await this.migrate();
+        await this.get('PRAGMA foreign_keys = ON');
         EventBus.$emit('db-init');
         return true;
       },

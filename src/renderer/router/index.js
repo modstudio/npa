@@ -39,7 +39,7 @@ export default new Router({
           path: 'trx-method',
           component: require('@/components/ListsPage/TrxMethodPage').default,
         },
-        { path: '', redirect: 'dist-class' },
+        { path: '', redirect: 'cause' },
       ],
     },
     {

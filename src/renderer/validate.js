@@ -1,13 +1,17 @@
 
 import { extend, setInteractionMode } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import { messages } from 'vee-validate/dist/locale/en.json';
 import PhoneNumber from 'awesome-phonenumber';
 
 
 setInteractionMode('eager');
 
 Object.keys(rules).forEach((rule) => {
-  extend(rule, rules[rule]);
+  extend(rule, {
+    ...rules[rule],
+    message: messages[rule],
+  });
 });
 
 extend('phone_number', {
