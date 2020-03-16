@@ -138,10 +138,12 @@ export default {
             causes: item.causes
               .filter(cause => cause.name.toLowerCase().indexOf(searchString) !== -1
                 || cause.contact_company_name.toLowerCase().indexOf(searchString) !== -1
-                || cause.contact_name.toLowerCase().indexOf(searchString) !== -1),
+                || cause.contact_first_name.toLowerCase().indexOf(searchString) !== -1
+                || cause.contact_last_name.toLowerCase().indexOf(searchString) !== -1),
             isExpanded: item.isExpanded,
           }))
           .filter(item => item.name.toLowerCase().indexOf(searchString) !== -1
+            || item.note.toLowerCase().indexOf(searchString) !== -1
             || item.causes.length);
       }
       return this.causeGroups;

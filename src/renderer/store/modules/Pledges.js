@@ -27,13 +27,13 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all(`SELECT causes.*, 
+        const data = await Vue.db.all(`SELECT pledges.*,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
-        cause_groups.sort_order
-        FROM causes join contacts ON causes.contact_id = contacts.id
-        join cause_groups ON causes.cause_group_id = cause_groups.id
-        ORDER BY cause_groups.sort_order, causes.sort_order`);
+        causes.name as cause_name
+        FROM pledges JOIN contacts ON pledges.contact_id = contacts.id
+        JOIN causes ON pledges.cause_id = causes.id
+        ORDER BY sort_order`);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);
@@ -43,20 +43,17 @@ export default {
     async addData(context, data) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO causes (
-          cause_group_id, contact_id, distribution_class_id, name, note, sort_order
-        ) VALUES ($cause_group_id, $contact_id, $distribution_class_id, 
-          $name, $note, (select ifnull(max(sort_order), 0) + 1 from cause_groups))
+        await Vue.db.run(`INSERT INTO pledges (
+          contact_id, cause_id, note, sort_order
+        ) VALUES ($contact_id, $cause_id, $note, (select ifnull(max(sort_order), 0) + 1 from distribution_classes))
         `, {
-          $cause_group_id: data.cause_group_id,
           $contact_id: data.contact_id,
-          $distribution_class_id: data.distribution_class_id,
-          $name: data.name,
+          $cause_id: data.cause_id,
           $note: data.note,
         });
         result = true;
       } catch (err) {
-        console.log('error insert cause_groups', err);
+        console.log('error insert pledges', err);
         result = false;
       }
       return result;
@@ -65,24 +62,20 @@ export default {
     async updateData(context, data) {
       let result;
       try {
-        await Vue.db.run(`UPDATE causes SET
-          cause_group_id = $cause_group_id,
+        await Vue.db.run(`UPDATE pledges SET
           contact_id = $contact_id,
-          distribution_class_id = $distribution_class_id,
-          name = $name, 
+          cause_id = $cause_id, 
           note = $note
           WHERE id = $id
         `, {
           $id: data.id,
-          $cause_group_id: data.cause_group_id,
           $contact_id: data.contact_id,
-          $distribution_class_id: data.distribution_class_id,
-          $name: data.name,
+          $cause_id: data.cause_id,
           $note: data.note,
         });
         result = true;
       } catch (err) {
-        console.log('error update causes', err);
+        console.log('error update pledges', err);
         result = false;
       }
       return result;
@@ -91,10 +84,10 @@ export default {
     async deleteItem(context, id) {
       let result;
       try {
-        await Vue.db.run('DELETE FROM causes WHERE id = ?', [id]);
+        await Vue.db.run('DELETE FROM pledges WHERE id = ?', [id]);
         result = true;
       } catch (err) {
-        console.log('error DELETE causes', err);
+        console.log('error DELETE pledges', err);
         result = false;
       }
       return result;
@@ -103,7 +96,7 @@ export default {
     async setSortOrder(context, { id, sortOrder }) {
       let result;
       try {
-        await Vue.db.run(`UPDATE causes SET
+        await Vue.db.run(`UPDATE pledges SET
           sort_order = $sortOrder
           WHERE id = $id
         `, {
@@ -114,7 +107,7 @@ export default {
         const item = context.getters.getItem(id);
         context.commit('updateItem', { ...item, sort_order: sortOrder });
       } catch (err) {
-        console.log('error update sort_order of causes', err);
+        console.log('error update sort_order of pledges', err);
         result = false;
       }
       return result;

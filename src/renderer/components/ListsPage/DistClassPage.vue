@@ -13,7 +13,7 @@
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
-          <div class="flex-table__header-item col-6 sortable">
+          <div class="flex-table__header-item col-6">
             NAME
           </div>
           <div class="flex-table__header-item col-6">
