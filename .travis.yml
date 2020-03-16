@@ -58,5 +58,8 @@ deploy:
     - "build/npa-*-mac.zip"
   skip_cleanup: true
   draft: true
+  tag_name: $TRAVIS_TAG
+  name: $TRAVIS_TAG
+  overwrite: true
   on:
     branch: develop
