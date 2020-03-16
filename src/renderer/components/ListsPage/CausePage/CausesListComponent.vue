@@ -18,10 +18,11 @@
         </div>
         <div class="flex-table__row-item col-2"
             tabindex="0">
-            <span v-if="item.contact_company_name">
-              {{item.contact_company_name}} {{item.contact_name}}
-            </span>
-            <span v-else>{{item.contact_name}}</span>
+          <contact-name-field-component
+            :company-name="item.contact_company_name"
+            :first-name="item.contact_first_name"
+            :last-name="item.contact_last_name"
+          ></contact-name-field-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
 
@@ -42,6 +43,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import ContactNameFieldComponent from '../../common/ContactNameFieldComponent';
 import SortOrderMixin from '../../mixins/sort-order';
 
 export default {
@@ -62,6 +64,7 @@ export default {
 
   components: {
     draggable,
+    ContactNameFieldComponent,
   },
 
   mixins: [SortOrderMixin],
