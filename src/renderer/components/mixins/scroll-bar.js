@@ -1,6 +1,9 @@
 module.exports = {
   methods: {
     bindScrollBarToEl(el, opt = null) {
+      if (!el) {
+        return true;
+      }
       let options = {
         axis: 'y',
         theme: 'dark',

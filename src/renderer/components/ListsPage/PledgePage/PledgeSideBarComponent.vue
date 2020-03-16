@@ -3,7 +3,7 @@
     <right-side-bar-component
       header-image-url="./static/images/register.svg"
       header-image-style="background-size: auto;"
-      init-event-name="open-dist-class-page"
+      init-event-name="open-pledge-page"
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>
@@ -80,7 +80,13 @@ export default {
     },
 
     name() {
-      return this.currentItem ? this.currentItem.name : '';
+      if (!this.currentItem) {
+        return '';
+      }
+      if (this.currentItem.contact_company_name) {
+        return this.currentItem.contact_company_name;
+      }
+      return `${this.currentItem.contact_first_name} ${this.currentItem.contact_last_name}`;
     },
   },
 

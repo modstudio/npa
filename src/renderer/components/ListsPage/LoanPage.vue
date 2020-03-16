@@ -76,6 +76,7 @@ import SortOrderMixin from '../mixins/sort-order';
 import LoanLeftSideComponent from './LoanPage/LoanLeftSideComponent';
 import LoanSideBarComponent from './LoanPage/LoanSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
+import Bus from '../../shared/EventBus';
 
 export default {
   components: {
@@ -86,6 +87,11 @@ export default {
   },
 
   mixins: [SortOrderMixin],
+
+  beforeRouteEnter(to, from, next) {
+    next();
+    Bus.$emit('open-loan-page');
+  },
 
   data() {
     return {

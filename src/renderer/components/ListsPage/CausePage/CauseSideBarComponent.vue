@@ -3,7 +3,7 @@
     <right-side-bar-component
       header-image-url="./static/images/register.svg"
       header-image-style="background-size: auto;"
-      init-event-name="open-dist-class-page"
+      init-event-name="open-cause-page"
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>

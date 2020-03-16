@@ -90,6 +90,7 @@ import CauseGroupSideBarComponent from './CausePage/CauseGroupSideBarComponent';
 import CauseSideBarComponent from './CausePage/CauseSideBarComponent';
 import CauseGroupRowComponent from './CausePage/CauseGroupRowComponent';
 import CausesListComponent from './CausePage/CausesListComponent';
+import Bus from '../../shared/EventBus';
 
 export default {
   components: {
@@ -104,6 +105,11 @@ export default {
   mixins: [
     SortOrderMixin,
   ],
+
+  beforeRouteEnter(to, from, next) {
+    next();
+    Bus.$emit('open-cause-page');
+  },
 
   data() {
     return {
