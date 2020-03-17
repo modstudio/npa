@@ -1,26 +1,25 @@
 <template>
-  <div class="info-sidebar__body">
-    <div class="info-sidebar__block-title mb-4">
+  <div>
+    <div class="info-sidebar__body">
+      <div class="info-sidebar__block-title mb-4">
         Do you really want to delete contact?
-      </div>
-      <div class="info-sidebar__block-buttons m-b-210">
-        <div class="row gutter-16">
-            <div class="col-6">
-              <button type="button" class="btn btn-block btn-secondary"
-                @click="$emit('close-dialog')">
-                  Hmm.. I will rethink this
-              </button>
-            </div>
-            <div class="col-6">
-              <action-button
-                button-name="Yes, as sure as ever"
-                loading-name="Deleting"
-                :form-busy="isProcessing"
-                @click="deleteItem"
-              ></action-button>
-            </div>
-        </div>
       </div>    
+    </div>
+    <div class="info-sidebar__footer">
+      <div class="d-flex justify-content-center align-items-center">
+        <button type="button" class="btn btn-block btn-secondary w-156"
+          @click="$emit('close-dialog')">
+            Hmm.. I will rethink this
+        </button>
+        <action-button
+          button-name="Yes, as sure as ever"
+          loading-name="Deleting"
+          :form-busy="isProcessing"
+          additional-class="w-156 ml-4"
+          @click="deleteItem"
+        ></action-button>
+      </div>
+    </div>
   </div>
 </template>
 

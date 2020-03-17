@@ -19,9 +19,6 @@
             </div>
         </div>
         <slot></slot>
-        <div class="info-sidebar__footer">
-          <slot name="footer"></slot>
-        </div>
     </div>
   </transition>
 </template>

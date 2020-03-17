@@ -1,40 +1,40 @@
 <template>
-  <div class="info-sidebar__body">
+  <div>
     <template v-if="hasAssociation">
-      <div class="info-sidebar__block-title mb-4">
-        This {{itemName}} can’t be deleted because it is associated with other records.
+      <div class="info-sidebar__body">
+        <div class="info-sidebar__block-title mb-4">
+          This {{itemName}} can’t be deleted because it is associated with other records.
+        </div>
       </div>
-      <div class="info-sidebar__block-buttons m-b-210">
-        <div class="row gutter-16">
-          <div class="col-6 offset-3">
-            <action-button
-              button-name="Ok"
-              @click="$emit('close-dialog')"
-            ></action-button>
-          </div>
+      <div class="info-sidebar__footer">
+        <div class="d-flex justify-content-center align-items-center">
+          <action-button
+            button-name="Ok"
+            @click="$emit('close-dialog')"
+          ></action-button>
         </div>
       </div>
     </template>
     <template v-else-if="hasAssociation !== null">
-      <div class="info-sidebar__block-title mb-4">
-        Do you really want to delete {{ itemName }}?
+      <div class="info-sidebar__body">
+        <div class="info-sidebar__block-title mb-4">
+          Do you really want to delete {{ itemName }}?
+        </div>
       </div>
-      <div class="info-sidebar__block-buttons m-b-210">
-        <div class="row gutter-16">
-            <div class="col-6">
-              <button type="button" class="btn btn-block btn-secondary"
-                @click="$emit('close-dialog')">
-                  Hmm.. I will rethink this
-              </button>
-            </div>
-            <div class="col-6">
-              <action-button
-                button-name="Yes, as sure as ever"
-                loading-name="Deleting"
-                :form-busy="isProcessing"
-                @click="deleteItem"
-              ></action-button>
-            </div>
+      <div class="info-sidebar__footer">
+        <div class="d-flex justify-content-center align-items-center">
+          <button type="button" class="btn btn-block btn-secondary w-156"
+            @click="$emit('close-dialog')">
+              Hmm.. I will rethink this
+          </button>
+
+          <action-button
+            button-name="Yes, as sure as ever"
+            loading-name="Deleting"
+            :form-busy="isProcessing"
+            additional-class="w-156 ml-4"
+            @click="deleteItem"
+          ></action-button>
         </div>
       </div>
     </template> 

@@ -6,7 +6,9 @@
     <layouts-container-lg-component>
       <div class="d-flex align-items-center mb-4 pb-2">
         <div class="flex-grow-1">
-          {{data.length}} total
+          {{data.length}} 
+          <template v-if="isFiltered">results</template>
+          <template v-else>total</template>
         </div>
         <button type="button" class="btn btn-secondary btn-sm" @click="addContact">
           Add contact
@@ -102,6 +104,9 @@ export default {
   },
 
   computed: {
+    isFiltered() {
+      return !!this.searchText;
+    },
     data() {
       let data = this.$store.state.Contacts.contacts;
       if (this.searchText) {
@@ -116,8 +121,11 @@ export default {
       let sortFields = [this.sortField];
       let sortOrders = [this.sortOrder];
       if (this.sortField === 'name') {
-        sortFields = ['company_name', 'first_name', 'last_name'];
-        sortOrders = [this.sortOrder, this.sortOrder, this.sortOrder];
+        sortFields = [function (item) {
+          return item.company_name ? item.company_name
+            : `${item.first_name} ${item.last_name}`;
+        }];
+        sortOrders = [this.sortOrder];
       }
 
       return _.orderBy(data, sortFields, sortOrders);

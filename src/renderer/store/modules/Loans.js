@@ -31,7 +31,10 @@ export default {
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
         FROM loans JOIN contacts ON loans.contact_id = contacts.id
-        ORDER BY sort_order`);
+        ORDER BY case 
+        when company_name <> '' then company_name
+        else first_name || last_name
+        end`);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);
@@ -42,8 +45,8 @@ export default {
       let result;
       try {
         await Vue.db.run(`INSERT INTO loans (
-          contact_id, description, note, sort_order
-        ) VALUES ($contact_id, $description, $note, (select ifnull(max(sort_order), 0) + 1 from distribution_classes))
+          contact_id, description, note
+        ) VALUES ($contact_id, $description, $note)
         `, {
           $contact_id: data.contact_id,
           $description: data.description,
@@ -86,26 +89,6 @@ export default {
         result = true;
       } catch (err) {
         console.log('error DELETE loans', err);
-        result = false;
-      }
-      return result;
-    },
-
-    async setSortOrder(context, { id, sortOrder }) {
-      let result;
-      try {
-        await Vue.db.run(`UPDATE loans SET
-          sort_order = $sortOrder
-          WHERE id = $id
-        `, {
-          $id: id,
-          $sortOrder: sortOrder,
-        });
-        result = true;
-        const item = context.getters.getItem(id);
-        context.commit('updateItem', { ...item, sort_order: sortOrder });
-      } catch (err) {
-        console.log('error update sort_order of loans', err);
         result = false;
       }
       return result;

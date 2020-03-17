@@ -6,12 +6,14 @@
     ></cause-left-side-component>
     <div class="d-flex">
       <div class="flex-grow-1">
-        {{totalCauses}} total
+        {{totalCauses}} 
+        <template v-if="isFiltered">results</template>
+        <template v-else>total</template>
       </div>
-      <button type="button" class="btn btn-secondary" @click="addGroup">
+      <button type="button" class="btn btn-secondary btn-sm" @click="addGroup">
         Add Group
       </button>
-      <button type="button" class="btn btn-secondary ml-3" @click="addCause">
+      <button type="button" class="btn btn-secondary btn-sm ml-3" @click="addCause">
         Add Cause
       </button>
     </div>

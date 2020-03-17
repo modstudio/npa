@@ -5,9 +5,11 @@
     ></dist-class-left-side-component>
       <div class="d-flex">
         <div class="flex-grow-1">
-          {{data.length}} total
+          {{data.length}}
+          <template v-if="isFiltered">results</template>
+          <template v-else>total</template>          
         </div>
-        <button type="button" class="btn btn-secondary" @click="addDistClass">
+        <button type="button" class="btn btn-secondary btn-sm" @click="addDistClass">
           Add Dist. Class
         </button>
       </div>
@@ -87,6 +89,10 @@ export default {
   },
 
   computed: {
+    isFiltered() {
+      return !!this.searchText;
+    },
+
     data: {
       get() {
         let { data } = this.$store.state.DistClasses;

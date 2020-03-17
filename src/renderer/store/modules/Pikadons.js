@@ -31,7 +31,10 @@ export default {
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
         FROM pikadons JOIN contacts ON pikadons.contact_id = contacts.id
-        ORDER BY ifnull(contacts.company_name, contacts.first_name || contacts.last_name)`);
+        ORDER BY case 
+        when company_name <> '' then company_name
+        else first_name || last_name
+        end`);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);
