@@ -1,6 +1,6 @@
 <template>
   <div class="m-4">
-    <layouts-container-lg-component> 
+    <layouts-container-lg-component>
       <div class="d-flex mb-5">
         <div class="nav tabs-inner tabs-inner--sm align-self-center d-none d-sm-flex">
           <router-link to='cause' tag="button" class="tabs-inner__link">
@@ -20,11 +20,11 @@
           </router-link>
           <router-link to='trx-method' tag="button" class="tabs-inner__link">
             Trx.Method
-          </router-link>                                        
+          </router-link>
         </div>
       </div>
       <router-view></router-view>
-    </layouts-container-lg-component> 
+    </layouts-container-lg-component>
   </div>
 </template>
 

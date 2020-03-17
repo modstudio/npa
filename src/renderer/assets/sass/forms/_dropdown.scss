@@ -5,7 +5,7 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
 .form-control {
     >.dropdown-toggle {
         background: $color-white;
-        @include fsz(14px);
+        @include fsz(13px);
         padding-left: 16px;
         padding-right: 16px;
         @include truncateText();
@@ -25,7 +25,7 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
         }
         &:after {
             border: none;
-            content: '\e80b';
+            content: "\ea05";
             font-family: $font-icon;
             color: $color-neutral-500;
             margin: 0;
@@ -35,9 +35,9 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
             display: flex;
             align-items: center;
             justify-content: center;
-            @include fsz(14px);
-            right: 16px;
-            top: 17px;
+            @include fsz(7px);
+            right: 14px;
+            top: 13px;
             position: absolute;
         }
         &.bs-placeholder {
@@ -70,17 +70,17 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
     &.show {
         >.dropdown-toggle {
             background: $color-white;
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             &:after {
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
                 transform: rotate(-180deg);
             }
             &.bs-placeholder {
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
                 &:hover {
-                    color: $color-neutral-800p;
+                    color: $color-neutral-900;
                 }
             }
         }
@@ -88,8 +88,8 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
     &--enter {
         >.dropdown-toggle {
             border-radius: $border-radius-default;
-            border: 1px solid $color-neutral-200;
-            @include fsz(14px);
+            border: 1px solid $color-neutral-300;
+            @include fsz(13px);
             &:active {
                 border-color: $color-neutral-200 !important;
             }
@@ -98,18 +98,6 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
             >.dropdown-toggle {
                 border: 1px solid $color-neutral-200;
             }
-        }
-    }
-    &--toggle-hebrew {
-        >.dropdown-toggle {
-            font-family: $font-regular-hebrew;
-            font-size: 0.95rem !important;
-        }
-    }
-    &--hebrew {
-        >.dropdown-menu .dropdown-item {
-            font-family: $font-regular-hebrew;
-            font-size: 0.95rem !important;
         }
     }
 }
@@ -177,8 +165,8 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
         }
     }
     .dropdown-item {
-        @include fsz(14px);
-        color: $color-neutral-800p;
+        @include fsz(13px);
+        color: $color-neutral-900;
         padding: 11px 14px;
         height: 40px;
         line-height: 1.25;
@@ -309,7 +297,7 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
                 display: none !important;
             }
             &.selected {
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
                 background: none;
                 &:before {
                     background: $color-primary-500;
@@ -331,7 +319,7 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
         button.dropdown-toggle,
         button.dropdown-toggle:active,
         button.dropdown-toggle:hover {
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
             background-color: $color-white !important;
             cursor: default !important;
             opacity: 1;
@@ -351,7 +339,7 @@ select.form-control:not([size]):not([multiple]), select.StripeElement:not([size]
     padding: 16px;
     position: relative;
     &:before{
-        content: '\e818';
+        content: '\ea03';
         font-family: $font-icon;
         position: absolute;
         left: 32px;

@@ -7,6 +7,7 @@
 .dashboard {
     width: $dashboard-width-lg;
     margin-left: auto;
+    @include fsz(13px);
     @include respond-to(md) {
         width: $dashboard-width-sm;
     }
@@ -17,7 +18,7 @@
 }
 
 .dashboard-body {
-    padding: 56px 56px 80px;
+    padding: 48px 48px 80px;
     position: relative;
     @include respond-to(md){
         padding-left: 32px;
@@ -28,7 +29,7 @@
     }
     h3, .h3 {
         @include fsz(24px);
-        font-family: $font-heavy;
+        font-family: $font-medium;
         text-align: center;
         margin-bottom: 32px;
         @include respond-to(xs) {
@@ -43,7 +44,7 @@
 
 .dashboard-heading {
     @include fsz(36px);
-    font-family: $font-heavy;
+    font-family: $font-medium;
     text-align: center;
     margin-bottom: 40px;
     @include respond-to(xs) {
@@ -74,22 +75,7 @@
     padding: 0;
     margin-left: auto !important;
     margin-right: auto !important;
-    &--xs{
-        max-width: 512px;
-    }
-    &--md {
-        max-width: 800px;
-    }
     &--lg{
-        max-width: 1040px;
-    }
-    &--xl{
-        max-width: 1152px;
-        &.search-result-block{
-            max-width: 1152px;
-        }
-        @include respond-to(xxl_up){
-            max-width: 1260px;
-        }
+        max-width: 1016px;
     }
 }

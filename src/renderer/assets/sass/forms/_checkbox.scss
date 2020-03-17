@@ -33,7 +33,7 @@ label.form-checkbox {
                 transition: 300ms;
             }
             &:hover{
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
                 &:before{
                     border: solid 1px $color-neutral-500;
                 }
@@ -42,7 +42,7 @@ label.form-checkbox {
         &:checked {
             +span {
                 &:before {
-                    background: $color-neutral-800p;
+                    background: $color-neutral-900;
                     border-color: transparent;
                 }
                 &:after {

@@ -1,7 +1,7 @@
 .tabs-top-nav{
-    box-shadow: 0 1px 0 0 $color-neutral-200, inset -0.5px 0 0 0 $color-neutral-200;
     display: flex;
     align-items: stretch;
+    background: $color-neutral-50;
     .nav-link{
         flex: 1 1 0;
         max-width: 100%;
@@ -11,27 +11,28 @@
         align-items: center;
         color: $color-neutral-600;
         @include fsz(14px);
-        font-family: $font-heavy;
-        box-shadow: 0.5px 0 0 0 $color-neutral-200, inset -0.5px 0 0 0 $color-neutral-200;
+        font-family: $font-medium;
         cursor: pointer;
-        &--h-48 {
-            height: 48px;
-        }
+        border-bottom: 1px solid $color-neutral-300;
         i{
-            @include fsz(16px);
+            @include fsz(18px);
             margin-right: 16px;
+            color: $color-neutral-500;
         }
         span{
             white-space: nowrap;
             position: relative;
         }
         &:hover{
-            background: rgba($color-white, 0.6);
+          i{
+              color: $color-primary-500;
+          }
         }
         &.active{
-            background: $color-white;
-            color: $color-neutral-800p;
+            background: $color-primary-200;
+            color: $color-neutral-900;
             pointer-events: none;
+            border-bottom: 1px solid $color-primary-500;
             i{
                 color: $color-primary-500;
             }
@@ -88,15 +89,15 @@
         align-items: center;
         justify-content: center;
         @include fsz(14px);
-        font-family: $font-heavy;
+        font-family: $font-medium;
         cursor: pointer;
         transition: 200ms;
         padding: 0 8px;
         &:hover{
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
         }
         &.active{
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
             background: $color-white;
             border-radius: $border-radius-default;
             pointer-events: none;

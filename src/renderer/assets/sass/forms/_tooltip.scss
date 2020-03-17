@@ -60,12 +60,12 @@
         overflow: hidden;
     }
     &.tooltip-hebrew .tooltip-inner {
-        font-family: $font-regular-hebrew;
+        font-family: $font-regular;
         @include fsz(15px);
     }
     &.tooltip-english .tooltip-inner {
         @include fsz(14px);
-        font-family: $font-light;
+        font-family: $font-regular;
     }
     &.tooltip-resource{
         > .tooltip-inner{

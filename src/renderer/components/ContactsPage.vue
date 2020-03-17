@@ -1,41 +1,41 @@
 <template>
-  <div class="m-4">
+  <div>
     <contact-left-side-bar-component
       v-model="searchText"
     ></contact-left-side-bar-component>
     <layouts-container-lg-component>
-      <div class="d-flex">
+      <div class="d-flex align-items-center mb-4 pb-2">
         <div class="flex-grow-1">
           {{data.length}} total
         </div>
-        <button type="button" class="btn btn-secondary" @click="addContact">
+        <button type="button" class="btn btn-secondary btn-sm" @click="addContact">
           Add contact
         </button>
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
-          <div class="flex-table__header-item col-4 sortable" ref="sortName"
+          <div class="flex-table__header-item col-3 sortable" ref="sortName"
             @click="setSortField('name')">
             NAME
-            <i class="icon-down"></i>
+            <i class="icon icon-triangle-down"></i>
           </div>
-          <div class="flex-table__header-item col-4 sortable" ref="sortPhone_number"
+          <div class="flex-table__header-item col-3 sortable" ref="sortPhone_number"
           @click="setSortField('phone_number')">
             Phone Number
-            <i class="icon-down"></i>
+            <i class="icon icon-triangle-down"></i>
           </div>
-          <div class="flex-table__header-item col-4 sortable" ref="sortAddress"
+          <div class="flex-table__header-item col-5 sortable" ref="sortAddress"
           @click="setSortField('address')">
             Address
-            <i class="icon-down"></i>
-          </div>          
+            <i class="icon icon-triangle-down"></i>
+          </div>
         </div>
-        <div class="position-relative mb-2" v-for="item in data"
+        <div class="position-relative" v-for="item in data"
           :key="item.id">
-          <div class="flex-table__row w-shadow"
+          <div class="flex-table__row"
             @click="viewItem(item)"
             :class="{'active': currentItem && currentItem.id === item.id}">
-            <div class="flex-table__row-item col-4 font-weight-bold"
+            <div class="flex-table__row-item col-3"
                 tabindex="0">
                 <div v-if="item.company_name">
                   <div>{{ item.company_name }}</div>
@@ -45,17 +45,17 @@
                   {{ item.first_name }} {{ item.last_name }}
                 </template>
             </div>
-            <div class="flex-table__row-item col-4"
+            <div class="flex-table__row-item col-3"
                 tabindex="0">
               {{ item.phone_number }}
             </div>
-            <div class="flex-table__row-item col-4"
+            <div class="flex-table__row-item col-6"
                 tabindex="0">
               {{ item.address }}
             </div>
           </div>
         </div>
-      </div>      
+      </div>
       <contact-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"

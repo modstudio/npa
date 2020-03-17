@@ -3,9 +3,6 @@
   @include fsz(18px);
 }
 .text-regular{
-  @include fsz(14px);
-}
-.text-mid-small{
   @include fsz(13px);
 }
 .text-small{
@@ -14,15 +11,8 @@
 
 /* --- Text Weight ---*/
 b, .font-weight-bold{
-    font-family: $font-heavy !important;
+    font-family: $font-medium !important;
     font-weight: normal !important;
-    [class*="hebrew"] , &[class*="hebrew"]{
-      font-family: $font-medium-hebrew !important;
-    }
-}
-.font-weight-medium{
-  font-family: $font-medium !important;
-  font-weight: normal !important;
 }
 .font-weight-regular{
   font-family: $font-regular !important;
@@ -42,9 +32,10 @@ b, .font-weight-bold{
 }
 
 span.subtext {
-    font-size: 12px;
+    @include fsz(12px);
     line-height: 1.67;
-    color: $color-neutral-500;
+    color: $color-neutral-600;
+    font-family: $font-light;
 }
 span.subtext-checkbox {
     @include fsz(10px);

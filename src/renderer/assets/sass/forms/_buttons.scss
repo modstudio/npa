@@ -13,9 +13,9 @@ button, .btn, .cursor-pointer {
 }
 
 .btn {
-    height: 48px;
+    height: 40px;
     border-radius: $border-radius-default;
-    @include fsz(14px);
+    @include fsz(13px);
     box-shadow: none;
     transition: 200ms;
     display: flex;
@@ -24,6 +24,7 @@ button, .btn, .cursor-pointer {
     position: relative;
     text-transform: none;
     font-family: $font-regular;
+    padding: 0;
     i {
         @include fsz(16px);
     }
@@ -54,38 +55,12 @@ button, .btn, .cursor-pointer {
         min-width: 120px;
         &:hover,
         &:active {
-            background: rgba($color-primary-500, 0.06) !important;
+            background: $color-primary-200 !important;
             color: $color-primary-500 !important;
             border-color: $color-primary-500 !important;
         }
         &:disabled {
             opacity: 0.8;
-        }
-    }
-    &.btn-filled {
-        border: 1px solid $color-neutral-200;
-        color: $color-neutral-500;
-        background: $color-white;
-        &:hover {
-            color: $color-primary-500;
-            border: 1px solid $color-primary-500;
-            &:disabled {
-                border: 1px solid $color-neutral-200;
-                color: $color-neutral-500;
-                cursor: default;
-            }
-        }
-    }
-    &.btn-card{
-        background: $color-neutral-100;
-        border: none;
-        color: $color-neutral-800p;
-        &:focus, &:active{
-            background: $color-neutral-100 !important;
-            border: none;
-        }
-        &:hover{
-            background: rgba($color-neutral-100, 0.9);
         }
     }
     &.btn-link {
@@ -106,90 +81,14 @@ button, .btn, .cursor-pointer {
             text-decoration: none;
         }
         &.selected {
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
             font-weight: 900;
             text-decoration: none;
         }
-        &--coupon {
-            color: $color-neutral-800p;
-            i {
-                @include fsz(24px);
-                margin-right: 16px;
-                color: $color-neutral-600;
-            }
-            &:hover {
-                i {
-                    color: $color-primary-500;
-                }
-            }
-        }
-        &--back-to-top {
-            position: fixed;
-            right: 16px;
-            bottom: 16px;
-            width: 32px;
-            height: 32px;
-            background: rgba($color-neutral-800p, 0.07);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $color-neutral-500;
-            padding: 0;
-            &:hover{
-                background: rgba($color-neutral-800p, 0.14);
-                color: $color-neutral-800p;
-            }
-            @include respond-to(xs) {
-                bottom: 66px;
-            }
-            i{
-                @include fsz(24px);
-                line-height: 1;
-            }
-        }
-    }
-    &.btn-double {
-        padding: 0;
-        border-radius: 0;
-        span+span {
-            margin-left: 16px;
-        }
-        &:hover {
-            span {
-                color: $color-primary-500;
-            }
-            .btn-filled{
-                border-color: $color-primary-500;
-            }
-        }
-    }
-    &.btn-form-lg {
-        margin-top: 40px;
-    }
-    &.btn-white {
-        background: $color-white;
-        border: none;
-        border: 1px solid $color-neutral-200;
-        &:hover {
-            color: $color-primary-500;
-        }
     }
     &.btn-sm{
-        height: 40px;
-    }
-    &.btn-grey{
-        background: $color-neutral-100;
-        border: 1px solid $color-neutral-200;
-        &:hover{
-            border-color: $color-neutral-400;
-        }
-    }
-    &.no-arrow-sm{
-        @include respond-to(sm){
-            &:after{
-                display: none;
-            }
-        }
+        height: 24px;
+        width: 120px;
     }
     &.btn-icon{
       height: auto;
@@ -199,7 +98,7 @@ button, .btn, .cursor-pointer {
       height: 32px;
       width: 32px;
       i{
-        color: $color-neutral-500;
+        color: $color-neutral-400;
         @include fsz(16px);
         transition: inherit;
       }

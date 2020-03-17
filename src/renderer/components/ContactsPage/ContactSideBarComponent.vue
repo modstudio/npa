@@ -36,7 +36,7 @@
               v-model="form.id"
               label="Id Number"
             ></text-info-component>
-            <div class="border-bottom w-100 mb-4"></div>
+            <hr>
             <div class="row gutter-8">
                 <div class="col-12 col-md-10">
                     <!-- Phone Number -->
@@ -87,7 +87,7 @@
             <select-countries-component
               v-model="form.country"
               @change="onChangeCountry"
-            ></select-countries-component>                  
+            ></select-countries-component>
           </ValidationObserver>
       </div>
 
@@ -98,24 +98,22 @@
       ></contact-delete-dialog-component>
 
       <template slot="footer">
-        <div class="d-flex justify-content-between" v-if="!isDeleteMode">
+        <div class="d-flex justify-content-end align-items-center" v-if="!isDeleteMode">
           <button type="button" v-if="isNewMode"
-            class="btn btn-link"
+            class="btn btn-link mr-auto"
             @click="cancel">
               Cancel
           </button>
           <button type="button" v-else
             @click="deleteAction"
-            class="btn btn-icon btn-icon--w-text my-auto">
-            <span>
-              <i class="icon-delete"></i>Delete
-            </span>
+            class="btn btn-icon btn-icon--w-text mr-auto">
+              <i class="icon icon-trash-can"></i><span>Delete</span>
           </button>
 
           <action-button
             button-name="Save and New"
             loading-name="Saving"
-            additional-class="btn-secondary w-160"
+            additional-class="btn-secondary w-156"
             @click="saveAndNew"
             :form-busy="isSavingAndNewProcess"
           >
@@ -123,13 +121,13 @@
           <action-button
             button-name="Save and Close"
             loading-name="Saving"
-            additional-class="w-160"
+            additional-class="w-156 ml-4"
             @click="saveAndClose"
             :form-busy="isSavingAndCloseProcess"
           >
           </action-button>
         </div>
-      </template>        
+      </template>
     </right-side-bar-component>
   </div>
 </template>
