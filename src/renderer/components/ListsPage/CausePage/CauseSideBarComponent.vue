@@ -61,7 +61,7 @@
         @item-deleted="onDeleteItem"
       ></item-delete-dialog-component>
 
-      <template slot="footer">
+      <div class="info-sidebar__footer" v-show="!isDeleteMode">
         <footer-buttons-component
           v-if="!isDeleteMode"
           :is-new-mode="isNewMode"
@@ -72,7 +72,7 @@
           @delete="deleteAction"
           @cancel="$emit('hidepanel')"
         ></footer-buttons-component>
-      </template>
+      </div>
     </right-side-bar-component>
   </div>  
 </template>

@@ -6,12 +6,14 @@
     ></cause-left-side-component>
     <div class="d-flex">
       <div class="flex-grow-1">
-        {{totalCauses}} total
+        {{totalCauses}} 
+        <template v-if="isFiltered">results</template>
+        <template v-else>total</template>
       </div>
-      <button type="button" class="btn btn-secondary" @click="addGroup">
+      <button type="button" class="btn btn-secondary btn-sm" @click="addGroup">
         Add Group
       </button>
-      <button type="button" class="btn btn-secondary ml-3" @click="addCause">
+      <button type="button" class="btn btn-secondary btn-sm ml-3" @click="addCause">
         Add Cause
       </button>
     </div>
@@ -31,9 +33,9 @@
           </div>          
           <div class="flex-table__row-item col-4 col-md-2 d-flex justify-content-end pr-2">
             <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
-              <i class="icon-minuses" v-if="this.isAllExpanded">
+              <i class="icon icon-Collapse-all" v-if="this.isAllExpanded">
               </i>
-              <i class="icon-pluses" v-else>
+              <i class="icon icon-Epand-all" v-else>
               </i>
             </button>
           </div>

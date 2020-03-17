@@ -40,14 +40,23 @@ extend('postcode', {
 });
 
 extend('uniqueCause', {
-  message: () => 'Cause should be unique',
+  message: () => 'Cause name must be unique',
   async validate(value, args) {
-    console.log(value, args);
-    const countCauses = await Vue.db.get(
+    const countItems = await Vue.db.get(
       'SELECT count(*) as count FROM causes where name = ? and id <> IFNULL(?, 0)',
       [value, args[0]],
     );
-    console.log('found cases:', countCauses);
-    return countCauses.count === 0;
+    return countItems.count === 0;
+  },
+});
+
+extend('uniqueDistClass', {
+  message: () => 'Distribution class name must be unique',
+  async validate(value, args) {
+    const countItems = await Vue.db.get(
+      'SELECT count(*) as count FROM distribution_classes where name = ? and id <> IFNULL(?, 0)',
+      [value, args[0]],
+    );
+    return countItems.count === 0;
   },
 });

@@ -1,18 +1,160 @@
 <template>
   <div>
-    <aside class="sidebar">
-      <div class="color-neutral-500 m-3">
-        <h4>Sidebar panel</h4>
-        of {{$route.name}} page
+    <pikadon-left-side-component
+      v-model="searchText"
+    ></pikadon-left-side-component>
+    <div class="d-flex">
+      <div class="flex-grow-1">
+        {{data.length}}
+        <template v-if="isFiltered">results</template>
+        <template v-else>total</template>        
       </div>
-    </aside> 
-    {{$route.name}} page will be soon...
+      <button type="button" class="btn btn-secondary btn-sm" @click="addItem">
+        Add Pikadon
+      </button>
+    </div>
+    <div class="flex-table">
+      <div class="flex-table__header">
+        <div class="flex-table__header-item col-4" ref="sortName"
+          @click="setSortField('name')">
+          Contact
+          <i class="icon icon-triangle-down"></i>
+        </div>
+        <div class="flex-table__header-item col-4">
+          Metrics
+        </div>
+        <div class="flex-table__header-item col-4">
+          Balance
+        </div>                     
+      </div>
+      <div class="position-relative" v-for="item in data"
+        :key="item.id">
+        <div class="flex-table__row w-shadow"
+          @click="viewItem(item)"
+          :class="{'active': currentItem && currentItem.id === item.id}">
+          <div class="flex-table__row-item col-4 font-weight-bold"
+              tabindex="0">
+              <contact-name-field-component
+                :company-name="item.contact_company_name"
+                :first-name="item.contact_first_name"
+                :last-name="item.contact_last_name"
+              ></contact-name-field-component>
+          </div>
+          <div class="flex-table__row-item col-4"
+              tabindex="0">
+          </div>
+          <div class="flex-table__row-item col-4"
+              tabindex="0">
+          </div>                        
+        </div>
+      </div>
+    </div>      
+    <pikadon-side-bar-component
+      :current-item="currentItem"
+      :is-shown="isViewPanel"
+      :mode="viewPanelMode"
+      @hidepanel="hidePanel"
+      @update="getData"
+      @add-new="addItem"
+    ></pikadon-side-bar-component>         
   </div>
 </template>
 
 <script>
-export default {
+import PikadonLeftSideComponent from './PikadonPage/PikadonLeftSideComponent';
+import PikadonSideBarComponent from './PikadonPage/PikadonSideBarComponent';
+import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
+import Bus from '../../shared/EventBus';
 
+const tableSortColumnMixin = require('../mixins/table-sort-column');
+export default {
+  components: {
+    PikadonLeftSideComponent,
+    PikadonSideBarComponent,
+    ContactNameFieldComponent,
+  },
+
+  mixins: [
+    tableSortColumnMixin,
+  ],
+
+  beforeRouteEnter(to, from, next) {
+    next();
+    Bus.$emit('open-pikadon-page');
+  },
+
+  data() {
+    return {
+      isViewPanel: false,
+      viewPanelMode: 'edit',
+      currentItem: null,
+      searchText: '',
+      refNameSortCol: ['sortName'],
+      sortField: 'name',
+      sortOrder: 'asc',
+    };
+  },
+
+  computed: {
+    isFiltered() {
+      return !!this.searchText;
+    },
+
+    data: {
+      get() {
+        let { data } = this.$store.state.Pikadons;
+        if (this.searchText) {
+          const searchString = this.searchText.toLowerCase();
+          data = data
+            .filter(item => item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
+              || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
+              || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1
+              || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
+        }
+        let sortFields = [this.sortField];
+        let sortOrders = [this.sortOrder];
+        if (this.sortField === 'name') {
+          sortFields = [function (item) {
+            return item.contact_company_name ? item.contact_company_name
+              : `${item.contact_first_name} ${item.contact_last_name}`;
+          }];
+          sortOrders = [this.sortOrder];
+        }
+
+        return _.orderBy(data, sortFields, sortOrders);
+      },
+      async set(data) {
+        await this.$store.commit('Pikadons/setData', data);
+      },
+    },
+  },
+
+  created() {
+    this.getData();
+  },
+
+  methods: {
+    getData() {
+      this.$store.dispatch('Pikadons/getData');
+    },
+
+    addItem() {
+      this.currentItem = null;
+      this.viewPanelMode = 'new';
+      this.isViewPanel = true;
+    },
+
+    hidePanel() {
+      this.isViewPanel = false;
+      this.currentItem = null;
+    },
+
+    viewItem(item) {
+      this.currentItem = item;
+      this.viewPanelMode = 'edit';
+      this.isViewPanel = true;
+    },
+  },
 };
 </script>
 

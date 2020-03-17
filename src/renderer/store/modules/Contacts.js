@@ -20,7 +20,11 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all('SELECT * FROM contacts ORDER BY id');
+        const data = await Vue.db.all(`SELECT * FROM contacts 
+        ORDER BY case 
+        when company_name <> '' then company_name
+        else first_name || last_name
+        end`);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);

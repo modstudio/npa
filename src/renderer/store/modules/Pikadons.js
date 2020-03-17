@@ -27,10 +27,10 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all(`SELECT loans.*,
+        const data = await Vue.db.all(`SELECT pikadons.*,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
-        FROM loans JOIN contacts ON loans.contact_id = contacts.id
+        FROM pikadons JOIN contacts ON pikadons.contact_id = contacts.id
         ORDER BY case 
         when company_name <> '' then company_name
         else first_name || last_name
@@ -44,17 +44,16 @@ export default {
     async addData(context, data) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO loans (
-          contact_id, description, note
-        ) VALUES ($contact_id, $description, $note)
+        await Vue.db.run(`INSERT INTO pikadons (
+          contact_id, note
+        ) VALUES ($contact_id, $note)
         `, {
           $contact_id: data.contact_id,
-          $description: data.description,
           $note: data.note,
         });
         result = true;
       } catch (err) {
-        console.log('error insert loans', err);
+        console.log('error insert pikadons', err);
         result = false;
       }
       return result;
@@ -63,20 +62,18 @@ export default {
     async updateData(context, data) {
       let result;
       try {
-        await Vue.db.run(`UPDATE loans SET
+        await Vue.db.run(`UPDATE pikadons SET
           contact_id = $contact_id,
-          description = $description,
           note = $note
           WHERE id = $id
         `, {
           $id: data.id,
           $contact_id: data.contact_id,
-          $description: data.description,
           $note: data.note,
         });
         result = true;
       } catch (err) {
-        console.log('error update loans', err);
+        console.log('error update pikadons', err);
         result = false;
       }
       return result;
@@ -85,13 +82,14 @@ export default {
     async deleteItem(context, id) {
       let result;
       try {
-        await Vue.db.run('DELETE FROM loans WHERE id = ?', [id]);
+        await Vue.db.run('DELETE FROM pikadons WHERE id = ?', [id]);
         result = true;
       } catch (err) {
-        console.log('error DELETE loans', err);
+        console.log('error DELETE pikadons', err);
         result = false;
       }
       return result;
     },
+
   },
 };

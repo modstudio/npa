@@ -7,6 +7,7 @@
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>
+      <template slot="headerBadge">{{ currentItem ? currentItem.id : '' }}</template>
 
       <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
         <div class="info-sidebar__block-header">
@@ -91,14 +92,8 @@
           </ValidationObserver>
       </div>
 
-      <contact-delete-dialog-component v-show="isDeleteMode"
-        :item="currentItem"
-        @close-dialog="isDeleteMode = false"
-        @item-deleted="onDeleteContact"
-      ></contact-delete-dialog-component>
-
-      <template slot="footer">
-        <div class="d-flex justify-content-end align-items-center" v-if="!isDeleteMode">
+      <div class="info-sidebar__footer" v-show="!isDeleteMode">
+        <div class="d-flex justify-content-end align-items-center">
           <button type="button" v-if="isNewMode"
             class="btn btn-link mr-auto"
             @click="cancel">
@@ -127,7 +122,13 @@
           >
           </action-button>
         </div>
-      </template>
+      </div>
+
+      <contact-delete-dialog-component v-show="isDeleteMode"
+        :item="currentItem"
+        @close-dialog="isDeleteMode = false"
+        @item-deleted="onDeleteContact"
+      ></contact-delete-dialog-component>      
     </right-side-bar-component>
   </div>
 </template>

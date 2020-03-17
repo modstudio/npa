@@ -5,9 +5,11 @@
     ></dist-class-left-side-component>
       <div class="d-flex">
         <div class="flex-grow-1">
-          {{data.length}} total
+          {{data.length}}
+          <template v-if="isFiltered">results</template>
+          <template v-else>total</template>          
         </div>
-        <button type="button" class="btn btn-secondary" @click="addDistClass">
+        <button type="button" class="btn btn-secondary btn-sm" @click="addDistClass">
           Add Dist. Class
         </button>
       </div>
@@ -23,10 +25,10 @@
         <div is="draggable" v-model="data" tag="div"
           handle=".list-components__item-move"
           @change="onSortChange">
-          <div class="position-relative mb-2" v-for="item in data"
+          <div class="position-relative" v-for="item in data"
             :key="item.id">
             <span class="list-components__item-move">
-              <i class="icon-move-dots"></i>
+              <i class="icon icon-drag"></i>
             </span>
             <div class="flex-table__row w-shadow"
               @click="viewItem(item)"
@@ -87,6 +89,10 @@ export default {
   },
 
   computed: {
+    isFiltered() {
+      return !!this.searchText;
+    },
+
     data: {
       get() {
         let { data } = this.$store.state.DistClasses;

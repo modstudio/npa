@@ -38,6 +38,7 @@ class DataStore {
     this.dbEach = util.promisify(this.db.each).bind(this.db);
     this.get = util.promisify(this.db.get).bind(this.db);
     this.all = util.promisify(this.db.all).bind(this.db);
+    this.exec = util.promisify(this.db.exec).bind(this.db);
   }
 
   async migrate() {
@@ -50,7 +51,7 @@ class DataStore {
       if (checkMigration.cnt === 0) {
         try {
           console.log('run migration', key);
-          await this.run(migrations[key]);
+          await this.exec(migrations[key]);
           await this.run('INSERT INTO migrations (migration) VALUES (?)', [key]);
         } catch (err) {
           console.log('Error during run migration:', key, err);

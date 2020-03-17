@@ -5,16 +5,20 @@
     ></loan-left-side-component>
     <div class="d-flex">
       <div class="flex-grow-1">
-        {{data.length}} total
+        {{data.length}}
+        <template v-if="isFiltered">results</template>
+        <template v-else>total</template>        
       </div>
-      <button type="button" class="btn btn-secondary" @click="addItem">
+      <button type="button" class="btn btn-secondary btn-sm" @click="addItem">
         Add Loan
       </button>
     </div>
     <div class="flex-table">
       <div class="flex-table__header">
-        <div class="flex-table__header-item col-3">
+        <div class="flex-table__header-item col-3" ref="sortName"
+          @click="setSortField('name')">
           Contact
+          <i class="icon icon-triangle-down"></i>
         </div>
         <div class="flex-table__header-item col-3">
           Description
@@ -26,36 +30,29 @@
           Balance
         </div>                     
       </div>
-      <div is="draggable" v-model="data" tag="div"
-        handle=".list-components__item-move"
-        @change="onSortChange">
-        <div class="position-relative mb-2" v-for="item in data"
-          :key="item.id">
-          <span class="list-components__item-move">
-            <i class="icon-move-dots"></i>
-          </span>
-          <div class="flex-table__row w-shadow"
-            @click="viewItem(item)"
-            :class="{'active': currentItem && currentItem.id === item.id}">
-            <div class="flex-table__row-item col-3 font-weight-bold"
-                tabindex="0">
-                <contact-name-field-component
-                  :company-name="item.contact_company_name"
-                  :first-name="item.contact_first_name"
-                  :last-name="item.contact_last_name"
-                ></contact-name-field-component>
-            </div>
-            <div class="flex-table__row-item col-3"
-                tabindex="0">
-              {{item.description}}
-            </div>
-            <div class="flex-table__row-item col-3"
-                tabindex="0">
-            </div>
-            <div class="flex-table__row-item col-3"
-                tabindex="0">
-            </div>                        
+      <div class="position-relative" v-for="item in data"
+        :key="item.id">
+        <div class="flex-table__row w-shadow"
+          @click="viewItem(item)"
+          :class="{'active': currentItem && currentItem.id === item.id}">
+          <div class="flex-table__row-item col-3 font-weight-bold"
+              tabindex="0">
+              <contact-name-field-component
+                :company-name="item.contact_company_name"
+                :first-name="item.contact_first_name"
+                :last-name="item.contact_last_name"
+              ></contact-name-field-component>
           </div>
+          <div class="flex-table__row-item col-3"
+              tabindex="0">
+            {{item.description}}
+          </div>
+          <div class="flex-table__row-item col-3"
+              tabindex="0">
+          </div>
+          <div class="flex-table__row-item col-3"
+              tabindex="0">
+          </div>                        
         </div>
       </div>
     </div>      
@@ -71,22 +68,23 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable';
-import SortOrderMixin from '../mixins/sort-order';
 import LoanLeftSideComponent from './LoanPage/LoanLeftSideComponent';
 import LoanSideBarComponent from './LoanPage/LoanSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
 import Bus from '../../shared/EventBus';
 
+const tableSortColumnMixin = require('../mixins/table-sort-column');
 export default {
   components: {
-    draggable,
     LoanLeftSideComponent,
     LoanSideBarComponent,
     ContactNameFieldComponent,
   },
 
-  mixins: [SortOrderMixin],
+
+  mixins: [
+    tableSortColumnMixin,
+  ],
 
   beforeRouteEnter(to, from, next) {
     next();
@@ -99,11 +97,17 @@ export default {
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
-      sortOrderActionName: 'Loans/setSortOrder',
+      refNameSortCol: ['sortName'],
+      sortField: 'name',
+      sortOrder: 'asc',
     };
   },
 
   computed: {
+    isFiltered() {
+      return !!this.searchText;
+    },
+
     data: {
       get() {
         let { data } = this.$store.state.Loans;
@@ -116,7 +120,17 @@ export default {
               || item.description.toLowerCase().indexOf(searchString) !== -1
               || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
         }
-        return data;
+        let sortFields = [this.sortField];
+        let sortOrders = [this.sortOrder];
+        if (this.sortField === 'name') {
+          sortFields = [function (item) {
+            return item.contact_company_name ? item.contact_company_name
+              : `${item.contact_first_name} ${item.contact_last_name}`;
+          }];
+          sortOrders = [this.sortOrder];
+        }
+
+        return _.orderBy(data, sortFields, sortOrders);
       },
       async set(data) {
         await this.$store.commit('Loans/setData', data);

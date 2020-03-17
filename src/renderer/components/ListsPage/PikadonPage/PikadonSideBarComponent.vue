@@ -3,7 +3,7 @@
     <right-side-bar-component
       header-image-url="./static/images/register.svg"
       header-image-style="background-size: auto;"
-      init-event-name="open-pledge-page"
+      init-event-name="open-pikadon-page"
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>
@@ -11,21 +11,15 @@
       <div>
         <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
           <div class="info-sidebar__block-header">
-              <h4>Pledge</h4>
+              <h4>Pikadon</h4>
           </div>
             <ValidationObserver ref="observer">
               <!-- Contact -->
               <contact-select-component
                 v-model="form.contact_id"
-                label="Contact"
-                rules="required"
-              ></contact-select-component>
-              <!-- Cause -->
-              <cause-select-component
-                v-model="form.cause_id"
                 label="Name"
                 rules="required"
-              ></cause-select-component>              
+              ></contact-select-component>         
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
@@ -36,8 +30,8 @@
 
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
-          item-name="Pledge"
-          store-action-name="Pledges/deleteItem"
+          item-name="Pikadon"
+          store-action-name="Pikadons/deleteItem"
           check-action-name=""
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
@@ -76,7 +70,7 @@ export default {
 
   computed: {
     headerName() {
-      return this.isNewMode ? 'New Pledge' : `${this.name}`;
+      return this.isNewMode ? 'New Pikadon' : `${this.name}`;
     },
 
     name() {
@@ -95,18 +89,17 @@ export default {
       return {
         id: null,
         contact_id: null,
-        cause_id: null,
         note: '',
       };
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('Pledges/addData', this.form);
+      const result = await this.$store.dispatch('Pikadons/addData', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('Pledges/updateData', this.form);
+      const result = await this.$store.dispatch('Pikadons/updateData', this.form);
       return result;
     },
   },
