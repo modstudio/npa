@@ -1,22 +1,22 @@
 <template>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-end align-items-center">
     <button type="button" v-if="isNewMode"
-      class="btn btn-link"
+      class="btn btn-link mr-auto"
       @click="$emit('cancel')">
         Cancel
     </button>
     <button type="button" v-else
       @click="$emit('delete')"
-      class="btn btn-icon btn-icon--w-text my-auto">
+      class="btn btn-icon btn-icon--w-text mr-auto">
       <span>
-        <i class="icon-delete"></i>Delete
+        <i class="icon icon-trash-can"></i>Delete
       </span>
     </button>
 
     <action-button
       button-name="Save and New"
       loading-name="Saving"
-      additional-class="btn-secondary w-160"
+      additional-class="btn-secondary w-156"
       @click="$emit('save-and-new')"
       :form-busy="isSavingAndNewProcess"
     >
@@ -24,12 +24,12 @@
     <action-button
       button-name="Save and Close"
       loading-name="Saving"
-      additional-class="w-160"
+      additional-class="w-156 ml-4"
       @click="$emit('save-and-close')"
       :form-busy="isSavingAndCloseProcess"
     >
     </action-button>
-  </div>  
+  </div>
 </template>
 
 <script>

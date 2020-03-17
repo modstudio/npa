@@ -19,7 +19,7 @@
     }
     &__heading {
         @include fsz(24px);
-        font-family: $font-light;
+        font-family: $font-regular;
         @include respond-to(md) {
             @include fsz(18px);
         }

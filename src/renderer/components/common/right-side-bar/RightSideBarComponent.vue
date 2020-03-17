@@ -4,7 +4,7 @@
         <div class="info-sidebar__header">
             <button type="button" class="info-sidebar__close"
               @click="hidePanel">
-                <i class="icon-close"></i>
+                <i class="icon icon-e-remove"></i>
             </button>
             <span class="info-sidebar__image">
                 <span role="img" class="profile-photo-preview"
@@ -19,7 +19,7 @@
             </div>
         </div>
         <slot></slot>
-        <div class="info-sidebar__footer py-3 px-4">
+        <div class="info-sidebar__footer">
           <slot name="footer"></slot>
         </div>
     </div>

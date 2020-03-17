@@ -6,7 +6,7 @@
     top: 0;
     bottom: 0;
     width: $sidebar-width-lg;
-    background-color: $color-neutral-850;
+    background-color: $color-neutral-800;
     min-height: calc(100vh - #{$navbar-height});
     display: flex;
     flex-direction: column;
@@ -226,10 +226,10 @@
         right: 16px;
         top: 12px;
         @include fsz(16px);
-        color: $color-neutral-800p;
+        color: $color-neutral-900;
     }
     .dropdown-item {
-        color: $color-neutral-800p;
+        color: $color-neutral-900;
         @include fsz(14px);
         padding: 0 0 0 28px;
         position: relative;
@@ -276,7 +276,7 @@
         .team-add {
             @include fsz(17px);
             left: -26px;
-            color: $color-neutral-800p;
+            color: $color-neutral-900;
         }
         .light-icon {
             width: 18px;
@@ -443,7 +443,7 @@
         @include fsz(14px);
         position: relative;
         padding-left: 16px;
-        font-family: $font-light;
+        font-family: $font-regular;
         &:hover {
             color: $color-white;
         }

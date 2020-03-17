@@ -1,8 +1,8 @@
 /*--- Typography ---*/
 body {
     font-family: $font-regular;
-    color: $color-neutral-800p;
-    background: $color-neutral-100;
+    color: $color-neutral-900;
+    background: $color-white;
 }
 
 h1,
@@ -20,6 +20,11 @@ h6,
     margin-top: 0;
     margin-bottom: 0;
     font-weight: 400;
+}
+
+h4{
+    @include fsz(18px);
+    font-family: $font-medium;
 }
 
 a {
@@ -65,7 +70,7 @@ ol, ul, dl, p{
                 counter-increment: list_count;
                 content:counter(list_count)".";
                 color: $color-primary-500;
-                font-family: $font-heavy;
+                font-family: $font-medium;
                 left: 0;
                 position: absolute;
             }
@@ -78,4 +83,10 @@ ol, ul, dl, p{
     text-align: center;
     @include fsz(14px);
     color: $color-neutral-600;
+}
+
+hr{
+  background: $color-primary-500;
+  margin-top: 32px;
+  margin-bottom: 32px;
 }

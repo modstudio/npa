@@ -5,7 +5,7 @@
         <h4>Sidebar panel</h4>
         register page
       </div>
-    </aside>    
+    </aside>
 
     <h3>Register Page</h3>
     <p class="mt-4">Page will be soon...</p>

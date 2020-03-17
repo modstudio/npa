@@ -1,5 +1,17 @@
+.color-primary-700{
+  color: $color-primary-700 !important;
+}
 .color-primary-500{
   color: $color-primary-500 !important;
+}
+.color-primary-200{
+  color: $color-primary-200 !important;
+}
+.color-secondary-700{
+  color: $color-secondary-700 !important;
+}
+.color-primary-500{
+  color: $color-secondary-500 !important;
 }
 .color-neutral-200{
   color: $color-neutral-200 !important;
@@ -14,40 +26,5 @@
   color: $color-neutral-600 !important;
 }
 .color-neutral-800p {
-  color: $color-neutral-800p !important;
-}
-
-// Curriculums
-.color-c-purple{
-  color:$color-c-purple !important;
-}
-.color-c-red{
-  color: $color-c-red !important;
-}
-.color-c-orange{
-  color: $color-c-orange !important;
-}
-.color-c-yellow{
-  color: $color-c-yellow !important;
-}
-.color-c-lime{
-  color: $color-c-lime !important;
-}
-.color-c-green{
-  color: $color-c-green !important;
-}
-.color-c-teal{
-  color: $color-c-teal !important;
-}
-.color-c-blue{
-  color: $color-c-blue !important;
-}
-.color-c-navy{
-  color: $color-c-navy !important;
-}
-.color-c-charcoal{
-  color: $color-c-charcoal !important;
-}
-.color-c-none{
-  color: $color-c-none !important;
+  color: $color-neutral-900 !important;
 }

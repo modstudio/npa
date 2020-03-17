@@ -33,7 +33,7 @@
     }
     .image-overlay {
         opacity: 0.6;
-        background-color: $color-neutral-800p;
+        background-color: $color-neutral-900;
         transition: all .5s ease-in;
         .profile-photo-preview {
             background: none;
@@ -92,13 +92,13 @@
         bottom: 16px;
     }
     &__header {
-        height: 32px;
+        height: 56px;
         display: flex;
-        margin-bottom: 8px;
+        border-bottom: 1px solid $color-neutral-300;
     }
     &__header-item {
         @include fsz(12px);
-        font-family: $font-heavy;
+        font-family: $font-medium;
         display: flex;
         align-items: center;
         text-transform: uppercase;
@@ -119,41 +119,38 @@
             cursor: pointer;
         }
         i{
-            @include fsz(16px);
-            margin-left: 2px;
+            @include fsz(7px);
+            margin-left: 6px;
             color: $color-neutral-400;
         }
         &.sorted-up{
             i{
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
                 transform: rotate(-180deg);
             }
         }
         &.sorted-down{
             i{
-                color: $color-neutral-800p;
+                color: $color-neutral-900;
             }
         }
     }
     &__row {
         display: flex;
         height: 56px;
-        border-radius: $border-radius-default;
         border: 1px solid transparent;
+        border-top: 1px solid $color-neutral-300;
+        border-bottom: 1px solid $color-neutral-300;
         background: $color-white;
         transition: 200ms;
         position: relative;
         max-width: 100%;
-        &.w-shadow{
-            cursor: pointer;
-            &:hover{
-              border: 1px solid $color-neutral-500;
-                label.form-checkbox{
-                    input + span:before{
-                        border: 1px solid $color-neutral-500;
-                    }
-                }
-            }
+        margin-top: -1px;
+        cursor: pointer;
+        &:hover{
+          border: 1px solid $color-neutral-500;
+          z-index: 2;
+          border-radius: $border-radius-default;
         }
         &.expandable{
           &:hover{
@@ -163,6 +160,8 @@
         }
         &.active{
             border: 1px solid $color-primary-500;
+            border-radius: $border-radius-default;
+            z-index: 3;
             &:hover{
                 border: 1px solid $color-primary-500;
                 label.form-checkbox{
@@ -172,11 +171,22 @@
                 }
             }
         }
+        &--small{
+          height: 48px;
+        }
+        &--double{
+          background: linear-gradient(to bottom, $color-white 50%, $color-neutral-50 51%);
+          .flex-table__row-item{
+            align-items: flex-start;
+            line-height: 2.12;
+          }
+        }
     }
     &__row-item {
         display: flex;
         align-items: center;
-        @include fsz(14px);
+        @include fsz(13px);
+        line-height: 1.2;
         padding: 0 8px;
         flex-shrink: 1;
         @include truncateText();
@@ -275,9 +285,9 @@
 
 .no-search-result, .page-coming-soon {
     text-align: center;
-    font-family: $font-heavy;
+    font-family: $font-medium;
     @include fsz(36px);
-    color: $color-neutral-800p;
+    color: $color-neutral-900;
     @include respond-to(xs){
         @include fsz(24px);
     }
@@ -337,7 +347,7 @@
             color: $color-primary-500;
             font-family: $font-medium;
             .form-step-item__inner{
-                background: $color-primary-100;
+                background: rgba($color-primary-500, 0.1);
             }
             .form-step-item__icon{
                 border: 5px solid $color-primary-500;
@@ -434,7 +444,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: $color-primary-100;
+    background-color: rgba($color-primary-500, 0.1);
     border-radius: 50%;
     flex-shrink: 0;
     color: $color-primary-500;
@@ -457,7 +467,7 @@
     font-family: $font-regular;
     @include fsz(14px);
     line-height: 1.64;
-    color: $color-neutral-800p;
+    color: $color-neutral-900;
     max-width: 800px;
     margin: 0 auto;
     &--w-bg{
