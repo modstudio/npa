@@ -3,7 +3,7 @@ import { extend, setInteractionMode } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import { messages } from 'vee-validate/dist/locale/en.json';
 import PhoneNumber from 'awesome-phonenumber';
-
+import Vue from 'vue';
 
 setInteractionMode('eager');
 
@@ -36,5 +36,18 @@ extend('postcode', {
         resolve({ valid: true });
       }
     });
+  },
+});
+
+extend('uniqueCause', {
+  message: () => 'Cause should be unique',
+  async validate(value, args) {
+    console.log(value, args);
+    const countCauses = await Vue.db.get(
+      'SELECT count(*) as count FROM causes where name = ? and id <> IFNULL(?, 0)',
+      [value, args[0]],
+    );
+    console.log('found cases:', countCauses);
+    return countCauses.count === 0;
   },
 });

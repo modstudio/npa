@@ -17,7 +17,7 @@
               <!-- Contact -->
               <contact-select-component
                 v-model="form.contact_id"
-                label="Name"
+                label="Contact"
                 rules="required"
               ></contact-select-component>
               <!-- Cause -->

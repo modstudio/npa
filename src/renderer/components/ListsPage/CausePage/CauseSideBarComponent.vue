@@ -17,7 +17,7 @@
             <!-- Name -->
             <text-input-component
               v-model="form.name"
-              rules="required"
+              :rules="{required: true, uniqueCause: form.id}"
               label="Name"
             ></text-input-component>
             <!-- Group -->
