@@ -40,7 +40,7 @@ extend('postcode', {
 });
 
 extend('uniqueCause', {
-  message: () => 'Cause should be unique',
+  message: () => 'Cause name must be unique',
   async validate(value, args) {
     console.log(value, args);
     const countCauses = await Vue.db.get(

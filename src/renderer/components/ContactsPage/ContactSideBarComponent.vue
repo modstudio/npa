@@ -7,6 +7,7 @@
       @hidepanel="$emit('hidepanel')"
     >
       <template slot="header">{{ headerName }}</template>
+      <template slot="headerBadge">{{ currentItem ? currentItem.id : '' }}</template>
 
       <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
         <div class="info-sidebar__block-header">

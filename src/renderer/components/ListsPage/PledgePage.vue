@@ -29,10 +29,10 @@
       <div is="draggable" v-model="data" tag="div"
         handle=".list-components__item-move"
         @change="onSortChange">
-        <div class="position-relative mb-2" v-for="item in data"
+        <div class="position-relative" v-for="item in data"
           :key="item.id">
           <span class="list-components__item-move">
-            <i class="icon-move-dots"></i>
+            <i class="icon icon-drag"></i>
           </span>
           <div class="flex-table__row w-shadow"
             @click="viewItem(item)"

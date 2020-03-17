@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="position-relative mb-2">
+    <div class="position-relative">
       <span class="list-components__item-move" :class="{'d-none': isFiltered}">
-          <i class="icon-move-dots"></i>
+          <i class="icon icon-drag"></i>
       </span>
       <div class="flex-table__row w-shadow expandable"
         @click="toggleCollapse"
@@ -36,9 +36,9 @@
               :aria-controls="`cause-group-${item.id}`"
               class="btn btn-icon"
             >
-              <i class="icon-minus" v-if="item.isExpanded" :key="`plus-${item.id}`">
+              <i class="icon icon-s-delete" v-if="item.isExpanded" :key="`plus-${item.id}`">
               </i>
-              <i class="icon-plus" v-else :key="`minus-${item.id}`">
+              <i class="icon icon-s-add" v-else :key="`minus-${item.id}`">
               </i>
             </button>
         </div>

@@ -1,13 +1,13 @@
 <template>
   <div is="draggable" v-model="data" tag="div"
-    class="ml-4 mb-2 pl-2"
+    class="ml-4 pl-2"
     handle=".list-components__item-move"
 
     @change="onSortChange">
-    <div class="position-relative mb-2" v-for="item in data"
+    <div class="position-relative" v-for="item in data"
       :key="item.id">
       <span class="list-components__item-move" :class="{'d-none': isFiltered}">
-          <i class="icon-move-dots"></i>
+          <i class="icon icon-drag"></i>
       </span>
       <div class="flex-table__row w-shadow"
         @click="$emit('view', item)"
