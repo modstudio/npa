@@ -5,14 +5,19 @@
           <i class="icon-move-dots"></i>
       </span>
       <div class="flex-table__row w-shadow expandable"
-        @click="$emit('toggle-collapse-status', item)"
+        @click="toggleCollapse"
         @mouseover="isHover = true"
         @mouseout="isHover = false"
         :class="{'active': currentItem && currentItem.id === item.id}"
         :aria-expanded="item.isExpanded"
         :aria-controls="`cause-group-${item.id}`">
-        <div class="flex-table__row-item col-8 font-weight-bold" tabindex="0">
-            <span>{{ item.name }}</span>
+        <div class="flex-table__row-item col-8" tabindex="0">
+            <div class="font-weight-bold">{{ item.name }}</div>
+            <span class="color-neutral-500 ml-3"
+              :class="{'pr-3': !item.causes.length}">
+              {{item.causes.length}} Cause<span
+                v-if="item.causes.length > 1">s</span>
+            </span>            
         </div>
         <div class="flex-table__row-item col-4 d-flex
         justify-content-end pr-2"

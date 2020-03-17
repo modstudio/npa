@@ -14,7 +14,7 @@
     <div class="flex-table">
       <div class="flex-table__header">
         <div class="flex-table__header-item col-3">
-          NAME
+          Contact
         </div>
         <div class="flex-table__header-item col-3">
           Cause
