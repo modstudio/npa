@@ -33,11 +33,11 @@
             <div class="flex-table__row w-shadow"
               @click="viewItem(item)"
               :class="{'active': currentItem && currentItem.id === item.id}">
-              <div class="flex-table__row-item col-4 font-weight-bold"
+              <div class="flex-table__row-item col-6 font-weight-bold"
                   tabindex="0">
                   {{ item.name }}
               </div>
-              <div class="flex-table__row-item col-4"
+              <div class="flex-table__row-item col-6"
                   tabindex="0">
               </div>
             </div>
