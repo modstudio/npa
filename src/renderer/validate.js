@@ -60,3 +60,14 @@ extend('uniqueDistClass', {
     return countItems.count === 0;
   },
 });
+
+extend('uniqueTrxMethod', {
+  message: () => 'Transaction method name must be unique',
+  async validate(value, args) {
+    const countItems = await Vue.db.get(
+      'SELECT count(*) as count FROM transaction_methods where name = ? and id <> IFNULL(?, 0)',
+      [value, args[0]],
+    );
+    return countItems.count === 0;
+  },
+});
