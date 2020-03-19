@@ -1,17 +1,15 @@
 <template>
   <ValidationProvider :name="label" :rules="rules" v-slot="{ errors }">
     <div class="form-group form-group--enter" :class="formGroupClass">
-        <input :type="fieldType" class="form-control form-control--enter"
-            :min="min"
-            :name="name"
-            :class="{'is-invalid': errors[0], ...additionalClass}"
+        <input type="number" class="form-control form-control--enter"
+            :class="{'is-invalid': errors[0], ...additionalClass, ...currencyClass}"
             :placeholder="placeholder"
             :value="value"
             :disabled="disabled"
             :readonly="readonly"
             :autocomplete="autocomplete"
             @input="onInput"
-            @change="$emit('change', $event.target.value)"
+            @change="onChange"
             @blur="$emit('blur')"
             aria-invalid="false"
         >
@@ -20,15 +18,8 @@
             {{ label }}
         </label>
 
-        <span class="state-icon" v-show="fieldIsDirty">
-            <span v-if="isShowEye" class="password" :class="{'pw-hide': fieldType==='text'}">
-              <span v-show="fieldType==='password'"
-                v-on:click="fieldType='text'"><i class="icon-eye"></i></span>
-              <span v-show="fieldType==='text'"
-                v-on:click="fieldType='password'"><i class="icon-eye-off"></i></span>
-            </span>
-            <i v-if="errors[0]" class="icon-warning"></i>
-            <i v-else-if="isIconOk && !fieldIsInvalid" class="icon-ok color-primary-500"></i>
+        <span class="state-icon">
+          <i class="icon icon-USD"></i>
         </span>
 
         <span class="state state--error" v-show="errors[0]">
@@ -44,14 +35,6 @@ export default {
     value: {
       type: [String, Number],
       default: '',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    name: {
-      type: String,
-      default: 'name',
     },
     label: {
       type: String,
@@ -73,10 +56,6 @@ export default {
       type: [Object, String],
       default: null,
     },
-    min: {
-      type: Number,
-      default: null,
-    },
     disabled: {
       type: Boolean,
       default: false,
@@ -85,46 +64,52 @@ export default {
       type: Boolean,
       default: false,
     },
-    isIconOk: {
-      type: Boolean,
-      default: false,
-    },
     autocomplete: {
       type: String,
       default: 'off',
     },
-    isShowEye: {
+    isCredit: {
+      type: Boolean,
+      default: false,
+    },
+    isDebit: {
       type: Boolean,
       default: false,
     },
   },
 
   computed: {
-    fieldIsDirty() {
-      const fields = this.scope ? this.fields[`$${this.scope}`] : this.fields;
-      return fields && fields[this.name] && fields[this.name].dirty;
-    },
-    fieldIsInvalid() {
-      const fields = this.scope ? this.fields[`$${this.scope}`] : this.fields;
-      return fields && fields[this.name] && fields[this.name].invalid;
-    },
-  },
+    currencyClass() {
+      if (this.value < 0 || (this.value > 0 && this.isDebit)) {
+        return { 'color-secondary-700': true };
+      }
 
-  data() {
-    return {
-      fieldType: this.type,
-    };
+      if (this.value > 0) {
+        return { 'color-primary-700': true };
+      }
+      return null;
+    },
   },
 
   methods: {
     onInput($event) {
       this.$emit('input', $event.target.value);
     },
+
+    onChange($event) {
+      const value = Number.parseFloat($event.target.value).toFixed(2);
+      this.$emit('input', value);
+      this.$emit('change', value);
+    },
   },
 
 };
 </script>
 
-<style>
-
+<style scoped>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 </style>
