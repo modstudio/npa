@@ -7,6 +7,8 @@ import TextInputComponent from './form-elements/TextInputComponent';
 import TextInfoComponent from './form-elements/TextInfoComponent';
 import TelInputComponent from './form-elements/TelInputComponent';
 import TextareaComponent from './form-elements/TextareaComponent';
+import CurrencyInputComponent from './form-elements/CurrencyInputComponent';
+import DatepickerComponent from './form-elements/DatepickerComponent';
 import SelectComponent from './form-elements/SelectComponent';
 import ActionButton from './form-elements/ActionButton';
 
@@ -19,5 +21,7 @@ Vue.component('TextInputComponent', TextInputComponent);
 Vue.component('TextInfoComponent', TextInfoComponent);
 Vue.component('TextareaComponent', TextareaComponent);
 Vue.component('TelInputComponent', TelInputComponent);
+Vue.component('CurrencyInputComponent', CurrencyInputComponent);
+Vue.component('DatepickerComponent', DatepickerComponent);
 Vue.component('SelectComponent', SelectComponent);
 Vue.component('ActionButton', ActionButton);

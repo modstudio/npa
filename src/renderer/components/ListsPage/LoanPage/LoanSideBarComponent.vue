@@ -62,14 +62,12 @@
 <script>
 import ItemDeleteDialogComponent from '../../common/right-side-bar/ItemDeleteDialogComponent';
 import ContactSelectComponent from '../../common/ContactSelectComponent';
-import CauseSelectComponent from '../../common/CauseSelectComponent';
 import sideBarPanelMixin from '../../mixins/side-bar-panel';
 
 export default {
   components: {
     ItemDeleteDialogComponent,
     ContactSelectComponent,
-    CauseSelectComponent,
   },
 
   mixins: [sideBarPanelMixin],

@@ -6,6 +6,7 @@ import { CollapsePlugin } from 'bootstrap-vue';
 
 import _ from 'lodash';
 import * as jQuery from 'jquery';
+import moment from 'moment';
 import mCustomScrollBar from 'malihu-custom-scrollbar-plugin';
 import VueTelInput from 'vue-tel-input';
 import './validate';
@@ -23,7 +24,7 @@ mCustomScrollBar(jQuery);
 
 window._ = _;
 window.$ = window.jQuery = jQuery;
-
+window.moment = moment;
 require('bootstrap/dist/js/bootstrap');
 require('bootstrap-select/dist/js/bootstrap-select');
 

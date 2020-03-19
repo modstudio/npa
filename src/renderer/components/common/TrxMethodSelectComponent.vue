@@ -2,24 +2,17 @@
   <select-component
     v-bind="$attrs"
     v-on="$listeners"
-    :label="label"
-    placeholder="Chooce Cause"    
+    label="Trx. Method"
+    placeholder="Chooce Trx. Method"    
     :source-data="data"
   ></select-component>
 </template>
 
 <script>
 export default {
-  props: {
-    label: {
-      type: String,
-      default: 'Cause',
-    },
-  },
-
   computed: {
     data() {
-      return this.$store.state.Causes.data.map(item => ({
+      return this.$store.state.TrxMethods.data.map(item => ({
         value: item.id,
         label: item.name,
         ...item,
@@ -34,7 +27,7 @@ export default {
   methods: {
     initData() {
       if (!this.data.length) {
-        this.$store.dispatch('Causes/getData');
+        this.$store.dispatch('TrxMethods/getData');
       }
     },
   },
