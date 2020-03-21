@@ -3,7 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     :label="label"
-    placeholder="Chooce Loan"    
+    placeholder="Choose Loan"    
     :source-data="data"
   ></select-component>
 </template>

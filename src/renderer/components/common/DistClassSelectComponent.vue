@@ -3,7 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     label="Distribution Class"
-    placeholder="Chooce Distribution Class"
+    placeholder="Choose Distribution Class"
     :source-data="data"
   ></select-component>
 </template>

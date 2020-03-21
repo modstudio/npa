@@ -26,7 +26,7 @@
                 rules="required"
                 @change="onTypeChange"
               ></transaction-type-select-component>
-              <div class="row gutter-8" v-if="!isPledge">
+              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance">
                 <div class="col-12 col-sm-6">
                   <!-- Transaction method -->
                   <trx-method-select-component
@@ -69,10 +69,24 @@
                 v-model="form.pledge_id"
                 label="Category"
                 rules="required"
-              ></pledge-select-component>                                                                          
+              ></pledge-select-component>
+              <!-- Starting Balance -->
+              <starting-balance-category-select-component
+                v-if="isStartingBalance"
+                :value="startingBalanceCategoryId"
+                label="Category"
+                rules="required"
+                @input="onStartingbalanceCategoryInput"
+              ></starting-balance-category-select-component>
+              <!-- Debit/Credit -->
+              <debit-credit-component
+                v-if="isStartingBalance"
+                label="Starting Balance (+/-)"
+                v-model="form.debit_credit"
+              ></debit-credit-component>
               <!-- Payee -->
               <contact-select-component
-                v-if="!isPledge"
+                v-if="!isPledge && !isStartingBalance"
                 v-model="form.contact_id"
                 label="Payee"
                 :rules="{required: isDistribution}"
@@ -126,6 +140,8 @@ import LoanSelectComponent from '../common/LoanSelectComponent';
 import PikadonSelectComponent from '../common/PikadonSelectComponent';
 import PledgeSelectComponent from '../common/PledgeSelectComponent';
 import ContactSelectComponent from '../common/ContactSelectComponent';
+import StartingBalanceCategorySelectComponent from '../common/StartingBalanceCategorySelectComponent';
+import DebitCreditComponent from '../common/form-elements/DebitCreditComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 
 export default {
@@ -138,6 +154,8 @@ export default {
     PikadonSelectComponent,
     PledgeSelectComponent,
     ContactSelectComponent,
+    StartingBalanceCategorySelectComponent,
+    DebitCreditComponent,
   },
 
   mixins: [sideBarPanelMixin],
@@ -173,16 +191,46 @@ export default {
       return this.$store.getters['Transactions/isPledge'](this.form.transaction_type_id);
     },
 
+    isPledgePayment() {
+      return this.$store.getters['Transactions/isPledgePayment'](this.form.transaction_type_id);
+    },
+
+    isStartingBalance() {
+      return this.$store.getters['Transactions/isStartingBalance'](this.form.transaction_type_id);
+    },
+
     isDistribution() {
       return this.form.transaction_type_id === 2;
     },
 
     isDebit() {
+      if (this.isStartingBalance) {
+        return this.form.debit_credit === 'debit';
+      }
       return this.$store.getters['Transactions/isDebit'](this.form.transaction_type_id);
     },
 
     isCredit() {
       return this.$store.getters['Transactions/isCredit'](this.form.transaction_type_id);
+    },
+
+    startingBalanceCategoryId() {
+      if (!this.isStartingBalance) {
+        return null;
+      }
+      if (this.form.cause_id) {
+        return `cause_id:${this.form.cause_id}`;
+      }
+      if (this.form.loan_id) {
+        return `loan_id:${this.form.loan_id}`;
+      }
+      if (this.form.pikadon_id) {
+        return `pikadon_id:${this.form.pikadon_id}`;
+      }
+      if (this.form.pledge_id) {
+        return `pledge_id:${this.form.pledge_id}`;
+      }
+      return null;
     },
   },
 
@@ -199,6 +247,7 @@ export default {
         pikadon_id: null,
         pledge_id: null,
         contact_id: null,
+        debit_credit: 'debit',
         amount: null,
         note: '',
       };
@@ -219,6 +268,7 @@ export default {
           this.form.amount = Math.abs(this.form.amount);
         }
       }
+      this.$store.dispatch('StartingBalanceCategories/getData', this.form.id || 0);
     },
 
     async saveItem() {
@@ -251,6 +301,15 @@ export default {
         this.form.transaction_method_id = null;
         this.form.number = '';
       }
+    },
+
+    onStartingbalanceCategoryInput(value) {
+      this.form.cause_id = null;
+      this.form.loan_id = null;
+      this.form.pikadon_id = null;
+      this.form.pledge_id = null;
+      const [fieldName, fieldVal] = value.split(':');
+      this.form[fieldName] = fieldVal;
     },
   },
 };

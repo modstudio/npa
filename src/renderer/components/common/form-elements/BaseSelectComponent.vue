@@ -21,7 +21,19 @@
               No options available
             </option>
           </slot>
-          <option-item-component
+          <template v-if="isDataGroup">
+            <optgroup v-for="(group, index) in data" :key="index"
+              :label="group.label"
+            >
+              <option-item-component
+                v-for="item in group.data" :key="item.id"
+                :item="item"
+                :search-text="searchText"
+                :class="{'d-flex': item.icon}">
+              </option-item-component>     
+            </optgroup>
+          </template>
+          <option-item-component v-else
             v-for="item in data" :key="item.id"
             :item="item"
             :search-text="searchText"
@@ -136,6 +148,10 @@ export default {
       type: String,
       default: 'values',
     },
+    isDataGroup: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   mixins: [
@@ -202,6 +218,11 @@ export default {
 
   computed: {
     isLiveSearch() {
+      if (this.isDataGroup) {
+        return this.data
+          && this.data.reduce((prev, curr) => prev + curr.data.length, 0)
+            >= minNumberItemsForSearch;
+      }
       return this.data && this.data.length >= minNumberItemsForSearch;
     },
   },
