@@ -6,9 +6,13 @@ const pledgeTransactionTypeIds = [8, 9];
 const causeTransactionTypeIds = [1, 2, 7];
 const debitTransactionTypeIds = [2, 7, 3, 6];
 const creditTransactionTypeIds = [1, 4, 5, 9];
+const startingBalanceTransactionTypeId = 10;
+const pledgePaymentId = 9;
 
 function getAmountSign(data) {
   return debitTransactionTypeIds.includes(data.transaction_type_id)
+    || (data.transaction_type_id === startingBalanceTransactionTypeId
+      && data.debit_credit === 'debit')
     ? -Math.abs(data.amount) : data.amount;
 }
 
@@ -28,6 +32,10 @@ export default {
     isCause: () => transactionTypeId => causeTransactionTypeIds.includes(transactionTypeId),
     isDebit: () => transactionTypeId => debitTransactionTypeIds.includes(transactionTypeId),
     isCredit: () => transactionTypeId => creditTransactionTypeIds.includes(transactionTypeId),
+    isPledgePayment: () => transactionTypeId =>
+      transactionTypeId === pledgePaymentId,
+    isStartingBalance: () => transactionTypeId =>
+      transactionTypeId === startingBalanceTransactionTypeId,
   },
   // -----------------------------------------------------------------
   mutations: {

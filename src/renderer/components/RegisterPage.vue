@@ -110,12 +110,13 @@ export default {
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data
-            .filter(item => item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
-              || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
-              || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1
+            .filter(item => (item.contact_id
+                && (item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
+                || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
+                || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1))
               || item.type_name.toLowerCase().indexOf(searchString) !== -1
-              || item.method_name.toLowerCase().indexOf(searchString) !== -1
-              || item.number.toLowerCase().indexOf(searchString) !== -1
+              || (item.method_name && item.method_name.toLowerCase().indexOf(searchString) !== -1)
+              || (item.number && item.number.toLowerCase().indexOf(searchString) !== -1)
               || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
               || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
         }

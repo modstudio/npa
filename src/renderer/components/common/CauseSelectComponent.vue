@@ -3,7 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     :label="label"
-    placeholder="Chooce Cause"    
+    placeholder="Choose Cause"    
     :source-data="data"
   ></select-component>
 </template>

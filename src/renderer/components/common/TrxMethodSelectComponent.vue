@@ -2,8 +2,7 @@
   <select-component
     v-bind="$attrs"
     v-on="$listeners"
-    label="Trx. Method"
-    placeholder="Chooce Trx. Method"    
+    label="Transaction Method"
     :source-data="data"
   ></select-component>
 </template>

@@ -23,7 +23,7 @@ export default {
       try {
         const data = await Vue.db.all(`SELECT *
         FROM transaction_types
-        ORDER BY id`);
+        ORDER BY sort_order`);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);

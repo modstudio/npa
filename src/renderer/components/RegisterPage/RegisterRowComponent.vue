@@ -2,7 +2,7 @@
   <div class="flex-table__row flex-table__row--double w-shadow"
     @click="$emit('view')"
     :class="{'active': currentItem && currentItem.id === item.id}">
-    <div class="flex-table__row-item col-2 font-weight-bold"
+    <div class="flex-table__row-item col-2"
         tabindex="0">
       {{item.date}}
     </div>
@@ -13,17 +13,20 @@
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
-      <template v-if="isCause">
+      <template v-if="item.cause_id">
         {{item.cause_name}}
       </template>
-      <template v-else-if="isLoan">
+      <template v-else-if="item.loan_id">
         <div>{{item.loan_name}}</div>
         <span class="subtext">{{item.loan_description}}</span>
       </template>
-      <template v-else-if="isPledge">
+      <template v-else-if="item.pledge_id">
         <div>{{item.pledge_name}}</div>
         <span class="subtext">{{item.pledge_cause_name}}</span>
       </template>
+      <template v-else-if="item.pikadon_id">
+        <div>{{item.pikadon_name}}</div>
+      </template>      
     </div>
     <div class="flex-table__row-item col-2"
         tabindex="0">
@@ -91,30 +94,6 @@ export default {
         words.push(this.item.number);
       }
       return words.join(' | ');
-    },
-
-    isCause() {
-      return this.$store.getters['Transactions/isCause'](this.item.transaction_type_id);
-    },
-
-    isLoan() {
-      return this.$store.getters['Transactions/isLoan'](this.item.transaction_type_id);
-    },
-
-    isPikadon() {
-      return this.$store.getters['Transactions/isPikadon'](this.item.transaction_type_id);
-    },
-
-    isPledge() {
-      return this.$store.getters['Transactions/isPledge'](this.item.transaction_type_id);
-    },
-
-    isDebit() {
-      return this.$store.getters['Transactions/isDebit'](this.item.transaction_type_id);
-    },
-
-    isCredit() {
-      return this.$store.getters['Transactions/isCredit'](this.item.transaction_type_id);
     },
   },
 };

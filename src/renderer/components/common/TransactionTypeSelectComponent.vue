@@ -2,8 +2,8 @@
   <select-component
     v-bind="$attrs"
     v-on="$listeners"
-    label="Type"
-    placeholder="Chooce type"    
+    label="Transaction Type"
+    placeholder="Choose type"    
     :source-data="data"
   ></select-component>
 </template>

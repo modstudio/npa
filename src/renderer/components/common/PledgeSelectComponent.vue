@@ -3,7 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     :label="label"
-    placeholder="Chooce Pledge"    
+    placeholder="Choose Pledge"    
     :source-data="data"
   ></select-component>
 </template>
@@ -24,7 +24,8 @@ export default {
         label: (item.contact_company_name ? item.contact_company_name
           : `${item.contact_first_name} ${item.contact_last_name}`),
         subtext: (item.contact_company_name
-          ? `${item.contact_first_name} ${item.contact_last_name}` : ''),
+          ? `${item.contact_first_name} ${item.contact_last_name} ` : '')
+          + item.cause_name,
         name: `${item.contact_company_name} ${item.contact_first_name} ${item.contact_last_name}`,
         ...item,
       }));

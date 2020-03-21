@@ -15,6 +15,7 @@ import router from './router';
 import store from './store';
 import db from './db/datastore';
 import config from './config';
+import EventBus from './shared/EventBus';
 
 import './assets/sass/app.scss';
 
@@ -38,19 +39,22 @@ Vue.component('b-tooltip', BTooltip);
 Vue.use(CollapsePlugin);
 Vue.use(VueTelInput);
 
-/* eslint-disable no-new */
-new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>',
-  mixins: [
-    require('./components/mixins/debounce'),
-    require('./components/mixins/scroll-first-error'),
-  ],
-  data() {
-    return {
-      config,
-    };
-  },
-}).$mount('#app');
+EventBus.$on('db-init', () => {
+  // Run app after finish migration
+  /* eslint-disable no-new */
+  new Vue({
+    components: { App },
+    router,
+    store,
+    template: '<App/>',
+    mixins: [
+      require('./components/mixins/debounce'),
+      require('./components/mixins/scroll-first-error'),
+    ],
+    data() {
+      return {
+        config,
+      };
+    },
+  }).$mount('#app');
+});
