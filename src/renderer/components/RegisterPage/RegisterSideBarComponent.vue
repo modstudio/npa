@@ -169,6 +169,16 @@ export default {
       if (!this.currentItem) {
         return '';
       }
+      if (this.isStartingBalance) {
+        if (this.currentItem.cause_id) {
+          return this.currentItem.cause_name;
+        } else if (this.currentItem.loan_id) {
+          return this.currentItem.loan_name;
+        } else if (this.currentItem.pikadon_id) {
+          return this.currentItem.pikadon_name;
+        }
+        return this.currentItem.pledge_name;
+      }
       if (this.currentItem.contact_company_name) {
         return this.currentItem.contact_company_name;
       }
@@ -247,7 +257,7 @@ export default {
         pikadon_id: null,
         pledge_id: null,
         contact_id: null,
-        debit_credit: 'debit',
+        debit_credit: 'credit',
         amount: null,
         note: '',
       };
