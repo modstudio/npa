@@ -45,38 +45,37 @@
               <!-- Cause -->
               <cause-select-component
                 v-if="isCause"
-                v-model="form.cause_id"
+                v-model="form.category_id"
                 label="Category"
                 rules="required"
               ></cause-select-component>
               <!-- Loan -->
               <loan-select-component
                 v-if="isLoan"
-                v-model="form.loan_id"
+                v-model="form.category_id"
                 label="Category"
                 rules="required"
               ></loan-select-component>
               <!-- Pikadon -->
               <pikadon-select-component
                 v-if="isPikadon"
-                v-model="form.pikadon_id"
+                v-model="form.category_id"
                 label="Category"
                 rules="required"
               ></pikadon-select-component>
               <!-- Pledge -->
               <pledge-select-component
                 v-if="isPledge"
-                v-model="form.pledge_id"
+                v-model="form.category_id"
                 label="Category"
                 rules="required"
               ></pledge-select-component>
               <!-- Starting Balance -->
               <starting-balance-category-select-component
                 v-if="isStartingBalance"
-                :value="startingBalanceCategoryId"
+                v-model="form.category_id"
                 label="Category"
                 rules="required"
-                @input="onStartingbalanceCategoryInput"
               ></starting-balance-category-select-component>
               <!-- Debit/Credit -->
               <debit-credit-component
@@ -170,19 +169,9 @@ export default {
         return '';
       }
       if (this.isStartingBalance) {
-        if (this.currentItem.cause_id) {
-          return this.currentItem.cause_name;
-        } else if (this.currentItem.loan_id) {
-          return this.currentItem.loan_name;
-        } else if (this.currentItem.pikadon_id) {
-          return this.currentItem.pikadon_name;
-        }
-        return this.currentItem.pledge_name;
+        return this.currentItem.category_name;
       }
-      if (this.currentItem.contact_company_name) {
-        return this.currentItem.contact_company_name;
-      }
-      return `${this.currentItem.contact_first_name} ${this.currentItem.contact_last_name}`;
+      return `${this.currentItem.type_name} | ${this.currentItem.category_name}`;
     },
 
     isCause() {
@@ -219,29 +208,6 @@ export default {
       }
       return this.$store.getters['Transactions/isDebit'](this.form.transaction_type_id);
     },
-
-    isCredit() {
-      return this.$store.getters['Transactions/isCredit'](this.form.transaction_type_id);
-    },
-
-    startingBalanceCategoryId() {
-      if (!this.isStartingBalance) {
-        return null;
-      }
-      if (this.form.cause_id) {
-        return `cause_id:${this.form.cause_id}`;
-      }
-      if (this.form.loan_id) {
-        return `loan_id:${this.form.loan_id}`;
-      }
-      if (this.form.pikadon_id) {
-        return `pikadon_id:${this.form.pikadon_id}`;
-      }
-      if (this.form.pledge_id) {
-        return `pledge_id:${this.form.pledge_id}`;
-      }
-      return null;
-    },
   },
 
   methods: {
@@ -252,10 +218,7 @@ export default {
         transaction_type_id: 1,
         transaction_method_id: null,
         number: '',
-        cause_id: null,
-        loan_id: null,
-        pikadon_id: null,
-        pledge_id: null,
+        category_id: null,
         contact_id: null,
         debit_credit: 'credit',
         amount: null,
@@ -272,8 +235,12 @@ export default {
       }
       this.form = this.newForm();
       if (!this.isNewMode && this.currentItem) {
-        this.form = { ...this.currentItem };
+        this.form = { ...this.form, ...this.currentItem };
         this.form.date = new Date(this.form.date);
+        if (this.isStartingBalance) {
+          this.form.debit_credit = this.form.amount < 0
+            ? 'debit' : 'credit';
+        }
         if (this.isDebit) {
           this.form.amount = Math.abs(this.form.amount);
         }
@@ -292,35 +259,12 @@ export default {
     },
 
     onTypeChange() {
-      if (this.isCause) {
-        this.form.loan_id = null;
-        this.form.pikadon_id = null;
-        this.form.pledge_id = null;
-      } else if (this.isLoan) {
-        this.form.cause_id = null;
-        this.form.pikadon_id = null;
-        this.form.pledge_id = null;
-      } else if (this.isPikadon) {
-        this.form.cause_id = null;
-        this.form.loan_id = null;
-        this.form.pledge_id = null;
-      } else if (this.isPledge) {
-        this.form.cause_id = null;
-        this.form.loan_id = null;
-        this.form.pikadon_id = null;
+      if (this.isPledge) {
         this.form.transaction_method_id = null;
         this.form.number = '';
       }
     },
 
-    onStartingbalanceCategoryInput(value) {
-      this.form.cause_id = null;
-      this.form.loan_id = null;
-      this.form.pikadon_id = null;
-      this.form.pledge_id = null;
-      const [fieldName, fieldVal] = value.split(':');
-      this.form[fieldName] = fieldVal;
-    },
   },
 };
 </script>

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 
+const categoryTypeId = 1;
+
 export default {
   namespaced: true,
   // -----------------------------------------------------------------
@@ -27,7 +29,11 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all('SELECT * FROM cause_groups ORDER BY sort_order');
+        const data = await Vue.db.all(`SELECT * FROM category_groups
+        WHERE category_type_id = $category_type_id
+        ORDER BY sort_order`, {
+          $category_type_id: categoryTypeId,
+        });
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);
@@ -37,16 +43,20 @@ export default {
     async addData(context, data) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO cause_groups (
-          name, note, sort_order
-        ) VALUES ($name, $note, (select ifnull(max(sort_order), 0) + 1 from cause_groups))
+        await Vue.db.run(`INSERT INTO category_groups (
+          category_type_id, name, note, sort_order
+        ) VALUES ($category_type_id, $name, $note, 
+          (select ifnull(max(sort_order), 0) + 1 from category_groups
+            WHERE category_type_id = $category_type_id
+          ))
         `, {
+          $category_type_id: categoryTypeId,
           $name: data.name,
           $note: data.note,
         });
         result = true;
       } catch (err) {
-        console.log('error insert cause_groups', err);
+        console.log('error insert category_groups', err);
         result = false;
       }
       return result;
@@ -55,7 +65,7 @@ export default {
     async updateData(context, data) {
       let result;
       try {
-        await Vue.db.run(`UPDATE cause_groups SET
+        await Vue.db.run(`UPDATE category_groups SET
           name = $name, 
           note = $note
           WHERE id = $id
@@ -66,7 +76,7 @@ export default {
         });
         result = true;
       } catch (err) {
-        console.log('error update cause_groups', err);
+        console.log('error update category_groups', err);
         result = false;
       }
       return result;
@@ -75,10 +85,10 @@ export default {
     async deleteItem(context, id) {
       let result;
       try {
-        await Vue.db.run('DELETE FROM cause_groups WHERE id = ?', [id]);
+        await Vue.db.run('DELETE FROM category_groups WHERE id = ?', [id]);
         result = true;
       } catch (err) {
-        console.log('error DELETE cause_groups', err);
+        console.log('error DELETE category_groups', err);
         result = false;
       }
       return result;
@@ -87,7 +97,7 @@ export default {
     async setSortOrder(context, { id, sortOrder }) {
       let result;
       try {
-        await Vue.db.run(`UPDATE cause_groups SET
+        await Vue.db.run(`UPDATE category_groups SET
           sort_order = $sortOrder
           WHERE id = $id
         `, {
@@ -98,7 +108,7 @@ export default {
         const item = context.getters.getItem(id);
         context.commit('updateItem', { ...item, sort_order: sortOrder });
       } catch (err) {
-        console.log('error update sort_order of cause_groups', err);
+        console.log('error update sort_order of category_groups', err);
         result = false;
       }
       return result;
@@ -107,10 +117,10 @@ export default {
     async checkAssociation(context, id) {
       try {
         const result = await Vue.db.get(`SELECT count(*) as cnt
-        FROM causes where cause_group_id = ?`, [id]);
+        FROM categories where category_group_id = ?`, [id]);
         return result.cnt > 0;
       } catch (err) {
-        console.log('error check assoc for cause_groups', err);
+        console.log('error check assoc for category_groups', err);
         return null;
       }
     },

@@ -22,7 +22,7 @@
             ></text-input-component>
             <!-- Group -->
             <select-component
-              v-model="form.cause_group_id"
+              v-model="form.category_group_id"
               label="Group"
               rules="required"
               placeholder="Choose Group"
@@ -106,7 +106,7 @@ export default {
     newForm() {
       return {
         id: null,
-        cause_group_id: null,
+        category_group_id: null,
         contact_id: null,
         distribution_class_id: null,
         name: '',

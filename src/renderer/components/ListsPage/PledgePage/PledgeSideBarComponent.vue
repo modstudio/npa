@@ -22,7 +22,7 @@
               ></contact-select-component>
               <!-- Cause -->
               <cause-select-component
-                v-model="form.cause_id"
+                v-model="form.related_category_id"
                 label="Name"
                 rules="required"
               ></cause-select-component>              
@@ -95,7 +95,7 @@ export default {
       return {
         id: null,
         contact_id: null,
-        cause_id: null,
+        related_category_id: null,
         note: '',
       };
     },

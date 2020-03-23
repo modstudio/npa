@@ -117,6 +117,9 @@ export default {
               || item.type_name.toLowerCase().indexOf(searchString) !== -1
               || (item.method_name && item.method_name.toLowerCase().indexOf(searchString) !== -1)
               || (item.number && item.number.toLowerCase().indexOf(searchString) !== -1)
+              || item.category_name.toLowerCase().indexOf(searchString) !== -1
+              || (item.category_description
+                && item.category_description.toLowerCase().indexOf(searchString) !== -1)
               || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
               || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
         }
