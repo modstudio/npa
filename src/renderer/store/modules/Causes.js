@@ -1,5 +1,7 @@
 import Vue from 'vue';
 
+const categoryTypeId = 1;
+
 export default {
   namespaced: true,
   // -----------------------------------------------------------------
@@ -27,13 +29,16 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all(`SELECT causes.*, 
+        const data = await Vue.db.all(`SELECT categories.*, 
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
-        cause_groups.sort_order
-        FROM causes join contacts ON causes.contact_id = contacts.id
-        join cause_groups ON causes.cause_group_id = cause_groups.id
-        ORDER BY cause_groups.sort_order, causes.sort_order`);
+        category_groups.sort_order
+        FROM categories join contacts ON categories.contact_id = contacts.id
+        join category_groups ON categories.category_group_id = category_groups.id
+        WHERE categories.category_type_id = $category_type_id
+        ORDER BY category_groups.sort_order, categories.sort_order`, {
+          $category_type_id: categoryTypeId,
+        });
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);
@@ -43,12 +48,14 @@ export default {
     async addData(context, data) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO causes (
-          cause_group_id, contact_id, distribution_class_id, name, note, sort_order
-        ) VALUES ($cause_group_id, $contact_id, $distribution_class_id, 
-          $name, $note, (select ifnull(max(sort_order), 0) + 1 from cause_groups))
+        await Vue.db.run(`INSERT INTO categories (category_type_id,
+          category_group_id, contact_id, distribution_class_id, name, note, sort_order
+        ) VALUES ($category_type_id, $category_group_id, $contact_id, $distribution_class_id, 
+          $name, $note, (select ifnull(max(sort_order), 0) + 1 from categories 
+            WHERE category_type_id = $category_type_id))
         `, {
-          $cause_group_id: data.cause_group_id,
+          $category_type_id: categoryTypeId,
+          $category_group_id: data.category_group_id,
           $contact_id: data.contact_id,
           $distribution_class_id: data.distribution_class_id,
           $name: data.name,
@@ -56,7 +63,7 @@ export default {
         });
         result = true;
       } catch (err) {
-        console.log('error insert cause_groups', err);
+        console.log('error insert categories', err);
         result = false;
       }
       return result;
@@ -65,8 +72,8 @@ export default {
     async updateData(context, data) {
       let result;
       try {
-        await Vue.db.run(`UPDATE causes SET
-          cause_group_id = $cause_group_id,
+        await Vue.db.run(`UPDATE categories SET
+          category_group_id = $category_group_id,
           contact_id = $contact_id,
           distribution_class_id = $distribution_class_id,
           name = $name, 
@@ -74,7 +81,7 @@ export default {
           WHERE id = $id
         `, {
           $id: data.id,
-          $cause_group_id: data.cause_group_id,
+          $category_group_id: data.category_group_id,
           $contact_id: data.contact_id,
           $distribution_class_id: data.distribution_class_id,
           $name: data.name,
@@ -82,7 +89,7 @@ export default {
         });
         result = true;
       } catch (err) {
-        console.log('error update causes', err);
+        console.log('error update categories', err);
         result = false;
       }
       return result;
@@ -91,10 +98,10 @@ export default {
     async deleteItem(context, id) {
       let result;
       try {
-        await Vue.db.run('DELETE FROM causes WHERE id = ?', [id]);
+        await Vue.db.run('DELETE FROM categories WHERE id = ?', [id]);
         result = true;
       } catch (err) {
-        console.log('error DELETE causes', err);
+        console.log('error DELETE categories', err);
         result = false;
       }
       return result;
@@ -103,7 +110,7 @@ export default {
     async setSortOrder(context, { id, sortOrder }) {
       let result;
       try {
-        await Vue.db.run(`UPDATE causes SET
+        await Vue.db.run(`UPDATE categories SET
           sort_order = $sortOrder
           WHERE id = $id
         `, {
@@ -114,7 +121,7 @@ export default {
         const item = context.getters.getItem(id);
         context.commit('updateItem', { ...item, sort_order: sortOrder });
       } catch (err) {
-        console.log('error update sort_order of causes', err);
+        console.log('error update sort_order of categories', err);
         result = false;
       }
       return result;

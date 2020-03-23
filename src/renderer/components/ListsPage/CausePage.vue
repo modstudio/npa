@@ -181,7 +181,7 @@ export default {
         .map(item => ({
           ...item,
           causes: this.$store.state.Causes.data
-            .filter(cause => cause.cause_group_id === item.id),
+            .filter(cause => cause.category_group_id === item.id),
           isExpanded: expandedIds.includes(item.id),
         }));
     },

@@ -56,40 +56,34 @@ export default {
         const data = await Vue.db.all(`SELECT transactions.*,
         transaction_types.name as type_name,
         transaction_methods.name as method_name,
-        causes.name as cause_name,
-        loan.name as loan_name, loan.description as loan_description,
-        pikadon.name as pikadon_name,
-        pledge.name as pledge_name, pledge.cause_name as pledge_cause_name,
+        case 
+          when categories.category_type_id = 1 THEN categories.name
+          else case 
+                when category_contact.company_name <> '' then category_contact.company_name
+                else category_contact.first_name || category_contact.last_name
+              end
+        end as category_name,
+        case
+          when categories.category_type_id = 2
+            THEN case 
+                when related_category_contact.company_name <> '' 
+                  then related_category_contact.company_name
+                else related_category_contact.first_name || related_category_contact.last_name
+              end
+          when categories.category_type_id = 3 then categories.description
+          else ''
+        end as category_description,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
         FROM transactions LEFT JOIN contacts ON transactions.contact_id = contacts.id
           JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
           LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
-          LEFT JOIN causes ON transactions.cause_id = causes.id
-          LEFT JOIN (SELECT loans.id, loans.description,
-            case 
-            when company_name <> '' then company_name
-            else first_name || last_name
-            end as name
-            FROM loans JOIN contacts ON loans.contact_id = contacts.id) loan 
-            ON transactions.loan_id = loan.id
-          LEFT JOIN (SELECT pikadons.id,
-            case 
-            when company_name <> '' then company_name
-            else first_name || last_name
-            end as name
-            FROM pikadons JOIN contacts ON pikadons.contact_id = contacts.id) pikadon 
-            ON transactions.pikadon_id = pikadon.id
-          LEFT JOIN (SELECT pledges.id,
-            case 
-            when company_name <> '' then company_name
-            else first_name || last_name
-            end as name,
-            causes.name as cause_name
-            FROM pledges JOIN contacts ON pledges.contact_id = contacts.id
-              JOIN causes ON pledges.cause_id = causes.id
-            ) pledge 
-            ON transactions.pledge_id = pledge.id
+          JOIN categories ON transactions.category_id = categories.id
+          JOIN contacts category_contact ON categories.contact_id = category_contact.id
+          LEFT JOIN categories related_category 
+            ON categories.related_category_id = related_category.id
+          LEFT JOIN contacts related_category_contact
+            ON related_category.contact_id = related_category_contact.id
         ORDER BY date`);
         context.commit('setData', data);
       } catch (err) {
@@ -101,10 +95,10 @@ export default {
       let result;
       try {
         await Vue.db.run(`INSERT INTO transactions (
-          date, transaction_type_id, transaction_method_id, number, cause_id,
-          loan_id, pikadon_id, pledge_id, contact_id, amount, note, created_at, updated_at
-        ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $cause_id,
-          $loan_id, $pikadon_id, $pledge_id, $contact_id, $amount, $note,
+          date, transaction_type_id, transaction_method_id, number, category_id,
+          contact_id, amount, note, created_at, updated_at
+        ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $category_id,
+          $contact_id, $amount, $note,
           DATETIME('now'), DATETIME('now')
         )
         `, {
@@ -112,10 +106,7 @@ export default {
           $transaction_type_id: data.transaction_type_id,
           $transaction_method_id: data.transaction_method_id,
           $number: data.number,
-          $cause_id: data.cause_id,
-          $loan_id: data.loan_id,
-          $pikadon_id: data.pikadon_id,
-          $pledge_id: data.pledge_id,
+          $category_id: data.category_id,
           $contact_id: data.contact_id,
           $amount: getAmountSign(data),
           $note: data.note,
@@ -136,10 +127,7 @@ export default {
           transaction_type_id = $transaction_type_id,
           transaction_method_id = $transaction_method_id,
           number = $number,
-          cause_id = $cause_id,
-          loan_id = $loan_id,
-          pikadon_id = $pikadon_id,
-          pledge_id = $pledge_id,
+          category_id = $category_id,
           contact_id = $contact_id,
           amount = $amount,
           note = $note, 
@@ -151,10 +139,7 @@ export default {
           $transaction_type_id: data.transaction_type_id,
           $transaction_method_id: data.transaction_method_id,
           $number: data.number,
-          $cause_id: data.cause_id,
-          $loan_id: data.loan_id,
-          $pikadon_id: data.pikadon_id,
-          $pledge_id: data.pledge_id,
+          $category_id: data.category_id,
           $contact_id: data.contact_id,
           $amount: getAmountSign(data),
           $note: data.note,

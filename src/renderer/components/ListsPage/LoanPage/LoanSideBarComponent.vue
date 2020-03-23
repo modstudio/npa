@@ -93,7 +93,6 @@ export default {
       return {
         id: null,
         contact_id: null,
-        cause_id: null,
         note: '',
       };
     },

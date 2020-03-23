@@ -13,20 +13,8 @@
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
-      <template v-if="item.cause_id">
-        {{item.cause_name}}
-      </template>
-      <template v-else-if="item.loan_id">
-        <div>{{item.loan_name}}</div>
-        <span class="subtext">{{item.loan_description}}</span>
-      </template>
-      <template v-else-if="item.pledge_id">
-        <div>{{item.pledge_name}}</div>
-        <span class="subtext">{{item.pledge_cause_name}}</span>
-      </template>
-      <template v-else-if="item.pikadon_id">
-        <div>{{item.pikadon_name}}</div>
-      </template>      
+        <div>{{item.category_name}}</div>
+        <span class="subtext">{{item.category_description}}</span>     
     </div>
     <div class="flex-table__row-item col-2"
         tabindex="0">
