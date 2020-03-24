@@ -70,9 +70,13 @@ export default {
         if (this.isNewMode) {
           this.initForm();
         } else {
-          this.$emit('add-new');
+          this.callNewForm();
         }
       }
+    },
+
+    callNewForm() {
+      this.$emit('add-new');
     },
 
     async saveAndClose() {

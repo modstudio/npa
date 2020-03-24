@@ -207,6 +207,9 @@ export default {
       } else if (this.data.length) {
         this.data = [];
       }
+      if (this.isMounted) {
+        this.$nextTick(() => this.setValueSelectpicker());
+      }
     },
 
     value(newValue, oldValue) {
@@ -281,9 +284,7 @@ export default {
                   ? 'block' : 'none';
               }
             });
-          if (this.value !== null && (!Array.isArray(this.value) || this.value.length)) {
-            $(this.$refs.select).selectpicker('val', this.value);
-          }
+          this.setValueSelectpicker();
           this.isMounted = true;
         });
       });
@@ -367,6 +368,12 @@ export default {
         : this.selected === item.id),
       'name'], ['desc', 'asc']);
       return true;
+    },
+
+    setValueSelectpicker() {
+      if (this.value !== null && (!Array.isArray(this.value) || this.value.length)) {
+        $(this.$refs.select).selectpicker('val', this.value);
+      }
     },
   },
 };

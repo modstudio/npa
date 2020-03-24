@@ -33,10 +33,10 @@
               label="Last name"
             ></text-input-component>
             <!-- Id Number -->
-            <text-info-component
-              v-model="form.id"
-              label="Id Number"
-            ></text-info-component>
+            <text-input-component
+              v-model="form.id_number"
+              label="ID Number"
+            ></text-input-component>
             <hr>
             <div class="row gutter-8">
                 <div class="col-12 col-md-10">
@@ -236,6 +236,7 @@ export default {
         state: '',
         zip: '',
         country: 'US',
+        id_numbers: null,
       };
     },
 

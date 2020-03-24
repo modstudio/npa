@@ -13,12 +13,27 @@
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
-        <div>{{item.category_name}}</div>
-        <span class="subtext">{{item.category_description}}</span>     
+        <div>
+          {{item.category_name}}
+          <amount-info-component v-if="isTransfer"
+            :amount="-item.amount"
+          ></amount-info-component>
+        </div>
+        <span class="subtext" v-if="isTransfer">From</span>
+        <span class="subtext" v-else>{{item.category_description}}</span>     
     </div>
-    <div class="flex-table__row-item col-2"
+    <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
-      <contact-name-field-component
+      <template v-if="isTransfer">
+        <div>
+          {{item.transfer_category_name}}
+          <amount-info-component
+            :amount="item.amount"
+          ></amount-info-component>
+        </div>
+        <span class="subtext">To</span>
+      </template>
+      <contact-name-field-component v-else
         :company-name="item.contact_company_name"
         :first-name="item.contact_first_name"
         :last-name="item.contact_last_name"
@@ -26,7 +41,9 @@
     </div>
     <div class="flex-table__row-item col-2"
         tabindex="0">
-      <span :class="amountClass">{{amountPrefix}}{{absAmount}}</span>
+      <amount-info-component v-if="!isTransfer"
+        :amount="item.amount"
+      ></amount-info-component>
     </div>
     <div class="flex-table__row-item col-2 text-wrap"
         tabindex="0">
@@ -55,24 +72,6 @@ export default {
   },
 
   computed: {
-    absAmount() {
-      return Math.abs(this.item.amount);
-    },
-
-    amountClass() {
-      if (this.item.amount < 0) {
-        return 'color-secondary-700';
-      }
-      if (this.item.amount > 0) {
-        return 'color-primary-700';
-      }
-      return '';
-    },
-
-    amountPrefix() {
-      return this.item.amount < 0 ? '-$' : '$';
-    },
-
     methodAndNumber() {
       const words = [];
       if (this.item.method_name) {
@@ -82,6 +81,14 @@ export default {
         words.push(this.item.number);
       }
       return words.join(' | ');
+    },
+
+    transferTypeId() {
+      return this.$store.getters['TransactionTypes/transferTypeId'];
+    },
+
+    isTransfer() {
+      return this.item.transaction_type_id === this.transferTypeId;
     },
   },
 };

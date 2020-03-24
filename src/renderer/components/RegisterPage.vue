@@ -10,7 +10,7 @@
           <template v-if="isFiltered">results</template>
           <template v-else>total</template>        
         </div>
-        <button type="button" class="btn btn-secondary btn-sm">
+        <button type="button" class="btn btn-secondary btn-sm" @click="addNewTransfer">
           Add Transfer
         </button>
         <button type="button" class="btn btn-secondary btn-sm ml-3" @click="addItem">
@@ -57,6 +57,7 @@
         @hidepanel="hidePanel"
         @update="getData"
         @add-new="addItem"
+        @add-new-transfer="addNewTransfer"
       ></register-side-bar-component>
     </layouts-container-lg-component>
   </div>
@@ -150,6 +151,12 @@ export default {
       this.$store.dispatch('Transactions/getData');
     },
 
+    addNewTransfer() {
+      this.currentItem = null;
+      this.viewPanelMode = 'new-transfer';
+      this.isViewPanel = true;
+    },
+
     addItem() {
       this.currentItem = null;
       this.viewPanelMode = 'new';
@@ -159,6 +166,7 @@ export default {
     hidePanel() {
       this.isViewPanel = false;
       this.currentItem = null;
+      this.addTransfer = false;
     },
 
     viewItem(item) {
