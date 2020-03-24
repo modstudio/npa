@@ -43,7 +43,8 @@ extend('uniqueCause', {
   message: () => 'Cause name must be unique',
   async validate(value, args) {
     const countItems = await Vue.db.get(
-      'SELECT count(*) as count FROM causes where name = ? and id <> IFNULL(?, 0)',
+      `SELECT count(*) as count FROM categories 
+        where category_type_id = 1 and name = ? and id <> IFNULL(?, 0)`,
       [value, args[0]],
     );
     return countItems.count === 0;
