@@ -35,8 +35,10 @@ export default {
       let result;
       try {
         await Vue.db.run(`INSERT INTO contacts (
-          company_name, first_name, last_name, phone_number, phone_ext, address, city, state, zip, country
-        ) VALUES ($company_name, $first_name, $last_name, $phone_number, $phone_ext, $address, $city, $state, $zip, $country)
+          company_name, first_name, last_name, phone_number, phone_ext, address,
+          city, state, zip, country, id_number
+        ) VALUES ($company_name, $first_name, $last_name, $phone_number, $phone_ext, $address, 
+          $city, $state, $zip, $country, $id_number)
         `, {
           $company_name: contact.company_name,
           $first_name: contact.first_name,
@@ -48,6 +50,7 @@ export default {
           $state: contact.state,
           $zip: contact.zip,
           $country: contact.country,
+          $id_number: contact.id_number,
         });
         result = true;
       } catch (err) {
@@ -70,7 +73,8 @@ export default {
           city = $city, 
           state = $state,
           zip = $zip, 
-          country = $country
+          country = $country,
+          id_number = $id_number
           WHERE id = $id
         `, {
           $id: contact.id,
@@ -84,6 +88,7 @@ export default {
           $state: contact.state,
           $zip: contact.zip,
           $country: contact.country,
+          $id_number: contact.id_number,
         });
         result = true;
       } catch (err) {

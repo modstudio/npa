@@ -12,6 +12,7 @@ import CurrencyInputComponent from './form-elements/CurrencyInputComponent';
 import DatepickerComponent from './form-elements/DatepickerComponent';
 import SelectComponent from './form-elements/SelectComponent';
 import ActionButton from './form-elements/ActionButton';
+import AmountInfoComponent from './AmountInfoComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -27,3 +28,5 @@ Vue.component('CurrencyInputComponent', CurrencyInputComponent);
 Vue.component('DatepickerComponent', DatepickerComponent);
 Vue.component('SelectComponent', SelectComponent);
 Vue.component('ActionButton', ActionButton);
+Vue.component('AmountInfoComponent', AmountInfoComponent);
+

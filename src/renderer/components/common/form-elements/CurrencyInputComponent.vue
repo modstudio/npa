@@ -1,17 +1,18 @@
 <template>
   <ValidationProvider :name="label" :rules="rules" v-slot="{ errors }">
     <div class="form-group form-group--enter" :class="formGroupClass">
-        <input type="number" class="form-control form-control--enter"
-            :class="{'is-invalid': errors[0], ...additionalClass, ...currencyClass}"
-            :placeholder="placeholder"
-            :value="value"
-            :disabled="disabled"
-            :readonly="readonly"
-            :autocomplete="autocomplete"
-            @input="onInput"
-            @change="onChange"
-            @blur="$emit('blur')"
-            aria-invalid="false"
+        <input type="text"
+          class="form-control form-control--enter"
+          :class="{'is-invalid': errors[0], ...additionalClass, ...currencyClass}"
+          :placeholder="placeholder"
+          :value="value"
+          :disabled="disabled"
+          :readonly="readonly"
+          :autocomplete="autocomplete"
+          @input="onInput"
+          @change="onChange"
+          @blur="$emit('blur')"
+          aria-invalid="false"
         >
 
         <label v-if="label">
@@ -76,10 +77,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    disableCurrencyClass: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
     currencyClass() {
+      if (this.disableCurrencyClass) {
+        return null;
+      }
       if (this.value < 0 || (this.value > 0 && this.isDebit)) {
         return { 'color-secondary-700': true };
       }
@@ -93,7 +101,11 @@ export default {
 
   methods: {
     onInput($event) {
-      this.$emit('input', $event.target.value);
+      if (/[0-9]/.test($event.data)
+        || ($event.data === '.' && !this.value.toString().includes('.'))
+        || $event.data === null) {
+        this.$emit('input', $event.target.value);
+      }
     },
 
     onChange($event) {

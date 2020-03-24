@@ -1,11 +1,18 @@
 <template>
-  <select-component
-    v-bind="$attrs"
-    v-on="$listeners"
-    :label="label"  
-    :source-data="selectData"
-    :is-data-group="true"
-  ></select-component>
+  <div class="position-relative">
+    <select-component
+      v-bind="$attrs"
+      v-on="$listeners"
+      :label="label"  
+      :source-data="selectData"
+      :is-data-group="true"
+    ></select-component>
+    <div class="state-icon">
+      <amount-info-component v-if="transferAmount"
+        :amount="transferAmount"
+      ></amount-info-component>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,11 +22,15 @@ export default {
       type: String,
       default: 'Cause',
     },
+    transferAmount: {
+      type: [Number, String],
+      default: null,
+    },
   },
 
   computed: {
     data() {
-      return this.$store.getters['Categories/startingBalanceData'];
+      return this.$store.getters['Categories/data'];
     },
 
     selectData() {
@@ -52,9 +63,24 @@ export default {
         }, []);
     },
   },
+
+  created() {
+    this.initData();
+  },
+
+  methods: {
+    initData() {
+      if (!this.data.length) {
+        this.$store.dispatch('Categories/getData');
+      }
+    },
+  },
 };
 </script>
 
-<style>
-
+<style scoped>
+  .state-icon {
+    top: 0px;
+    bottom: inherit;
+  }
 </style>

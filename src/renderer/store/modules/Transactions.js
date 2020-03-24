@@ -73,6 +73,13 @@ export default {
           when categories.category_type_id = 3 then categories.description
           else ''
         end as category_description,
+        case 
+          when transfer_categories.category_type_id = 1 THEN transfer_categories.name
+          else case 
+                when transfer_category_contact.company_name <> '' then transfer_category_contact.company_name
+                else transfer_category_contact.first_name || transfer_category_contact.last_name
+              end
+        end as transfer_category_name,        
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
         FROM transactions LEFT JOIN contacts ON transactions.contact_id = contacts.id
@@ -84,6 +91,10 @@ export default {
             ON categories.related_category_id = related_category.id
           LEFT JOIN contacts related_category_contact
             ON related_category.contact_id = related_category_contact.id
+          LEFT JOIN categories transfer_categories
+            ON transactions.transfer_category_id = transfer_categories.id
+          LEFT JOIN contacts transfer_category_contact 
+            ON transfer_categories.contact_id = transfer_category_contact.id
         ORDER BY date`);
         context.commit('setData', data);
       } catch (err) {
@@ -96,9 +107,9 @@ export default {
       try {
         await Vue.db.run(`INSERT INTO transactions (
           date, transaction_type_id, transaction_method_id, number, category_id,
-          contact_id, amount, note, created_at, updated_at
+          transfer_category_id, contact_id, amount, note, created_at, updated_at
         ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $category_id,
-          $contact_id, $amount, $note,
+          $transfer_category_id, $contact_id, $amount, $note,
           DATETIME('now'), DATETIME('now')
         )
         `, {
@@ -107,6 +118,7 @@ export default {
           $transaction_method_id: data.transaction_method_id,
           $number: data.number,
           $category_id: data.category_id,
+          $transfer_category_id: data.transfer_category_id,
           $contact_id: data.contact_id,
           $amount: getAmountSign(data),
           $note: data.note,
@@ -128,6 +140,7 @@ export default {
           transaction_method_id = $transaction_method_id,
           number = $number,
           category_id = $category_id,
+          transfer_category_id = $transfer_category_id,
           contact_id = $contact_id,
           amount = $amount,
           note = $note, 
@@ -140,6 +153,7 @@ export default {
           $transaction_method_id: data.transaction_method_id,
           $number: data.number,
           $category_id: data.category_id,
+          $transfer_category_id: data.transfer_category_id,
           $contact_id: data.contact_id,
           $amount: getAmountSign(data),
           $note: data.note,
