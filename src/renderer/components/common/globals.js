@@ -13,6 +13,12 @@ import DatepickerComponent from './form-elements/DatepickerComponent';
 import SelectComponent from './form-elements/SelectComponent';
 import ActionButton from './form-elements/ActionButton';
 import AmountInfoComponent from './AmountInfoComponent';
+import FilterComponent from './search-bar/FilterComponent';
+import TypeFilterComponent from './search-bar/TypeFilterComponent';
+import CategoryTypeFilterComponent from './search-bar/CategoryTypeFilterComponent';
+import MethodFilterComponent from './search-bar/MethodFilterComponent';
+import ContactFilterComponent from './search-bar/ContactFilterComponent';
+import RangeFilterComponent from './search-bar/RangeFilterComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -29,4 +35,9 @@ Vue.component('DatepickerComponent', DatepickerComponent);
 Vue.component('SelectComponent', SelectComponent);
 Vue.component('ActionButton', ActionButton);
 Vue.component('AmountInfoComponent', AmountInfoComponent);
-
+Vue.component('FilterComponent', FilterComponent);
+Vue.component('TypeFilterComponent', TypeFilterComponent);
+Vue.component('CategoryTypeFilterComponent', CategoryTypeFilterComponent);
+Vue.component('MethodFilterComponent', MethodFilterComponent);
+Vue.component('ContactFilterComponent', ContactFilterComponent);
+Vue.component('RangeFilterComponent', RangeFilterComponent);

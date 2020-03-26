@@ -1,21 +1,16 @@
 <template>
   <ValidationProvider :name="label" :rules="rules" v-slot="{ errors }">
     <div class="form-group form-group--enter">
-        <datepicker
-          wrapper-class="order-1"
-          input-class="form-control form-control--enter"
-          :name="name"
-          :class="{'is-invalid': errors[0], ...additionalClass}"
-          :placeholder="placeholder"
+        <el-date-picker
+          ref="datepicker"
+          class="order-1 text-small w-auto"
           :value="value"
+          :name="name"
+          type="date"
           format="MM/dd/yyyy"
-          :use-utc="true"
-          :calendar-button="true"
-          :typeable="true"
-          calendar-button-icon="icon icon-triangle-down"
           @input="onInput"
-        ></datepicker>
-
+          v-on="$listeners"
+        ></el-date-picker>
         <label v-if="label">
             {{ label }}
         </label>
@@ -28,8 +23,6 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker';
-
 export default {
   props: {
     value: {
@@ -56,10 +49,6 @@ export default {
       type: Object,
       default: null,
     },
-  },
-
-  components: {
-    Datepicker,
   },
 
   methods: {

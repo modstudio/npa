@@ -2,13 +2,49 @@
   <div>
     <register-left-side-component
       v-model="searchText"
-    ></register-left-side-component>
+      :is-filtered="isFiltered"
+      @resetfilter="resetFilter"
+    >
+      <range-filter-component
+        name-filter="Date"
+        type="date"
+        v-model="dateFilter"
+        collapse-event="clear-register-filter"
+      ></range-filter-component>    
+      <type-filter-component
+        v-model="typeFilter"
+        @filter="filterData"
+      ></type-filter-component>
+      <category-type-filter-component
+        v-model="categoryFilter"
+        @filter="filterData"
+      ></category-type-filter-component>
+      <method-filter-component
+        v-model="methodFilter"
+        @filter="filterData"
+      ></method-filter-component>
+      <contact-filter-component
+        v-model="contactFilter"
+        @filter="filterData"
+      ></contact-filter-component>
+      <range-filter-component
+        name-filter="Amount"
+        v-model="amountFilter"
+        collapse-event="clear-register-filter"
+      ></range-filter-component>
+    </register-left-side-component>
     <layouts-container-lg-component>
       <div class="d-flex">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 d-flex">
           {{data.length}}
           <template v-if="isFiltered">results</template>
-          <template v-else>total</template>        
+          <template v-else>total</template> 
+          <div v-if="isFiltered" class="ml-3">
+            Subtotal
+            <amount-info-component
+              :amount="subtotal"
+            ></amount-info-component>
+          </div>       
         </div>
         <button type="button" class="btn btn-secondary btn-sm" @click="addNewTransfer">
           Add Transfer
@@ -97,17 +133,64 @@ export default {
       refNameSortCol: ['sortDate'],
       sortField: 'date',
       sortOrder: 'asc',
+      dateFilter: null,
+      typeFilter: [],
+      categoryFilter: [],
+      methodFilter: [],
+      contactFilter: [],
+      amountFilter: null,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!(this.searchText || this.typeFilter.length || this.categoryFilter.length
+        || this.methodFilter.length || this.contactFilter.length || this.amountFilter
+        || this.dateFilter);
     },
 
     data: {
       get() {
         let { data } = this.$store.state.Transactions;
+        if (this.typeFilter.length) {
+          data = data.filter(item => this.typeFilter.includes(item.transaction_type_id));
+        }
+        if (this.categoryFilter.length) {
+          data = data.filter(item => this.categoryFilter.includes(item.category_type_id)
+            || this.categoryFilter.includes(item.transfer_category_type_id));
+        }
+        if (this.methodFilter.length) {
+          data = data.filter(item => this.methodFilter.includes(item.transaction_method_id));
+        }
+        if (this.contactFilter.length) {
+          data = data.filter(item => this.contactFilter.includes(item.contact_id)
+            || this.contactFilter.includes(item.category_contact_id)
+            || this.contactFilter.includes(item.transfer_category_contact_id));
+        }
+        if (this.amountFilter) {
+          data = data.filter((item) => {
+            let rule = true;
+            if (this.amountFilter.from) {
+              rule = rule && item.amount >= this.amountFilter.from;
+            }
+            if (this.amountFilter.to) {
+              rule = rule && item.amount <= this.amountFilter.to;
+            }
+            return rule;
+          });
+        }
+        if (this.dateFilter) {
+          data = data.filter((item) => {
+            let rule = true;
+            if (this.dateFilter.from) {
+              rule = rule && moment(item.date).isSameOrAfter(this.dateFilter.from);
+            }
+            if (this.dateFilter.to) {
+              rule = rule && moment(item.date).isSameOrBefore(this.dateFilter.to);
+            }
+            return rule;
+          });
+        }
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data
@@ -122,7 +205,10 @@ export default {
               || (item.category_description
                 && item.category_description.toLowerCase().indexOf(searchString) !== -1)
               || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
-              || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
+              || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1)
+              || (this.categoryFilter.includes(2) && item.related_category_name
+                && item.related_category_name.toString()
+                  .toLowerCase().indexOf(searchString) !== -1));
         }
         let sortFields = [this.sortField];
         let sortOrders = [this.sortOrder];
@@ -139,6 +225,10 @@ export default {
       async set(data) {
         await this.$store.commit('Transactions/setData', data);
       },
+    },
+
+    subtotal() {
+      return this.data.reduce((sum, item) => (sum + item.amount), 0);
     },
   },
 
@@ -173,6 +263,20 @@ export default {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;
+    },
+
+    filterData() {
+    },
+
+    resetFilter() {
+      this.searchText = '';
+      this.typeFilter = [];
+      this.categoryFilter = [];
+      this.methodFilter = [];
+      this.contactFilter = [];
+      this.amountFilter = null;
+      this.dateFilter = null;
+      Bus.$emit('clear-register-filter');
     },
   },
 };

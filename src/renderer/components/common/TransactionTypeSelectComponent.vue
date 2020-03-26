@@ -12,11 +12,17 @@
 export default {
   computed: {
     data() {
-      return this.$store.state.TransactionTypes.data.map(item => ({
-        value: item.id,
-        label: item.name,
-        ...item,
-      }));
+      return this.$store.state.TransactionTypes.data
+        .filter(item => item.id !== this.transferTypeId)
+        .map(item => ({
+          value: item.id,
+          label: item.name,
+          ...item,
+        }));
+    },
+
+    transferTypeId() {
+      return this.$store.getters['TransactionTypes/transferTypeId'];
     },
   },
 

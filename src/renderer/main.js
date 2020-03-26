@@ -4,12 +4,18 @@ import { VBTooltip } from 'bootstrap-vue/esm/directives/tooltip/tooltip';
 import { BTooltip } from 'bootstrap-vue/esm/components/tooltip/tooltip';
 import { CollapsePlugin } from 'bootstrap-vue';
 
+import { DatePicker } from 'element-ui';
+import lang from 'element-ui/lib/locale/lang/en';
+import locale from 'element-ui/lib/locale';
+
 import _ from 'lodash';
 import * as jQuery from 'jquery';
 import moment from 'moment';
 import mCustomScrollBar from 'malihu-custom-scrollbar-plugin';
 import VueTelInput from 'vue-tel-input';
 import './validate';
+import HelperStyle from './plugins/helper-style';
+
 import App from './App';
 import router from './router';
 import store from './store';
@@ -36,9 +42,14 @@ Vue.config.productionTip = false;
 
 Vue.directive('b-tooltip', VBTooltip);
 Vue.component('b-tooltip', BTooltip);
+
+// configure language
+locale.use(lang);
+Vue.use(DatePicker);
+
 Vue.use(CollapsePlugin);
 Vue.use(VueTelInput);
-
+Vue.use(HelperStyle);
 EventBus.$on('db-init', () => {
   // Run app after finish migration
   /* eslint-disable no-new */
@@ -50,6 +61,7 @@ EventBus.$on('db-init', () => {
     mixins: [
       require('./components/mixins/debounce'),
       require('./components/mixins/scroll-first-error'),
+      require('./components/mixins/tooltip'),
     ],
     data() {
       return {
