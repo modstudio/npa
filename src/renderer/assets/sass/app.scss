@@ -2,6 +2,7 @@
 @import '~bootstrap-select/sass/bootstrap-select.scss';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 @import '~malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
+@import '~element-ui/lib/theme-chalk/index.css';
 @import "variables/all";
 @import "mixins.scss";
 @import "keyframes.scss";
@@ -18,3 +19,4 @@
 @import 'main-layouts/info-sidebar';
 @import 'components/settings';
 @import 'components/list-component';
+@import 'components/search-bar';

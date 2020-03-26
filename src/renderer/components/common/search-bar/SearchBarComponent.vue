@@ -1,5 +1,5 @@
 <template>
-  <div class="search-nav-block">
+  <div class="search-nav-block mb-5 px-4">
     <div class="search-nav-block__field search-nav-block__item">
       <div class="flex-fill position-relative">
           <input type="text" class="form-control form-control--search"
@@ -9,9 +9,13 @@
               :placeholder="searchPlaceholder"
               @keyup="search">
           <div class="form-control--search-icon" :class="{'active': searchText }">
-              <i class="icon-search"></i>
+              <i class="icon icon-zoom"></i>
           </div>
       </div>
+      <button type="button" class="search-nav-block__reset"
+        v-show="isFiltered" @click="resetFilter">
+        Clear all
+      </button>
     </div>
   </div>
 </template>
@@ -27,6 +31,10 @@ export default {
       type: String,
       default: 'Search',
     },
+    isFiltered: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   /**
@@ -40,6 +48,12 @@ export default {
 
   created() {
     this.search = this.$root.createDebounce(() => this.$emit('search'));
+  },
+
+  methods: {
+    resetFilter() {
+      this.$emit('resetfilter');
+    },
   },
 };
 </script>

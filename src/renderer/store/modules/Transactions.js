@@ -73,15 +73,20 @@ export default {
           when categories.category_type_id = 3 then categories.description
           else ''
         end as category_description,
+        categories.category_type_id,
+        category_contact.id as category_contact_id,
         case 
           when transfer_categories.category_type_id = 1 THEN transfer_categories.name
           else case 
                 when transfer_category_contact.company_name <> '' then transfer_category_contact.company_name
                 else transfer_category_contact.first_name || transfer_category_contact.last_name
               end
-        end as transfer_category_name,        
+        end as transfer_category_name,
+        transfer_categories.category_type_id as transfer_category_type_id,
+        transfer_category_contact.id as transfer_category_contact_id,
         contacts.company_name as contact_company_name, 
-        contacts.first_name as contact_first_name, contacts.last_name as contact_last_name
+        contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
+        related_category.name as related_category_name
         FROM transactions LEFT JOIN contacts ON transactions.contact_id = contacts.id
           JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
           LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
