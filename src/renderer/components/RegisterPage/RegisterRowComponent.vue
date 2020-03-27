@@ -9,7 +9,15 @@
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
       <div>{{ item.type_name }}</div>
-      <span class="subtext">{{ methodAndNumber }}</span>
+      <template v-if=isTransfer>
+        <span class="subtext" v-if="item.transfer_transaction_id">
+          To {{item.transfer_category_name}}
+        </span>
+        <span class="subtext" v-else>
+          From {{item.related_category_name}}
+        </span>
+      </template>
+      <span class="subtext" v-else>{{ methodAndNumber }}</span>
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">

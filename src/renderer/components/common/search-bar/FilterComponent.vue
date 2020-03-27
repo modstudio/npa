@@ -15,15 +15,16 @@
               <i :class="iconClass"></i>
           </span>
           <span class="text-small">{{nameFilter}}</span>
-          <span class="text-small" v-show="isActiveFilter || selectedItem">
-            &nbsp;|&nbsp;
-          </span>
-          <span class="dropdown-multiselect text-small" v-if="isMultipleSelect"
-            :class="{'active': isActiveFilter}"
-            v-overflow-number-additional-items="{items: dropdownTitle}"
-          ></span>
-          <span class="dropdown-multiselect text-small" v-else >{{dropdownTitle}}</span>
-
+          <template v-if="isMultipleSelect || defaultId === null || defaultId !== value">
+            <span class="text-small" v-show="isActiveFilter || selectedItem">
+              &nbsp;|&nbsp;
+            </span>
+            <span class="dropdown-multiselect text-small" v-if="isMultipleSelect"
+              :class="{'active': isActiveFilter}"
+              v-overflow-number-additional-items="{items: dropdownTitle}"
+            ></span>
+            <span class="dropdown-multiselect text-small" v-else >{{dropdownTitle}}</span>
+          </template>
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" ref="filterDropdownMenu">
           <button class="dropdown-item" type="button" v-if="isMultipleSelect"
