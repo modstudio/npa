@@ -19,6 +19,7 @@ import CategoryTypeFilterComponent from './search-bar/CategoryTypeFilterComponen
 import MethodFilterComponent from './search-bar/MethodFilterComponent';
 import ContactFilterComponent from './search-bar/ContactFilterComponent';
 import RangeFilterComponent from './search-bar/RangeFilterComponent';
+import NotesFilterComponent from './search-bar/NotesFilterComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -41,3 +42,4 @@ Vue.component('CategoryTypeFilterComponent', CategoryTypeFilterComponent);
 Vue.component('MethodFilterComponent', MethodFilterComponent);
 Vue.component('ContactFilterComponent', ContactFilterComponent);
 Vue.component('RangeFilterComponent', RangeFilterComponent);
+Vue.component('NotesFilterComponent', NotesFilterComponent);

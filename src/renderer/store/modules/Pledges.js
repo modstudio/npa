@@ -51,21 +51,31 @@ export default {
 
     async addData(context, data) {
       let result;
-      try {
-        await Vue.db.run(`INSERT INTO categories (
-          category_type_id, contact_id, related_category_id, note
-        ) VALUES ($category_type_id, $contact_id, $related_category_id, $note)
-        `, {
-          $category_type_id: categoryTypeId,
-          $contact_id: data.contact_id,
-          $related_category_id: data.related_category_id,
-          $note: data.note,
-        });
-        result = true;
-      } catch (err) {
-        console.log('error insert categories', err);
-        result = false;
-      }
+
+      await Vue.db.serialize(async () => {
+        try {
+          await Vue.db.run('BEGIN TRANSACTION');
+          const res = await Vue.db.run(`INSERT INTO categories (
+            category_type_id, contact_id, related_category_id, note
+          ) VALUES ($category_type_id, $contact_id, $related_category_id, $note)
+          `, {
+            $category_type_id: categoryTypeId,
+            $contact_id: data.contact_id,
+            $related_category_id: data.related_category_id,
+            $note: data.note,
+          });
+          console.log('res: ', res);
+          await Vue.db.run('Fail Query');
+          await Vue.db.run('Commit');
+          console.log('commit');
+          console.log('finish');
+          result = true;
+        } catch (err) {
+          console.log('error insert categories', err);
+          result = false;
+        }
+      });
+      console.log('we here');
       return result;
     },
 

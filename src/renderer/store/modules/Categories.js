@@ -11,6 +11,7 @@ export default {
   getters: {
     startingBalanceData: state => state.startingBalanceData,
     data: state => state.data,
+    category: state => categoryId => _.find(state.data, { id: categoryId }),
   },
   // -----------------------------------------------------------------
   mutations: {

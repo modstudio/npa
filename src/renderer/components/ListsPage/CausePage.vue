@@ -184,6 +184,7 @@ export default {
             .filter(cause => cause.category_group_id === item.id),
           isExpanded: expandedIds.includes(item.id),
         }));
+      this.$store.dispatch('Categories/getData');
     },
 
     addGroup() {

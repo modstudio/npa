@@ -146,6 +146,7 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch('Pledges/getData');
+      this.$store.dispatch('Categories/getData');
     },
 
     addItem() {

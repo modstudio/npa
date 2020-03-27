@@ -136,6 +136,7 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch('Pikadons/getData');
+      this.$store.dispatch('Categories/getData');
     },
 
     addItem() {

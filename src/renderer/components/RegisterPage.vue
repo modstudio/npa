@@ -32,6 +32,9 @@
         v-model="amountFilter"
         collapse-event="clear-register-filter"
       ></range-filter-component>
+      <notes-filter-component
+        v-model="notesFilter"
+      ></notes-filter-component>      
     </register-left-side-component>
     <layouts-container-lg-component>
       <div class="d-flex">
@@ -86,6 +89,14 @@
         </div>
       </div>
 
+      <register-transfer-side-bar-component
+        :current-item="currentItem"
+        :is-shown="isViewTransferPanel"
+        :mode="viewPanelMode"
+        @hidepanel="hidePanel"
+        @update="getData"
+        @add-new="addNewTransfer"
+      ></register-transfer-side-bar-component> 
       <register-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
@@ -93,8 +104,7 @@
         @hidepanel="hidePanel"
         @update="getData"
         @add-new="addItem"
-        @add-new-transfer="addNewTransfer"
-      ></register-side-bar-component>
+      ></register-side-bar-component>     
     </layouts-container-lg-component>
   </div>
 </template>
@@ -102,6 +112,7 @@
 <script>
 import RegisterLeftSideComponent from './RegisterPage/RegisterLeftSideComponent';
 import RegisterSideBarComponent from './RegisterPage/RegisterSideBarComponent';
+import RegisterTransferSideBarComponent from './RegisterPage/RegisterTransferSideBarComponent';
 import ContactNameFieldComponent from './common/ContactNameFieldComponent';
 import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
 import Bus from '../shared/EventBus';
@@ -111,6 +122,7 @@ export default {
   components: {
     RegisterLeftSideComponent,
     RegisterSideBarComponent,
+    RegisterTransferSideBarComponent,
     ContactNameFieldComponent,
     RegisterRowComponent,
   },
@@ -127,6 +139,7 @@ export default {
   data() {
     return {
       isViewPanel: false,
+      isViewTransferPanel: false,
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
@@ -139,6 +152,7 @@ export default {
       methodFilter: [],
       contactFilter: [],
       amountFilter: null,
+      notesFilter: 0,
     };
   },
 
@@ -146,7 +160,7 @@ export default {
     isFiltered() {
       return !!(this.searchText || this.typeFilter.length || this.categoryFilter.length
         || this.methodFilter.length || this.contactFilter.length || this.amountFilter
-        || this.dateFilter);
+        || this.dateFilter || this.notesFilter);
     },
 
     data: {
@@ -192,23 +206,34 @@ export default {
           });
         }
         if (this.searchText) {
-          const searchString = this.searchText.toLowerCase();
-          data = data
-            .filter(item => (item.contact_id
-                && (item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
-                || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
-                || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1))
-              || item.type_name.toLowerCase().indexOf(searchString) !== -1
-              || (item.method_name && item.method_name.toLowerCase().indexOf(searchString) !== -1)
-              || (item.number && item.number.toLowerCase().indexOf(searchString) !== -1)
-              || item.category_name.toLowerCase().indexOf(searchString) !== -1
-              || (item.category_description
-                && item.category_description.toLowerCase().indexOf(searchString) !== -1)
-              || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
-              || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1)
-              || (this.categoryFilter.includes(2) && item.related_category_name
-                && item.related_category_name.toString()
-                  .toLowerCase().indexOf(searchString) !== -1));
+          this.searchText.split(' ').forEach((searchItem) => {
+            console.log('search loop', searchItem);
+            const searchString = searchItem.toLowerCase();
+            data = data
+              .filter((item) => {
+                if (this.notesFilter === 2) { // notes only
+                  return item.note && item.note.toLowerCase().indexOf(searchString) !== -1;
+                }
+                return (item.contact_id
+                    && (item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
+                    || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
+                    || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1))
+                  || item.type_name.toLowerCase().indexOf(searchString) !== -1
+                  || (item.method_name
+                    && item.method_name.toLowerCase().indexOf(searchString) !== -1)
+                  || (item.number && item.number.toLowerCase().indexOf(searchString) !== -1)
+                  || item.category_name.toLowerCase().indexOf(searchString) !== -1
+                  || (item.transaction_type_id !== this.transferTypeId
+                    && item.category_description
+                    && item.category_description.toLowerCase().indexOf(searchString) !== -1)
+                  || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
+                  || (this.notesFilter === 1 && item.note
+                    && item.note.toLowerCase().indexOf(searchString) !== -1)
+                  || (this.categoryFilter.includes(2) && item.related_category_name
+                    && item.related_category_name.toString()
+                      .toLowerCase().indexOf(searchString) !== -1);
+              });
+          });
         }
         let sortFields = [this.sortField];
         let sortOrders = [this.sortOrder];
@@ -219,7 +244,9 @@ export default {
           }];
           sortOrders = [this.sortOrder];
         }
-
+        if (this.currentItem && !_.find(data, { id: this.currentItem.id })) {
+          this.hidePanel();
+        }
         return _.orderBy(data, sortFields, sortOrders);
       },
       async set(data) {
@@ -229,6 +256,10 @@ export default {
 
     subtotal() {
       return this.data.reduce((sum, item) => (sum + item.amount), 0);
+    },
+
+    transferTypeId() {
+      return this.$store.getters['TransactionTypes/transferTypeId'];
     },
   },
 
@@ -243,26 +274,34 @@ export default {
 
     addNewTransfer() {
       this.currentItem = null;
-      this.viewPanelMode = 'new-transfer';
-      this.isViewPanel = true;
+      this.viewPanelMode = 'new';
+      this.isViewTransferPanel = true;
+      this.isViewPanel = false;
     },
 
     addItem() {
       this.currentItem = null;
       this.viewPanelMode = 'new';
       this.isViewPanel = true;
+      this.isViewTransferPanel = false;
     },
 
     hidePanel() {
       this.isViewPanel = false;
+      this.isViewTransferPanel = false;
       this.currentItem = null;
-      this.addTransfer = false;
     },
 
     viewItem(item) {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
-      this.isViewPanel = true;
+      if (this.currentItem.transaction_type_id === this.transferTypeId) {
+        this.isViewTransferPanel = true;
+        this.isViewPanel = false;
+      } else {
+        this.isViewPanel = true;
+        this.isViewTransferPanel = false;
+      }
     },
 
     filterData() {
@@ -276,6 +315,7 @@ export default {
       this.contactFilter = [];
       this.amountFilter = null;
       this.dateFilter = null;
+      this.notesFilter = 0;
       Bus.$emit('clear-register-filter');
     },
   },
