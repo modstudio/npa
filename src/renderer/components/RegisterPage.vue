@@ -205,16 +205,14 @@ export default {
             return rule;
           });
         }
+        if (this.notesFilter === 2) {
+          data = data.filter(item => item.note);
+        }
         if (this.searchText) {
           this.searchText.split(' ').forEach((searchItem) => {
-            console.log('search loop', searchItem);
             const searchString = searchItem.toLowerCase();
             data = data
-              .filter((item) => {
-                if (this.notesFilter === 2) { // notes only
-                  return item.note && item.note.toLowerCase().indexOf(searchString) !== -1;
-                }
-                return (item.contact_id
+              .filter(item => (item.contact_id
                     && (item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
                     || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
                     || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1))
@@ -231,8 +229,7 @@ export default {
                     && item.note.toLowerCase().indexOf(searchString) !== -1)
                   || (this.categoryFilter.includes(2) && item.related_category_name
                     && item.related_category_name.toString()
-                      .toLowerCase().indexOf(searchString) !== -1);
-              });
+                      .toLowerCase().indexOf(searchString) !== -1));
           });
         }
         let sortFields = [this.sortField];

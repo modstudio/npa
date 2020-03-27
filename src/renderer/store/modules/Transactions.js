@@ -76,8 +76,22 @@ export default {
         -- transaction TO
         transfer_transactions.id as transfer_transaction_id,
         transfer_transactions.category_id as transfer_transaction_category_id,
+        case 
+        when transfer_categories.category_type_id = 1 THEN transfer_categories.name
+        else case 
+              when transfer_category_contact.company_name <> '' then transfer_category_contact.company_name
+              else transfer_category_contact.first_name || transfer_category_contact.last_name
+            end
+        end as transfer_category_name,
         -- transaction FROM 
-        related_transactions.category_id as related_transaction_category_id
+        related_transactions.category_id as related_transaction_category_id,
+        case 
+        when related_categories.category_type_id = 1 THEN related_categories.name
+        else case 
+              when related_category_contact.company_name <> '' then related_category_contact.company_name
+              else related_category_contact.first_name || related_category_contact.last_name
+            end
+        end as related_category_name        
         FROM transactions LEFT JOIN contacts ON transactions.contact_id = contacts.id
           JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
           LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
@@ -85,12 +99,20 @@ export default {
           JOIN contacts category_contact ON categories.contact_id = category_contact.id
           LEFT JOIN categories related_category 
             ON categories.related_category_id = related_category.id
-          -- Get transaction to item
+          -- Get transaction TO item
           LEFT JOIN transactions transfer_transactions
             ON transactions.id = transfer_transactions.related_transaction_id
+          LEFT JOIN categories transfer_categories
+            ON transfer_transactions.category_id = transfer_categories.id
+          LEFT JOIN contacts transfer_category_contact 
+            ON transfer_categories.contact_id = transfer_category_contact.id
           -- Get transaction from item
           LEFT JOIN transactions related_transactions
-            ON transactions.related_transaction_id = related_transactions.id                         
+            ON transactions.related_transaction_id = related_transactions.id
+          LEFT JOIN categories related_categories
+            ON related_transactions.category_id = related_categories.id
+          LEFT JOIN contacts related_category_contact 
+            ON related_categories.contact_id = related_category_contact.id                      
         ORDER BY date, created_at, id`);
         context.commit('setData', data);
       } catch (err) {
