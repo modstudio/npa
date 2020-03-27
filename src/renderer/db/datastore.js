@@ -34,11 +34,33 @@ class DataStore {
   }
 
   promisifyApi() {
-    this.run = util.promisify(this.db.run).bind(this.db);
+    this.run = (sql, params) => new Promise((resolve, reject) => {
+      this.db.run(
+        sql,
+        params,
+        function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(this);
+          }
+        },
+      );
+    });
     this.dbEach = util.promisify(this.db.each).bind(this.db);
     this.get = util.promisify(this.db.get).bind(this.db);
     this.all = util.promisify(this.db.all).bind(this.db);
     this.exec = util.promisify(this.db.exec).bind(this.db);
+    this.serialize = cb => new Promise((resolve, reject) => {
+      this.db.serialize(async () => {
+        try {
+          await cb();
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
   }
 
   async migrate() {

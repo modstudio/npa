@@ -14,7 +14,7 @@
             <div class="flex-grow-1">
               <slot name="header"></slot>
             </div>
-            <div class="badge badge-info rounded">
+            <div class="badge badge-info rounded w-auto">
               <slot name="headerBadge"></slot>
             </div>
         </div>

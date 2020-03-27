@@ -1,7 +1,7 @@
 <template>
   <div class="flex-table__row flex-table__row--double w-shadow"
     @click="$emit('view')"
-    :class="{'active': currentItem && currentItem.id === item.id}">
+    :class="{'active': isActiveRow}">
     <div class="flex-table__row-item col-2"
         tabindex="0">
       {{item.date}}
@@ -15,25 +15,13 @@
         tabindex="0">
         <div>
           {{item.category_name}}
-          <amount-info-component v-if="isTransfer"
-            :amount="-item.amount"
-          ></amount-info-component>
         </div>
-        <span class="subtext" v-if="isTransfer">From</span>
-        <span class="subtext" v-else>{{item.category_description}}</span>     
+        <span class="subtext" v-if="isPledge">{{item.related_category_name}}</span>
+        <span class="subtext">{{item.category_description}}</span>     
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
-      <template v-if="isTransfer">
-        <div>
-          {{item.transfer_category_name}}
-          <amount-info-component
-            :amount="item.amount"
-          ></amount-info-component>
-        </div>
-        <span class="subtext">To</span>
-      </template>
-      <contact-name-field-component v-else
+      <contact-name-field-component
         :company-name="item.contact_company_name"
         :first-name="item.contact_first_name"
         :last-name="item.contact_last_name"
@@ -41,7 +29,7 @@
     </div>
     <div class="flex-table__row-item col-2"
         tabindex="0">
-      <amount-info-component v-if="!isTransfer"
+      <amount-info-component
         :amount="item.amount"
       ></amount-info-component>
     </div>
@@ -72,6 +60,12 @@ export default {
   },
 
   computed: {
+    isActiveRow() {
+      return this.currentItem && (this.currentItem.id === this.item.id
+        || this.currentItem.id === this.item.related_transaction_id
+        || this.currentItem.related_transaction_id === this.item.id);
+    },
+
     methodAndNumber() {
       const words = [];
       if (this.item.method_name) {
@@ -89,6 +83,10 @@ export default {
 
     isTransfer() {
       return this.item.transaction_type_id === this.transferTypeId;
+    },
+
+    isPledge() {
+      return this.item.category_type_id === 2;
     },
   },
 };

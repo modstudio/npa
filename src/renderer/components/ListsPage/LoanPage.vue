@@ -145,6 +145,7 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch('Loans/getData');
+      this.$store.dispatch('Categories/getData');
     },
 
     addItem() {
