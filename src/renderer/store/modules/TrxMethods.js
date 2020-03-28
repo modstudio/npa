@@ -103,5 +103,16 @@ export default {
       }
       return result;
     },
+
+    async checkAssociation(context, id) {
+      try {
+        const result = await Vue.db.get(`SELECT count(*) as cnt
+        FROM transactions where transaction_method_id = ?`, [id]);
+        return result.cnt > 0;
+      } catch (err) {
+        console.log('error check assoc for transaction_method', err);
+        return null;
+      }
+    },
   },
 };

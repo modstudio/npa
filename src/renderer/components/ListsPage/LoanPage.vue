@@ -61,7 +61,7 @@
       :is-shown="isViewPanel"
       :mode="viewPanelMode"
       @hidepanel="hidePanel"
-      @update="getData"
+      @update="onUpdate"
       @add-new="addItem"
     ></loan-side-bar-component>         
   </div>
@@ -110,7 +110,7 @@ export default {
 
     data: {
       get() {
-        let { data } = this.$store.state.Loans;
+        let data = this.$store.getters['Categories/getLoans'];
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data
@@ -132,9 +132,6 @@ export default {
 
         return _.orderBy(data, sortFields, sortOrders);
       },
-      async set(data) {
-        await this.$store.commit('Loans/setData', data);
-      },
     },
   },
 
@@ -144,7 +141,6 @@ export default {
 
   methods: {
     getData() {
-      this.$store.dispatch('Loans/getData');
       this.$store.dispatch('Categories/getData');
     },
 
@@ -163,6 +159,11 @@ export default {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;
+    },
+
+    onUpdate() {
+      this.getData();
+      this.$store.dispatch('Transactions/getData');
     },
   },
 };

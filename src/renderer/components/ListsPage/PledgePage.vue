@@ -20,8 +20,8 @@
           Contact
           <i class="icon icon-triangle-down"></i>
         </div>
-        <div class="flex-table__header-item col-3" ref="sortCause_name"
-          @click="setSortField('cause_name')">
+        <div class="flex-table__header-item col-3" ref="sortRelated_category_name"
+          @click="setSortField('related_category_name')">
           Cause
           <i class="icon icon-triangle-down"></i>
         </div>
@@ -47,7 +47,7 @@
           </div>
           <div class="flex-table__row-item col-3"
               tabindex="0">
-            {{item.cause_name}}
+            {{item.related_category_name}}
           </div>
           <div class="flex-table__row-item col-3"
               tabindex="0">
@@ -63,7 +63,7 @@
       :is-shown="isViewPanel"
       :mode="viewPanelMode"
       @hidepanel="hidePanel"
-      @update="getData"
+      @update="onUpdate"
       @add-new="addItem"
     ></pledge-side-bar-component>         
   </div>
@@ -98,7 +98,7 @@ export default {
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
-      refNameSortCol: ['sortName', 'sortCause_name'],
+      refNameSortCol: ['sortName', 'sortRelated_category_name'],
       sortField: 'name',
       sortOrder: 'asc',
     };
@@ -111,14 +111,14 @@ export default {
 
     data: {
       get() {
-        let { data } = this.$store.state.Pledges;
+        let data = this.$store.getters['Categories/getPledges'];
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data
             .filter(item => item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
               || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
               || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1
-              || item.cause_name.toLowerCase().indexOf(searchString) !== -1
+              || item.related_category_name.toLowerCase().indexOf(searchString) !== -1
               || (item.note && item.note.toLowerCase().indexOf(searchString) !== -1));
         }
         let sortFields = [this.sortField];
@@ -133,9 +133,6 @@ export default {
 
         return _.orderBy(data, sortFields, sortOrders);
       },
-      async set(data) {
-        await this.$store.commit('Pledges/setData', data);
-      },
     },
   },
 
@@ -145,7 +142,6 @@ export default {
 
   methods: {
     getData() {
-      this.$store.dispatch('Pledges/getData');
       this.$store.dispatch('Categories/getData');
     },
 
@@ -164,6 +160,11 @@ export default {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;
+    },
+
+    onUpdate() {
+      this.getData();
+      this.$store.dispatch('Transactions/getData');
     },
   },
 };

@@ -37,8 +37,8 @@
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
           item-name="Pledge"
-          store-action-name="Pledges/deleteItem"
-          check-action-name=""
+          store-action-name="Categories/deleteItem"
+          check-action-name="Categories/checkAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -94,6 +94,7 @@ export default {
     newForm() {
       return {
         id: null,
+        category_type_id: 2,
         contact_id: null,
         related_category_id: null,
         note: '',
@@ -101,12 +102,12 @@ export default {
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('Pledges/addData', this.form);
+      const result = await this.$store.dispatch('Categories/addData', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('Pledges/updateData', this.form);
+      const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
     },
   },

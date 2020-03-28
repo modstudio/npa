@@ -109,5 +109,21 @@ export default {
       }
       return result;
     },
+
+    async checkAssociation(context, id) {
+      try {
+        let result = await Vue.db.get(`SELECT count(*) as cnt
+        FROM categories where contact_id = ?`, [id]);
+        if (result.cnt > 0) {
+          return true;
+        }
+        result = await Vue.db.get(`SELECT count(*) as cnt
+        FROM transactions where contact_id = ?`, [id]);
+        return result.cnt > 0;
+      } catch (err) {
+        console.log('error check assoc for distribution_classes', err);
+        return null;
+      }
+    },
   },
 };

@@ -19,7 +19,7 @@ export default {
 
   computed: {
     data() {
-      return this.$store.state.Loans.data.map(item => ({
+      return this.$store.getters['Categories/getLoans'].map(item => ({
         value: item.id,
         label: (item.contact_company_name ? item.contact_company_name
           : `${item.contact_first_name} ${item.contact_last_name}`),
@@ -37,8 +37,8 @@ export default {
 
   methods: {
     initData() {
-      if (!this.data.length) {
-        this.$store.dispatch('Loans/getData');
+      if (!this.$store.state.Categories.data) {
+        this.$store.dispatch('Categories/getData');
       }
     },
   },

@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       collapse: false,
-      sortOrderActionName: 'Causes/setSortOrder',
+      sortOrderActionName: 'Categories/setSortOrder',
     };
   },
 

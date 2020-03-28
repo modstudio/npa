@@ -70,7 +70,7 @@
       :is-shown="isViewGroupPanel"
       :mode="viewGroupPanelMode"
       @hidepanel="hideGroupPanel"
-      @update="getData"
+      @update="onUpdate"
       @add-new="addGroup"
     ></cause-group-side-bar-component>
     <cause-side-bar-component
@@ -78,7 +78,7 @@
       :is-shown="isViewCausePanel"
       :mode="viewCausePanelMode"
       @hidepanel="hideCausePanel"
-      @update="getData"
+      @update="onUpdate"
       @add-new="addCause"
     ></cause-side-bar-component>    
   </div>
@@ -175,16 +175,15 @@ export default {
       const expandedIds = this.causeGroups
         .filter(item => item.isExpanded)
         .map(item => item.id);
-      await this.$store.dispatch('Causes/getData');
+      await this.$store.dispatch('Categories/getData');
       await this.$store.dispatch('CauseGroups/getData');
       this.causeGroups = this.$store.state.CauseGroups.data
         .map(item => ({
           ...item,
-          causes: this.$store.state.Causes.data
+          causes: this.$store.getters['Categories/getCauses']
             .filter(cause => cause.category_group_id === item.id),
           isExpanded: expandedIds.includes(item.id),
         }));
-      this.$store.dispatch('Categories/getData');
     },
 
     addGroup() {
@@ -277,6 +276,11 @@ export default {
       if (index !== -1) {
         this.causeGroups[index].isExpanded = !item.isExpanded;
       }
+    },
+
+    onUpdate() {
+      this.getData();
+      this.$store.dispatch('Transactions/getData');
     },
   },
 };

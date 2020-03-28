@@ -31,8 +31,8 @@
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
           item-name="Pikadon"
-          store-action-name="Pikadons/deleteItem"
-          check-action-name=""
+          store-action-name="Categories/deleteItem"
+          check-action-name="Categories/checkAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -86,18 +86,19 @@ export default {
     newForm() {
       return {
         id: null,
+        category_type_id: 4,
         contact_id: null,
         note: '',
       };
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('Pikadons/addData', this.form);
+      const result = await this.$store.dispatch('Categories/addData', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('Pikadons/updateData', this.form);
+      const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
     },
   },

@@ -19,7 +19,7 @@ export default {
 
   computed: {
     data() {
-      return this.$store.state.Causes.data.map(item => ({
+      return this.$store.getters['Categories/getCauses'].map(item => ({
         value: item.id,
         label: item.name,
         ...item,
@@ -33,8 +33,8 @@ export default {
 
   methods: {
     initData() {
-      if (!this.data.length) {
-        this.$store.dispatch('Causes/getData');
+      if (!this.$store.state.Categories.data) {
+        this.$store.dispatch('Categories/getData');
       }
     },
   },

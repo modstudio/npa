@@ -32,7 +32,7 @@
           :item="currentItem"
           item-name="Transaction method"
           store-action-name="TrxMethods/deleteItem"
-          check-action-name=""
+          check-action-name="TrxMethods/checkAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>

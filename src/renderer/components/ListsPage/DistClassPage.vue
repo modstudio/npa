@@ -49,7 +49,7 @@
         :is-shown="isViewPanel"
         :mode="viewPanelMode"
         @hidepanel="hidePanel"
-        @update="getData"
+        @update="onUpdate"
         @add-new="addDistClass"
       ></dist-class-side-bar-component>   
   </div>
@@ -134,6 +134,11 @@ export default {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;
+    },
+
+    onUpdate() {
+      this.getData();
+      this.$store.dispatch('Transactions/getData');
     },
   },
 };

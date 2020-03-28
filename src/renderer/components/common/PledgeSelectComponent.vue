@@ -19,13 +19,13 @@ export default {
 
   computed: {
     data() {
-      return this.$store.state.Pledges.data.map(item => ({
+      return this.$store.getters['Categories/getPledges'].map(item => ({
         value: item.id,
         label: (item.contact_company_name ? item.contact_company_name
           : `${item.contact_first_name} ${item.contact_last_name}`),
         subtext: (item.contact_company_name
           ? `${item.contact_first_name} ${item.contact_last_name} ` : '')
-          + item.cause_name,
+          + item.related_category_name,
         name: `${item.contact_company_name} ${item.contact_first_name} ${item.contact_last_name}`,
         ...item,
       }));
@@ -38,8 +38,8 @@ export default {
 
   methods: {
     initData() {
-      if (!this.data.length) {
-        this.$store.dispatch('Pledges/getData');
+      if (!this.$store.state.Categories.data) {
+        this.$store.dispatch('Categories/getData');
       }
     },
   },

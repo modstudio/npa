@@ -37,8 +37,8 @@
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
           item-name="Loan"
-          store-action-name="Loans/deleteItem"
-          check-action-name=""
+          store-action-name="Categories/deleteItem"
+          check-action-name="Categories/checkAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -92,18 +92,19 @@ export default {
     newForm() {
       return {
         id: null,
+        category_type_id: 3,
         contact_id: null,
         note: '',
       };
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('Loans/addData', this.form);
+      const result = await this.$store.dispatch('Categories/addData', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('Loans/updateData', this.form);
+      const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
     },
   },

@@ -8,127 +8,128 @@
     >
       <template slot="header">{{ headerName }}</template>
       <template slot="headerBadge">{{ currentItem ? currentItem.id : '' }}</template>
-
-      <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
-        <div class="info-sidebar__block-header">
-            <h4>Contact</h4>
+      <div>
+        <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
+          <div class="info-sidebar__block-header">
+              <h4>Contact</h4>
+          </div>
+            <ValidationObserver ref="observer">
+              <!-- Company Name -->
+              <text-input-component
+                v-model="form.company_name"
+                :rules="{required: !form.first_name || !form.last_name}"
+                label="Company name"
+              ></text-input-component>
+              <!-- First Name -->
+              <text-input-component
+                v-model="form.first_name"
+                :rules="{required: !form.company_name}"
+                label="First name"
+              ></text-input-component>
+              <!-- Last Name -->
+              <text-input-component
+                v-model="form.last_name"
+                :rules="{required: !form.company_name}"
+                label="Last name"
+              ></text-input-component>
+              <!-- Id Number -->
+              <text-input-component
+                v-model="form.id_number"
+                label="ID Number"
+              ></text-input-component>
+              <hr>
+              <div class="row gutter-8">
+                  <div class="col-12 col-md-10">
+                      <!-- Phone Number -->
+                      <tel-input-component
+                          v-model="form.phone_number"
+                          label="Phone Number"
+                          autocomplete="tel"
+                      ></tel-input-component>
+                  </div>
+                  <div class="col-12 col-md-2">
+                      <text-input-component
+                          v-model="form.phone_ext"
+                          name="phone_ext"
+                          label="Ext."
+                          autocomplete="tel-extension"
+                      ></text-input-component>
+                  </div>
+              </div>
+              <!-- Address -->
+              <text-input-component
+                v-model="form.address"
+                label="Address"
+              ></text-input-component>
+              <!-- City -->
+              <text-input-component
+                v-model="form.city"
+                label="City"
+              ></text-input-component>
+              <div class="row gutter-8">
+                  <div class="col-12 col-sm-6" v-show="countryHasStates">
+                      <!-- State -->
+                      <select-states-component
+                        v-model="form.state"
+                        :country="form.country"
+                      ></select-states-component>
+                  </div>
+                  <div class="col-12" :class="{'col-sm-6': countryHasStates}">
+                      <!-- Organization ZIP -->
+                      <text-input-component
+                        v-model="form.zip"
+                        type="tel"
+                        :rules="{postcode: form.country }"
+                        :label="form.country === 'US' ? 'Zip' : 'Postal Code'"
+                      ></text-input-component>
+                  </div>
+              </div>
+              <!-- Country -->
+              <select-countries-component
+                v-model="form.country"
+                @change="onChangeCountry"
+              ></select-countries-component>
+            </ValidationObserver>
         </div>
-          <ValidationObserver ref="observer">
-            <!-- Company Name -->
-            <text-input-component
-              v-model="form.company_name"
-              :rules="{required: !form.first_name || !form.last_name}"
-              label="Company name"
-            ></text-input-component>
-            <!-- First Name -->
-            <text-input-component
-              v-model="form.first_name"
-              :rules="{required: !form.company_name}"
-              label="First name"
-            ></text-input-component>
-            <!-- Last Name -->
-            <text-input-component
-              v-model="form.last_name"
-              :rules="{required: !form.company_name}"
-              label="Last name"
-            ></text-input-component>
-            <!-- Id Number -->
-            <text-input-component
-              v-model="form.id_number"
-              label="ID Number"
-            ></text-input-component>
-            <hr>
-            <div class="row gutter-8">
-                <div class="col-12 col-md-10">
-                    <!-- Phone Number -->
-                    <tel-input-component
-                        v-model="form.phone_number"
-                        label="Phone Number"
-                        autocomplete="tel"
-                    ></tel-input-component>
-                </div>
-                <div class="col-12 col-md-2">
-                    <text-input-component
-                        v-model="form.phone_ext"
-                        name="phone_ext"
-                        label="Ext."
-                        autocomplete="tel-extension"
-                    ></text-input-component>
-                </div>
-            </div>
-            <!-- Address -->
-            <text-input-component
-              v-model="form.address"
-              label="Address"
-            ></text-input-component>
-            <!-- City -->
-            <text-input-component
-              v-model="form.city"
-              label="City"
-            ></text-input-component>
-            <div class="row gutter-8">
-                <div class="col-12 col-sm-6" v-show="countryHasStates">
-                    <!-- State -->
-                    <select-states-component
-                      v-model="form.state"
-                      :country="form.country"
-                    ></select-states-component>
-                </div>
-                <div class="col-12" :class="{'col-sm-6': countryHasStates}">
-                    <!-- Organization ZIP -->
-                    <text-input-component
-                      v-model="form.zip"
-                      type="tel"
-                      :rules="{postcode: form.country }"
-                      :label="form.country === 'US' ? 'Zip' : 'Postal Code'"
-                    ></text-input-component>
-                </div>
-            </div>
-            <!-- Country -->
-            <select-countries-component
-              v-model="form.country"
-              @change="onChangeCountry"
-            ></select-countries-component>
-          </ValidationObserver>
-      </div>
 
-      <div class="info-sidebar__footer" v-show="!isDeleteMode">
-        <div class="d-flex justify-content-end align-items-center">
-          <button type="button" v-if="isNewMode"
-            class="btn btn-link mr-auto"
-            @click="cancel">
-              Cancel
-          </button>
-          <button type="button" v-else
-            @click="deleteAction"
-            class="btn btn-icon btn-icon--w-text mr-auto">
-              <i class="icon icon-trash-can"></i><span>Delete</span>
-          </button>
+        <div class="info-sidebar__footer" v-show="!isDeleteMode">
+          <div class="d-flex justify-content-end align-items-center">
+            <button type="button" v-if="isNewMode"
+              class="btn btn-link mr-auto"
+              @click="cancel">
+                Cancel
+            </button>
+            <button type="button" v-else
+              @click="deleteAction"
+              class="btn btn-icon btn-icon--w-text mr-auto">
+                <i class="icon icon-trash-can"></i><span>Delete</span>
+            </button>
 
-          <action-button
-            button-name="Save and New"
-            loading-name="Saving"
-            additional-class="btn-secondary w-156"
-            @click="saveAndNew"
-            :form-busy="isSavingAndNewProcess"
-          >
-          </action-button>
-          <action-button
-            button-name="Save and Close"
-            loading-name="Saving"
-            additional-class="w-156 ml-4"
-            @click="saveAndClose"
-            :form-busy="isSavingAndCloseProcess"
-          >
-          </action-button>
+            <action-button
+              button-name="Save and New"
+              loading-name="Saving"
+              additional-class="btn-secondary w-156"
+              @click="saveAndNew"
+              :form-busy="isSavingAndNewProcess"
+            >
+            </action-button>
+            <action-button
+              button-name="Save and Close"
+              loading-name="Saving"
+              additional-class="w-156 ml-4"
+              @click="saveAndClose"
+              :form-busy="isSavingAndCloseProcess"
+            >
+            </action-button>
+          </div>
         </div>
-      </div>
 
-      <contact-delete-dialog-component v-show="isDeleteMode"
-        :item="currentItem"
-        @close-dialog="isDeleteMode = false"
-        @item-deleted="onDeleteContact"
-      ></contact-delete-dialog-component>      
+        <contact-delete-dialog-component v-if="isDeleteMode"
+          :item="currentItem"
+          @close-dialog="isDeleteMode = false"
+          @item-deleted="onDeleteContact"
+        ></contact-delete-dialog-component>
+      </div>
     </right-side-bar-component>
   </div>
 </template>

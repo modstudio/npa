@@ -107,7 +107,7 @@ export default {
     async checkAssociation(context, id) {
       try {
         const result = await Vue.db.get(`SELECT count(*) as cnt
-        FROM causes where distribution_class_id = ?`, [id]);
+        FROM categories where distribution_class_id = ?`, [id]);
         return result.cnt > 0;
       } catch (err) {
         console.log('error check assoc for distribution_classes', err);

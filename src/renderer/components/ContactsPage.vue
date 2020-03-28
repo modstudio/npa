@@ -63,7 +63,7 @@
         :is-shown="isViewPanel"
         :mode="viewPanelMode"
         @hidepanel="hidePanel"
-        @update-contacts="getData"
+        @update-contacts="onUpdateContact"
         @add-new="addContact"
       ></contact-side-bar-component>
     </layouts-container-lg-component>
@@ -156,6 +156,12 @@ export default {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;
+    },
+
+    onUpdateContact() {
+      this.getData();
+      this.$store.dispatch('Transactions/getData');
+      this.$store.dispatch('Categories/getData');
     },
   },
 };
