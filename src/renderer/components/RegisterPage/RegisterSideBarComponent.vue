@@ -222,7 +222,7 @@ export default {
     newForm() {
       return {
         id: null,
-        date: new Date(),
+        date: moment().toDate(),
         transaction_type_id: 1,
         transaction_method_id: null,
         number: '',
@@ -244,7 +244,7 @@ export default {
       this.form = this.newForm();
       if (!this.isNewMode && this.currentItem) {
         this.form = { ...this.form, ...this.currentItem };
-        this.form.date = new Date(this.form.date);
+        this.form.date = moment(this.form.date).toDate();
         if (this.isStartingBalance) {
           this.form.debit_credit = this.form.amount < 0
             ? 'debit' : 'credit';

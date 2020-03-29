@@ -23,8 +23,7 @@ export default {
         value: item.id,
         label: (item.contact_company_name ? item.contact_company_name
           : `${item.contact_first_name} ${item.contact_last_name}`),
-        subtext: (item.contact_company_name
-          ? `${item.contact_first_name} ${item.contact_last_name}` : ''),
+        subtext: item.description,
         name: `${item.contact_company_name} ${item.contact_first_name} ${item.contact_last_name}`,
         ...item,
       }));

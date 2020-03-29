@@ -53,6 +53,24 @@ export default {
   // -----------------------------------------------------------------
   actions: {
     async getData(context) {
+      const transactionSubquery = `
+        select transactions.*,
+        categories.category_type_id,
+          case 
+                when categories.category_type_id = 1 THEN categories.name
+                else case 
+                      when category_contact.company_name <> '' then category_contact.company_name
+                      else category_contact.first_name || ' ' || category_contact.last_name
+                    end
+              end as category_name,
+          categories.description as category_description,
+              related_category.name as related_category_name
+        from transactions 
+        JOIN categories ON transactions.category_id = categories.id
+        JOIN contacts category_contact ON categories.contact_id = category_contact.id
+        LEFT JOIN categories related_category 
+        ON categories.related_category_id = related_category.id      
+      `;
       try {
         const data = await Vue.db.all(`SELECT transactions.*,
         transaction_types.name as type_name,
@@ -61,7 +79,7 @@ export default {
           when categories.category_type_id = 1 THEN categories.name
           else case 
                 when category_contact.company_name <> '' then category_contact.company_name
-                else category_contact.first_name || category_contact.last_name
+                else category_contact.first_name || ' ' || category_contact.last_name
               end
         end as category_name,
         case
@@ -74,24 +92,18 @@ export default {
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
         related_category.name as related_category_name,
         -- transaction TO
-        transfer_transactions.id as transfer_transaction_id,
-        transfer_transactions.category_id as transfer_transaction_category_id,
-        case 
-        when transfer_categories.category_type_id = 1 THEN transfer_categories.name
-        else case 
-              when transfer_category_contact.company_name <> '' then transfer_category_contact.company_name
-              else transfer_category_contact.first_name || transfer_category_contact.last_name
-            end
-        end as transfer_category_name,
+        transfer_transaction.id as transfer_transaction_id,
+        transfer_transaction.category_id as transfer_transaction_category_id,
+        transfer_transaction.category_name as transfer_transation_category_name,
+        transfer_transaction.category_type_id as transfer_transaction_category_type_id,
+        transfer_transaction.category_description as transfer_transaction_category_description,
+        transfer_transaction.related_category_name as transfer_transaction_related_category_name,
         -- transaction FROM 
-        related_transactions.category_id as related_transaction_category_id,
-        case 
-        when related_categories.category_type_id = 1 THEN related_categories.name
-        else case 
-              when related_category_contact.company_name <> '' then related_category_contact.company_name
-              else related_category_contact.first_name || related_category_contact.last_name
-            end
-        end as related_category_name        
+        related_transaction.category_id as related_transaction_category_id,
+        related_transaction.category_name as related_transaction_category_name,
+        related_transaction.category_type_id as related_transaction_category_type_id,
+        related_transaction.category_description as related_transaction_category_description,
+        related_transaction.related_category_name as related_transaction_related_category_name
         FROM transactions LEFT JOIN contacts ON transactions.contact_id = contacts.id
           JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
           LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
@@ -100,19 +112,11 @@ export default {
           LEFT JOIN categories related_category 
             ON categories.related_category_id = related_category.id
           -- Get transaction TO item
-          LEFT JOIN transactions transfer_transactions
-            ON transactions.id = transfer_transactions.related_transaction_id
-          LEFT JOIN categories transfer_categories
-            ON transfer_transactions.category_id = transfer_categories.id
-          LEFT JOIN contacts transfer_category_contact 
-            ON transfer_categories.contact_id = transfer_category_contact.id
+          LEFT JOIN (${transactionSubquery}) transfer_transaction
+            ON transactions.id = transfer_transaction.related_transaction_id
           -- Get transaction from item
-          LEFT JOIN transactions related_transactions
-            ON transactions.related_transaction_id = related_transactions.id
-          LEFT JOIN categories related_categories
-            ON related_transactions.category_id = related_categories.id
-          LEFT JOIN contacts related_category_contact 
-            ON related_categories.contact_id = related_category_contact.id                      
+          LEFT JOIN (${transactionSubquery}) related_transaction
+            ON transactions.related_transaction_id = related_transaction.id                     
         ORDER BY date, created_at, id`);
         context.commit('setData', data);
       } catch (err) {

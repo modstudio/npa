@@ -58,24 +58,16 @@ export default {
           when categories.category_type_id = 1 THEN categories.name
           else case 
                 when contacts.company_name <> '' then contacts.company_name
-                else contacts.first_name || contacts.last_name
+                else contacts.first_name || ' ' || contacts.last_name
               end
         end as category_name,
         case 
           when categories.category_type_id = 1 THEN ''
-          when contacts.company_name <> '' then contacts.first_name || contacts.last_name
+          when categories.category_type_id = 2 THEN related_category.name
+          when categories.category_type_id = 3 THEN categories.description
+          when contacts.company_name <> '' then contacts.first_name || ' ' || contacts.last_name
           else ''
         end as category_subtext,
-        case
-          when categories.category_type_id = 2
-            THEN case 
-                when related_category_contact.company_name <> '' 
-                  then related_category_contact.company_name
-                else related_category_contact.first_name || related_category_contact.last_name
-              end
-          when categories.category_type_id = 3 then categories.description
-          else ''
-        end as category_description,
         related_category.name as related_category_name,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
@@ -93,7 +85,7 @@ export default {
           category_groups.sort_order, categories.sort_order, 
           case 
             when contacts.company_name <> '' then contacts.company_name
-            else contacts.first_name || contacts.last_name
+            else contacts.first_name || ' ' || contacts.last_name
           end
         `);
         context.commit(mutationName, data);

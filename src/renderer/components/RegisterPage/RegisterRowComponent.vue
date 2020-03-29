@@ -11,10 +11,10 @@
       <div>{{ item.type_name }}</div>
       <template v-if=isTransfer>
         <span class="subtext" v-if="item.transfer_transaction_id">
-          To {{item.transfer_category_name}}
+          To {{item.transfer_transation_category_name}}{{toTransactionSubtext}}
         </span>
         <span class="subtext" v-else>
-          From {{item.related_category_name}}
+          From {{item.related_transaction_category_name}}{{fromTransactionSubtext}}
         </span>
       </template>
       <span class="subtext" v-else>{{ methodAndNumber }}</span>
@@ -95,6 +95,26 @@ export default {
 
     isPledge() {
       return this.item.category_type_id === 2;
+    },
+
+    fromTransactionSubtext() {
+      if (this.item.related_transaction_category_type_id === 3) {
+        return `, ${this.item.related_transaction_category_description}`;
+      }
+      if (this.item.related_transaction_category_type_id === 2) {
+        return `, ${this.item.related_transaction_related_category_name}`;
+      }
+      return '';
+    },
+
+    toTransactionSubtext() {
+      if (this.item.transfer_transaction_category_type_id === 3) {
+        return `, ${this.item.transfer_transaction_category_description}`;
+      }
+      if (this.item.transfer_transaction_category_type_id === 2) {
+        return `, ${this.item.transfer_transaction_related_category_name}`;
+      }
+      return '';
     },
   },
 };
