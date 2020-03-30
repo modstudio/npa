@@ -16,7 +16,7 @@
         <div class="d-flex" v-if="type === 'date'">
           <div class="flex-grow-1 mr-1">
             From
-            <datepicker-component ref="from" 
+            <datepicker-component ref="from"
               :value="fromValue"
               @input="onInputFrom"
               @blur="onBlurDatePicker"
@@ -120,7 +120,7 @@ export default {
       if (this.type === 'number') {
         this.$nextTick(() => this.$refs.from.focus());
       } else {
-        this.$nextTick(() => this.$refs.from.$refs.datepicker.focus());
+        this.$nextTick(() => this.$refs.from.$refs.datepicker.click());
       }
     },
 
@@ -137,14 +137,20 @@ export default {
       return true;
     },
 
-    onBlurDatePicker(event) {
+    onBlurDatePicker() {
       if (this.isActiveFilter) {
         return true;
       }
-      console.log('on blur', event, this.$refs.to.$refs.datepicker);
       const { activeElement } = document;
-      const inputFromEl = this.$refs.from.$refs.datepicker.$el.children[0];
-      const inputToEl = this.$refs.to.$refs.datepicker.$el.children[0];
+      let inputFromEl;
+      let inputToEl;
+      if (this.$refs.from.isJewish) {
+        inputFromEl = this.$refs.from.$refs.datepicker;
+        inputToEl = this.$refs.to.$refs.datepicker;
+      } else {
+        [inputFromEl] = this.$refs.from.$refs.datepicker.$el.children;
+        [inputToEl] = this.$refs.to.$refs.datepicker.$el.children;
+      }
       if (!activeElement
         || (activeElement !== inputFromEl && activeElement !== inputToEl
         && activeElement !== this.$refs.toggleButton)) {
