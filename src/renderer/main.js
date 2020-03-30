@@ -35,6 +35,18 @@ window.moment = moment;
 require('bootstrap/dist/js/bootstrap');
 require('bootstrap-select/dist/js/bootstrap-select');
 
+// For flexcal
+require('jquery-ui/ui/data');
+require('jquery-ui/ui/focusable');
+require('jquery-ui/ui/position');
+require('jquery-ui/ui/widget');
+require('jquery-ui/ui/widgets/datepicker');
+require('jquery-ui/themes/base/all.css');
+require('../../static/flexcal/flexcal.css');
+require('../../static/flexcal/jquery.textpopup');
+require('../../static/flexcal/jquery.flexcal');
+require('../../static/flexcal/flexcal-integrate');
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.http = Vue.prototype.$http = axios;
 Vue.db = Vue.prototype.$db = db;

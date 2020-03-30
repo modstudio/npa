@@ -18,7 +18,7 @@
                 <datepicker-component
                   v-model="form.date"
                   label="Date"
-                  rules="required"
+                  :rules="{ required: true, regex: /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/ }"
                 ></datepicker-component>
                 <!-- Category from -->
                 <category-select-component
