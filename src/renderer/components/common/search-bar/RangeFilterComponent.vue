@@ -142,15 +142,8 @@ export default {
         return true;
       }
       const { activeElement } = document;
-      let inputFromEl;
-      let inputToEl;
-      if (this.$refs.from.isJewish) {
-        inputFromEl = this.$refs.from.$refs.datepicker;
-        inputToEl = this.$refs.to.$refs.datepicker;
-      } else {
-        [inputFromEl] = this.$refs.from.$refs.datepicker.$el.children;
-        [inputToEl] = this.$refs.to.$refs.datepicker.$el.children;
-      }
+      const [inputFromEl] = this.$refs.from.$refs.datepicker.$el.children;
+      const [inputToEl] = this.$refs.to.$refs.datepicker.$el.children;
       if (!activeElement
         || (activeElement !== inputFromEl && activeElement !== inputToEl
         && activeElement !== this.$refs.toggleButton)) {
