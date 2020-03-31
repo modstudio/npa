@@ -4,7 +4,7 @@
     :class="{'active': isActiveRow}">
     <div class="flex-table__row-item col-2"
         tabindex="0">
-      {{item.date}}
+      {{$root.formatDate(item.date)}}
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">

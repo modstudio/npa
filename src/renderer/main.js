@@ -45,6 +45,7 @@ require('jquery-ui/themes/base/all.css');
 require('../../static/flexcal/flexcal.css');
 require('../../static/flexcal/jquery.textpopup');
 require('../../static/flexcal/jquery.flexcal');
+require('../../static/flexcal/jquery.flexcal.format');
 require('../../static/flexcal/flexcal-integrate');
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
@@ -74,6 +75,7 @@ EventBus.$on('db-init', () => {
       require('./components/mixins/debounce'),
       require('./components/mixins/scroll-first-error'),
       require('./components/mixins/tooltip'),
+      require('./components/mixins/format-date'),
     ],
     data() {
       return {
