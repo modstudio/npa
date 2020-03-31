@@ -11,7 +11,7 @@ module.exports = {
 
   methods: {
     // Format Date to Jewish use flexcal
-    formatDate(d, format = 'DD MM YYYY') {
+    formatDate(d, format = 'dddd MM YYYY') {
       const date = typeof (d) === 'string' ? moment(d).toDate() : d;
       return $.bililite.flexcal.format(date, format, this.jewishLoc);
     },
