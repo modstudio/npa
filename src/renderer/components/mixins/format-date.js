@@ -6,12 +6,12 @@ module.exports = {
   },
 
   mounted() {
-    this.jewishLoc = $.bililite.flexcal.tol10n('jewish');
+    this.jewishLoc = $.bililite.flexcal.tol10n('he-jewish');
   },
 
   methods: {
     // Format Date to Jewish use flexcal
-    formatDate(d, format = 'mm/dd/YYYY') {
+    formatDate(d, format = 'DD MM YYYY') {
       const date = typeof (d) === 'string' ? moment(d).toDate() : d;
       return $.bililite.flexcal.format(date, format, this.jewishLoc);
     },
