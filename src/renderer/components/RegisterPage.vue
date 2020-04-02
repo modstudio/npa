@@ -4,37 +4,47 @@
       v-model="searchText"
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
+      @search="filterData"
     >
-      <range-filter-component
-        name-filter="Date"
-        type="date"
-        v-model="dateFilter"
-        collapse-event="clear-register-filter"
-      ></range-filter-component>    
-      <type-filter-component
-        v-model="typeFilter"
-        @filter="filterData"
-      ></type-filter-component>
-      <category-type-filter-component
-        v-model="categoryFilter"
-        @filter="filterData"
-      ></category-type-filter-component>
-      <method-filter-component
-        v-model="methodFilter"
-        @filter="filterData"
-      ></method-filter-component>
-      <contact-filter-component
-        v-model="contactFilter"
-        @filter="filterData"
-      ></contact-filter-component>
-      <range-filter-component
-        name-filter="Amount"
-        v-model="amountFilter"
-        collapse-event="clear-register-filter"
-      ></range-filter-component>
-      <notes-filter-component
-        v-model="notesFilter"
-      ></notes-filter-component>      
+      <template #search>
+        <range-filter-component
+          name-filter="Date"
+          type="date"
+          v-model="dateFilter"
+          collapse-event="clear-register-filter"
+          @input="filterData"
+        ></range-filter-component>    
+        <type-filter-component
+          v-model="typeFilter"
+          @filter="filterData"
+        ></type-filter-component>
+        <category-type-filter-component
+          v-model="categoryFilter"
+          @filter="filterData"
+        ></category-type-filter-component>
+        <method-filter-component
+          v-model="methodFilter"
+          @filter="filterData"
+        ></method-filter-component>
+        <contact-filter-component
+          v-model="contactFilter"
+          @filter="filterData"
+        ></contact-filter-component>
+        <range-filter-component
+          name-filter="Amount"
+          v-model="amountFilter"
+          collapse-event="clear-register-filter"
+          @filter="filterData"
+        ></range-filter-component>
+        <notes-filter-component
+          v-model="notesFilter"
+          @filter="filterData"
+        ></notes-filter-component>
+      </template>
+      <template #register>
+        <register-report-component :data="reportData">
+        </register-report-component>
+      </template> 
     </register-left-side-component>
     <layouts-container-lg-component>
       <div class="d-flex">
@@ -115,6 +125,7 @@ import RegisterSideBarComponent from './RegisterPage/RegisterSideBarComponent';
 import RegisterTransferSideBarComponent from './RegisterPage/RegisterTransferSideBarComponent';
 import ContactNameFieldComponent from './common/ContactNameFieldComponent';
 import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
+import RegisterReportComponent from './RegisterPage/RegisterReportComponent';
 import Bus from '../shared/EventBus';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
@@ -125,6 +136,7 @@ export default {
     RegisterTransferSideBarComponent,
     ContactNameFieldComponent,
     RegisterRowComponent,
+    RegisterReportComponent,
   },
 
   mixins: [
@@ -145,7 +157,7 @@ export default {
       searchText: '',
       refNameSortCol: ['sortDate'],
       sortField: 'date',
-      sortOrder: 'asc',
+      sortOrder: 'desc',
       dateFilter: null,
       typeFilter: [],
       categoryFilter: [],
@@ -153,6 +165,7 @@ export default {
       contactFilter: [],
       amountFilter: null,
       notesFilter: 0,
+      reportData: null,
     };
   },
 
@@ -262,11 +275,23 @@ export default {
 
   created() {
     this.getData();
+    Bus.$on('update-contacts', this.getData);
+    Bus.$on('update-category', this.getData);
+    Bus.$on('update-dist-class', this.getData);
+    Bus.$on('update-method', this.getData);
+  },
+
+  destroyed() {
+    Bus.$off('update-contacts', this.getData);
+    Bus.$off('update-category', this.getData);
+    Bus.$off('update-dist-class', this.getData);
+    Bus.$off('update-method', this.getData);
   },
 
   methods: {
     getData() {
       this.$store.dispatch('Transactions/getData');
+      this.runReport();
     },
 
     addNewTransfer() {
@@ -302,6 +327,7 @@ export default {
     },
 
     filterData() {
+      this.runReport();
     },
 
     resetFilter() {
@@ -314,6 +340,50 @@ export default {
       this.dateFilter = null;
       this.notesFilter = 0;
       Bus.$emit('clear-register-filter');
+      this.runReport();
+    },
+
+    async runReport() {
+      await this.$store.dispatch('Transactions/runReport', {
+        search: this.searchText,
+        type: this.typeFilter,
+        category: this.categoryFilter,
+        method: this.methodFilter,
+        contact: this.contactFilter,
+        amount: this.amountFilter,
+        date: this.dateFilter,
+        notes: this.notesFilter,
+      });
+      const data = [];
+      let currentTypeId = null;
+      const expandedIds = this.reportData ? this.reportData
+        .filter(item => item.isExpanded)
+        .map(item => item.id) : [];
+      this.$store.state.Transactions.reportData.forEach((item) => {
+        if (currentTypeId !== item.category_type_id) {
+          data.push({
+            id: item.category_type_id,
+            name: item.category_type_name,
+            isExpanded: expandedIds.includes(item.category_type_id),
+            data: [],
+          });
+          currentTypeId = item.category_type_id;
+        }
+        let name;
+        if (item.category_type_id === 2) {
+          name = item.related_category_name;
+        } else if (item.category_type_id === 3) {
+          name = item.category_description;
+        } else {
+          name = item.category_name;
+        }
+        data[data.length - 1].data.push({
+          id: item.category_id,
+          name,
+          amount: item.sum_amount,
+        });
+      });
+      this.reportData = data;
     },
   },
 };

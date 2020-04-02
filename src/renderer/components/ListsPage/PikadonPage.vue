@@ -154,7 +154,7 @@ export default {
 
     onUpdate() {
       this.getData();
-      this.$store.dispatch('Transactions/getData');
+      Bus.$emit('update-category');
     },
   },
 };

@@ -160,8 +160,8 @@ export default {
 
     onUpdateContact() {
       this.getData();
-      this.$store.dispatch('Transactions/getData');
       this.$store.dispatch('Categories/getData');
+      Bus.$emit('update-contacts');
     },
   },
 };
