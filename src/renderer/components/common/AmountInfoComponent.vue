@@ -9,6 +9,10 @@ export default {
       type: [Number, String],
       default: null,
     },
+    isColored: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   computed: {
@@ -17,6 +21,9 @@ export default {
     },
 
     amountClass() {
+      if (!this.isColored) {
+        return '';
+      }
       if (this.amount < 0) {
         return 'color-secondary-700';
       }

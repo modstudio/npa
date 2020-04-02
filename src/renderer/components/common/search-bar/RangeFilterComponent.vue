@@ -39,6 +39,7 @@
               :value="fromValue"
               @input="onInputFrom"
               @blur="onBlurInput"
+              @change="$emit('filter')"
             >
           </div>
           <div class="flex-grow-1 ml-1">
@@ -47,7 +48,8 @@
               class="form-control form-control--enter"
               :value="toValue" 
               @input="onInputTo"
-              @blur="onBlurInput" 
+              @blur="onBlurInput"
+              @change="$emit('filter')"
             >
           </div>
         </div>
