@@ -42,8 +42,10 @@
         ></notes-filter-component>
       </template>
       <template #register>
-        <register-report-component :data="reportData">
-        </register-report-component>
+        <register-report-component 
+          :data="reportData"
+          :search-report="searchText"
+        ></register-report-component>
       </template> 
     </register-left-side-component>
     <layouts-container-lg-component>
@@ -369,13 +371,11 @@ export default {
           });
           currentTypeId = item.category_type_id;
         }
-        let name;
+        let name = item.category_name;
         if (item.category_type_id === 2) {
-          name = item.related_category_name;
+          name = `${name}, ${item.related_category_name}`;
         } else if (item.category_type_id === 3) {
-          name = item.category_description;
-        } else {
-          name = item.category_name;
+          name = `${name}, ${item.category_description}`;
         }
         data[data.length - 1].data.push({
           id: item.category_id,

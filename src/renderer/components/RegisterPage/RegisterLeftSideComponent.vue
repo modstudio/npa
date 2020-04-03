@@ -16,15 +16,15 @@
         </button>
       </div>
       <div class="sidebar-nav">
+      <search-bar-component
+        :value="value"
+        :is-filtered="isFiltered"
+        :search-placeholder="searchPlaceholder"
+        @input="searchText => $emit('input', searchText)"
+        @resetfilter="$emit('resetfilter')"
+        @search="$emit('search')"
+      ></search-bar-component>        
       <div v-show="isSearchMode">
-        <search-bar-component
-          :value="value"
-          :is-filtered="isFiltered"
-          search-placeholder="Search Register"
-          @input="searchText => $emit('input', searchText)"
-          @resetfilter="$emit('resetfilter')"
-          @search="$emit('search')"
-        ></search-bar-component>
         <slot name="search"></slot>
       </div>
       <div v-show="isReportMode">
@@ -67,6 +67,10 @@ export default {
 
     isReportMode() {
       return this.mode === 'report';
+    },
+
+    searchPlaceholder() {
+      return this.isSearchMode ? 'Search Register' : 'Search Reports';
     },
   },
 
