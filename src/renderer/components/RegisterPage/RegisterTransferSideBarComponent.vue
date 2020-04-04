@@ -18,7 +18,7 @@
                 <datepicker-component
                   v-model="form.date"
                   label="Date"
-                  :rules="{ required: true, regex: /[0-9]{2}\/[0-9]{2}\/[0-9]{4}/ }"
+                  rules="required"
                 ></datepicker-component>
                 <!-- Category from -->
                 <category-select-component
@@ -71,7 +71,7 @@
 
 <script>
 import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
-import CategorySelectComponent from '../common/CategorySelectComponent';
+import CategorySelectComponent from '../common/form-select-components/CategorySelectComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 
 export default {

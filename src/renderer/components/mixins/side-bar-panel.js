@@ -36,6 +36,8 @@ export default {
       isSavingAndNewProcess: false,
       isSavingAndCloseProcess: false,
       isDeleteMode: false,
+      hasAssociation: null,
+      checkAssociationActionName: null,
     };
   },
 
@@ -54,6 +56,7 @@ export default {
       this.form = this.newForm();
       if (!this.isNewMode && this.currentItem) {
         this.form = { ...this.currentItem };
+        this.checkAssociation();
       }
     },
 
@@ -123,7 +126,8 @@ export default {
       this.$emit('hidepanel');
     },
 
-    deleteAction() {
+    async deleteAction() {
+      await this.checkAssociation();
       this.isDeleteMode = true;
     },
 
@@ -131,6 +135,17 @@ export default {
       this.$emit('update');
       this.$emit('hidepanel');
       this.isDeleteMode = false;
+    },
+
+    async checkAssociation() {
+      if (this.checkAssociationActionName) {
+        this.hasAssociation = await this.$store.dispatch(
+          this.checkAssociationActionName,
+          this.currentItem.id,
+        );
+      } else {
+        this.hasAssociation = false;
+      }
     },
   },
 };

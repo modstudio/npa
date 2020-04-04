@@ -22,18 +22,10 @@
                 label="Name"
               ></text-input-component>
               <!-- Group -->
-              <select-component
+              <cause-group-select-component
                 v-model="form.category_group_id"
-                label="Group"
                 rules="required"
-                placeholder="Choose Group"
-                :source-data="$store.state.CauseGroups.data.map(
-                  item => ({
-                    value: item.id,
-                    label: item.name,
-                    ...item })
-                )"
-              ></select-component>
+              ></cause-group-select-component>
               <!-- Recipient -->
               <contact-select-component
                 v-model="form.contact_id"
@@ -58,7 +50,8 @@
           :item="currentItem"
           item-name="Cause"
           store-action-name="Categories/deleteItem"
-          check-action-name="Categories/checkAssociation"
+          archive-action-name="Categories/archiveItem"
+          :has-association="hasAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -69,6 +62,7 @@
             :is-new-mode="isNewMode"
             :is-saving-and-new-process="isSavingAndNewProcess"
             :is-saving-and-close-process="isSavingAndCloseProcess"
+            :has-association="hasAssociation"
             @save-and-new="saveAndNew"
             @save-and-close="saveAndClose"
             @delete="deleteAction"
@@ -83,12 +77,14 @@
 <script>
 import ItemDeleteDialogComponent from '../../common/right-side-bar/ItemDeleteDialogComponent';
 import sideBarPanelMixin from '../../mixins/side-bar-panel';
-import ContactSelectComponent from '../../common/ContactSelectComponent';
-import DistClassSelectComponent from '../../common/DistClassSelectComponent';
+import CauseGroupSelectComponent from '../../common/form-select-components/CauseGroupSelectComponent';
+import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
+import DistClassSelectComponent from '../../common/form-select-components/DistClassSelectComponent';
 
 export default {
   components: {
     ItemDeleteDialogComponent,
+    CauseGroupSelectComponent,
     ContactSelectComponent,
     DistClassSelectComponent,
   },
@@ -103,6 +99,12 @@ export default {
     name() {
       return this.currentItem ? this.currentItem.name : '';
     },
+  },
+
+  data() {
+    return {
+      checkAssociationActionName: 'Categories/checkAssociation',
+    };
   },
 
   methods: {

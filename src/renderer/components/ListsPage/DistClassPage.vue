@@ -1,8 +1,14 @@
 <template>
   <div>
-    <dist-class-left-side-component
-      v-model="searchText"
-    ></dist-class-left-side-component>
+      <left-side-bar-component
+        v-model="searchText"
+        search-placeholder="Search Dist. Class"
+        :is-filtered="isFiltered"
+      >
+        <inactive-filter-component
+          v-model="inactiveFilter"
+        ></inactive-filter-component>      
+      </left-side-bar-component>
       <div class="d-flex">
         <div class="flex-grow-1">
           {{data.length}}
@@ -36,6 +42,7 @@
               <div class="flex-table__row-item col-6 font-weight-bold"
                   tabindex="0">
                   {{ item.name }}
+                  <inactive-badge-component class="ml-2" v-if="item.is_inactive"></inactive-badge-component>
               </div>
               <div class="flex-table__row-item col-6"
                   tabindex="0">
@@ -58,14 +65,12 @@
 <script>
 import draggable from 'vuedraggable';
 import SortOrderMixin from '../mixins/sort-order';
-import DistClassLeftSideComponent from './DistClassPage/DistClassLeftSideComponent';
 import DistClassSideBarComponent from './DistClassPage/DistClassSideBarComponent';
 import Bus from '../../shared/EventBus';
 
 export default {
   components: {
     draggable,
-    DistClassLeftSideComponent,
     DistClassSideBarComponent,
   },
 
@@ -85,17 +90,23 @@ export default {
       currentItem: null,
       searchText: '',
       sortOrderActionName: 'DistClasses/setSortOrder',
+      inactiveFilter: 0,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!this.searchText && this.inactiveFilter !== 0;
     },
 
     data: {
       get() {
         let { data } = this.$store.state.DistClasses;
+        if (this.inactiveFilter === 0) {
+          data = data.filter(item => item.is_inactive === 0);
+        } else if (this.inactiveFilter === 2) {
+          data = data.filter(item => item.is_inactive === 1);
+        }
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data

@@ -218,6 +218,7 @@ export default {
 
     $(this.$refs.filter).on('hidden.bs.dropdown', () => {
       this.$nextTick(() => {
+        $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
         this.searchText = '';
         if (this.$refs.filterSearch) {
           this.$refs.filterSearch.value = '';
@@ -226,6 +227,9 @@ export default {
         if (this.sortFunc) {
           this.data = this.sortFunc(this.data);
         }
+        this.$nextTick(function () {
+          this.bindScrollBars();
+        });
       });
     });
   },

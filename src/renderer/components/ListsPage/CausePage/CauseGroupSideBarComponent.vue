@@ -33,7 +33,9 @@
           :item="currentItem"
           item-name="Cause Group"
           store-action-name="CauseGroups/deleteItem"
-          check-action-name="CauseGroups/checkAssociation"
+          archive-action-name="CauseGroups/archiveItem"
+          :has-association="hasAssociation"
+          subtext="Making this cause group inactive will make all causes in this group inactive as well."
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -44,6 +46,7 @@
           :is-new-mode="isNewMode"
           :is-saving-and-new-process="isSavingAndNewProcess"
           :is-saving-and-close-process="isSavingAndCloseProcess"
+          :has-association="hasAssociation"
           @save-and-new="saveAndNew"
           @save-and-close="saveAndClose"
           @delete="deleteAction"
@@ -71,6 +74,12 @@ export default {
     name() {
       return this.currentItem ? this.currentItem.name : '';
     },
+  },
+
+  data() {
+    return {
+      checkAssociationActionName: 'CauseGroups/checkAssociation',
+    };
   },
 
   methods: {

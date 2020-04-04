@@ -3,6 +3,7 @@
     <select-component
       v-bind="$attrs"
       v-on="$listeners"
+      :value="value"
       :label="label"  
       :source-data="selectData"
       :is-data-group="true"
@@ -18,6 +19,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: Number,
+      default: null,
+    },
     label: {
       type: String,
       default: 'Cause',
@@ -39,6 +44,7 @@ export default {
       }
       let currentTypeId = null;
       return this.data
+        .filter(item => (item.is_inactive === 0 || item.id === this.value))
         .reduce((data, item) => {
           if (currentTypeId !== item.category_type_id) {
             data.push({
@@ -48,6 +54,7 @@ export default {
                 label: item.category_name,
                 subtext: item.category_subtext,
                 name: `${item.category_name} ${item.category_subtext}`,
+                disabled: (item.is_inactive === 1),
               }],
             });
             currentTypeId = item.category_type_id;
@@ -57,6 +64,7 @@ export default {
               label: item.category_name,
               subtext: item.category_subtext,
               name: `${item.category_name} ${item.category_subtext}`,
+              disabled: (item.is_inactive === 1),
             });
           }
           return data;

@@ -2,6 +2,7 @@
   <select-component
     v-bind="$attrs"
     v-on="$listeners"
+    :value="value"
     :label="label"
     placeholder="Choose Cause"    
     :source-data="data"
@@ -11,6 +12,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: Number,
+      default: null,
+    },
     label: {
       type: String,
       default: 'Cause',
@@ -19,11 +24,14 @@ export default {
 
   computed: {
     data() {
-      return this.$store.getters['Categories/getCauses'].map(item => ({
-        value: item.id,
-        label: item.name,
-        ...item,
-      }));
+      return this.$store.getters['Categories/getCauses']
+        .filter(item => item.is_inactive === 0 || item.id === this.value)
+        .map(item => ({
+          value: item.id,
+          label: item.name,
+          disabled: (item.is_inactive === 1),
+          ...item,
+        }));
     },
   },
 

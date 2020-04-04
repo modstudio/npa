@@ -82,6 +82,26 @@ export default {
       return result;
     },
 
+    async archiveItem(context, id) {
+      let result;
+      try {
+        await Vue.db.serialize(async () => {
+          await Vue.db.run('BEGIN TRANSACTION');
+          await Vue.db.run('UPDATE category_groups SET is_inactive = 1 WHERE id = ?', [id]);
+          await Vue.db.run(
+            'UPDATE categories SET is_inactive = 1 WHERE category_group_id = ?',
+            [id],
+          );
+          await Vue.db.run('COMMIT');
+        });
+        result = true;
+      } catch (err) {
+        console.log('error archive category_groups', err);
+        result = false;
+      }
+      return result;
+    },
+
     async deleteItem(context, id) {
       let result;
       try {

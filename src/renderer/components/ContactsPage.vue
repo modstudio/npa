@@ -1,8 +1,15 @@
 <template>
   <div>
-    <contact-left-side-bar-component
+    <left-side-bar-component
       v-model="searchText"
-    ></contact-left-side-bar-component>
+      search-placeholder="Search Contacts"
+      :is-filtered="isFiltered"
+      @resetfilter="resetFilter"
+    >
+      <inactive-filter-component
+        v-model="inactiveFilter"
+      ></inactive-filter-component> 
+    </left-side-bar-component>    
     <layouts-container-lg-component>
       <div class="d-flex align-items-center mb-4 pb-2">
         <div class="flex-grow-1">
@@ -39,13 +46,18 @@
             :class="{'active': currentItem && currentItem.id === item.id}">
             <div class="flex-table__row-item col-3"
                 tabindex="0">
-                <div v-if="item.company_name">
-                  <div>{{ item.company_name }}</div>
-                  <span class="subtext">{{ item.first_name }} {{ item.last_name }}</span>
+                <div class="flex-grow-1">
+                  <div v-if="item.company_name">
+                    <div>
+                      {{ item.company_name }}
+                    </div>
+                    <span class="subtext">{{ item.first_name }} {{ item.last_name }}</span>
+                  </div>
+                  <template v-else>
+                    {{ item.first_name }} {{ item.last_name }}
+                  </template>
                 </div>
-                <template v-else>
-                  {{ item.first_name }} {{ item.last_name }}
-                </template>
+                <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
             </div>
             <div class="flex-table__row-item col-3"
                 tabindex="0">
@@ -63,7 +75,7 @@
         :is-shown="isViewPanel"
         :mode="viewPanelMode"
         @hidepanel="hidePanel"
-        @update-contacts="onUpdateContact"
+        @update="onUpdateContact"
         @add-new="addContact"
       ></contact-side-bar-component>
     </layouts-container-lg-component>
@@ -72,14 +84,12 @@
 
 <script>
 import ContactSideBarComponent from './ContactsPage/ContactSideBarComponent';
-import ContactLeftSideBarComponent from './ContactsPage/ContactLeftSideBarComponent';
 import Bus from '../shared/EventBus';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
   components: {
     ContactSideBarComponent,
-    ContactLeftSideBarComponent,
   },
 
   mixins: [
@@ -100,15 +110,21 @@ export default {
       refNameSortCol: ['sortName', 'sortPhone_number', 'sortAddress'],
       sortField: 'name',
       sortOrder: 'asc',
+      inactiveFilter: 0,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!this.searchText || this.inactiveFilter !== 0;
     },
     data() {
       let data = this.$store.state.Contacts.contacts;
+      if (this.inactiveFilter === 0) {
+        data = data.filter(item => item.is_inactive === 0);
+      } else if (this.inactiveFilter === 2) {
+        data = data.filter(item => item.is_inactive === 1);
+      }
       if (this.searchText) {
         const searchString = this.searchText.toLowerCase();
         data = data
@@ -162,6 +178,11 @@ export default {
       this.getData();
       this.$store.dispatch('Categories/getData');
       Bus.$emit('update-contacts');
+    },
+
+    resetFilter() {
+      this.searchText = '';
+      this.inactiveFilter = 0;
     },
   },
 };

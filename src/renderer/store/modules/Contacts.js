@@ -9,6 +9,7 @@ export default {
   // -----------------------------------------------------------------
   getters: {
     contacts: state => state.contacts,
+    activeContacts: state => state.contacts.filter(item => item.is_inactive === 0),
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -20,7 +21,7 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all(`SELECT * FROM contacts 
+        const data = await Vue.db.all(`SELECT * FROM contacts
         ORDER BY case 
         when company_name <> '' then company_name
         else first_name || last_name
@@ -93,6 +94,18 @@ export default {
         result = true;
       } catch (err) {
         console.log('error update contact', err);
+        result = false;
+      }
+      return result;
+    },
+
+    async archiveContact(context, id) {
+      let result;
+      try {
+        await Vue.db.run('UPDATE contacts SET is_inactive = 1 WHERE id = ?', [id]);
+        result = true;
+      } catch (err) {
+        console.log('error archive contact', err);
         result = false;
       }
       return result;

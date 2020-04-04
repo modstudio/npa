@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import SearchBarComponent from '../common/search-bar/SearchBarComponent';
-
 export default {
   props: {
     data: {
@@ -50,10 +48,6 @@ export default {
       type: String,
       default: '',
     },
-  },
-
-  components: {
-    SearchBarComponent,
   },
 
   data() {

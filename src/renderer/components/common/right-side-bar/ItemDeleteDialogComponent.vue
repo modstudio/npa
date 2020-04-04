@@ -3,16 +3,9 @@
     <template v-if="hasAssociation">
       <div class="info-sidebar__body">
         <div class="info-sidebar__block-title mb-4">
-          This {{itemName}} can’t be deleted because it is associated with other records.
+          Do you really want to archive {{itemName}}?
         </div>
-      </div>
-      <div class="info-sidebar__footer">
-        <div class="d-flex justify-content-center align-items-center">
-          <action-button
-            button-name="Ok"
-            @click="$emit('close-dialog')"
-          ></action-button>
-        </div>
+        <div class="text-center"><span class="subtext">{{subtext}}</span></div>
       </div>
     </template>
     <template v-else-if="hasAssociation !== null">
@@ -21,23 +14,23 @@
           Do you really want to delete {{ itemName }}?
         </div>
       </div>
-      <div class="info-sidebar__footer">
-        <div class="d-flex justify-content-center align-items-center">
-          <button type="button" class="btn btn-block btn-secondary w-156"
-            @click="$emit('close-dialog')">
-              Hmm.. I will rethink this
-          </button>
+    </template>
+    <div class="info-sidebar__footer">
+      <div class="d-flex justify-content-center align-items-center">
+        <button type="button" class="btn btn-block btn-secondary w-156"
+          @click="$emit('close-dialog')">
+            Hmm.. I will rethink this
+        </button>
 
-          <action-button
-            button-name="Yes, as sure as ever"
-            loading-name="Deleting"
-            :form-busy="isProcessing"
-            additional-class="w-156 ml-4"
-            @click="deleteItem"
-          ></action-button>
-        </div>
+        <action-button
+          button-name="Yes, as sure as ever"
+          :loading-name="loadingName"
+          :form-busy="isProcessing"
+          additional-class="w-156 ml-4"
+          @click="deleteItem"
+        ></action-button>
       </div>
-    </template> 
+    </div> 
   </div>
 </template>
 
@@ -56,35 +49,40 @@ export default {
       type: String,
       default: null,
     },
-    checkActionName: {
+    archiveActionName: {
+      type: String,
+      default: null,
+    },
+    hasAssociation: {
+      type: Boolean,
+      default: null,
+    },
+    subtext: {
       type: String,
       default: null,
     },
   },
 
+  computed: {
+    loadingName() {
+      return this.hasAssociation ? 'Archiving' : 'Deleting';
+    },
+  },
+
   data() {
     return {
-      hasAssociation: null,
       isProcessing: false,
     };
   },
 
-  created() {
-    this.checkAssociation();
-  },
-
   methods: {
-    async checkAssociation() {
-      if (this.checkActionName) {
-        this.hasAssociation = await this.$store.dispatch(this.checkActionName, this.item.id);
-      } else {
-        this.hasAssociation = false;
-      }
-    },
-
     async deleteItem() {
       this.isProcessing = true;
-      await this.$store.dispatch(this.storeActionName, this.item.id);
+      if (this.hasAssociation) {
+        await this.$store.dispatch(this.archiveActionName, this.item.id);
+      } else {
+        await this.$store.dispatch(this.storeActionName, this.item.id);
+      }
       this.$emit('item-deleted');
       this.isProcessing = false;
     },

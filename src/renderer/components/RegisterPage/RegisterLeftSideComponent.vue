@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import SearchBarComponent from '../common/search-bar/SearchBarComponent';
+import SearchBarComponent from '../common/left-side-bar/SearchBarComponent';
 
 export default {
   props: {

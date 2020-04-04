@@ -92,43 +92,28 @@
             </ValidationObserver>
         </div>
 
-        <div class="info-sidebar__footer" v-show="!isDeleteMode">
-          <div class="d-flex justify-content-end align-items-center">
-            <button type="button" v-if="isNewMode"
-              class="btn btn-link mr-auto"
-              @click="cancel">
-                Cancel
-            </button>
-            <button type="button" v-else
-              @click="deleteAction"
-              class="btn btn-icon btn-icon--w-text mr-auto">
-                <i class="icon icon-trash-can"></i><span>Delete</span>
-            </button>
-
-            <action-button
-              button-name="Save and New"
-              loading-name="Saving"
-              additional-class="btn-secondary w-156"
-              @click="saveAndNew"
-              :form-busy="isSavingAndNewProcess"
-            >
-            </action-button>
-            <action-button
-              button-name="Save and Close"
-              loading-name="Saving"
-              additional-class="w-156 ml-4"
-              @click="saveAndClose"
-              :form-busy="isSavingAndCloseProcess"
-            >
-            </action-button>
-          </div>
-        </div>
-
-        <contact-delete-dialog-component v-if="isDeleteMode"
+        <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
+          item-name="Contact"
+          store-action-name="Contacts/deleteContact"
+          archive-action-name="Contacts/archiveContact"
+          :has-association="hasAssociation"
           @close-dialog="isDeleteMode = false"
-          @item-deleted="onDeleteContact"
-        ></contact-delete-dialog-component>
+          @item-deleted="onDeleteItem"
+        ></item-delete-dialog-component>
+      </div>
+      <div class="info-sidebar__footer" v-show="!isDeleteMode">
+        <footer-buttons-component
+          v-if="!isDeleteMode"
+          :is-new-mode="isNewMode"
+          :is-saving-and-new-process="isSavingAndNewProcess"
+          :is-saving-and-close-process="isSavingAndCloseProcess"
+          :has-association="hasAssociation"
+          @save-and-new="saveAndNew"
+          @save-and-close="saveAndClose"
+          @delete="deleteAction"
+          @cancel="$emit('hidepanel')"
+        ></footer-buttons-component>
       </div>
     </right-side-bar-component>
   </div>
@@ -137,40 +122,18 @@
 <script>
 import SelectCountriesComponent from '../common/countries-component/SelectCountriesComponent';
 import SelectStatesComponent from '../common/states-component/SelectStatesComponent';
-import ContactDeleteDialogComponent from './ContactDeleteDialogComponent';
+import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
 import states from '../common/states-component/states';
+import sideBarPanelMixin from '../mixins/side-bar-panel';
 
 export default {
-  props: {
-    currentItem: {
-      type: Object,
-      default: null,
-    },
-    isShown: {
-      type: Boolean,
-      default: false,
-    },
-    mode: {
-      type: String,
-      default: null,
-    },
-  },
-
-  watch: {
-    isShown() {
-      this.initForm();
-    },
-
-    currentItem() {
-      this.initForm();
-    },
-  },
-
   components: {
     SelectCountriesComponent,
     SelectStatesComponent,
-    ContactDeleteDialogComponent,
+    ItemDeleteDialogComponent,
   },
+
+  mixins: [sideBarPanelMixin],
 
   computed: {
     headerName() {
@@ -198,15 +161,8 @@ export default {
 
   data() {
     return {
-      form: null,
-      isSavingAndNewProcess: false,
-      isSavingAndCloseProcess: false,
-      isDeleteMode: false,
+      checkAssociationActionName: 'Contacts/checkAssociation',
     };
-  },
-
-  created() {
-    this.initForm();
   },
 
   methods: {
@@ -221,6 +177,7 @@ export default {
       if (!this.isNewMode && this.currentItem) {
         this.form = { ...this.currentItem };
         this.form.phone_number = this.form.phone_number || '';
+        this.checkAssociation();
       }
     },
 
@@ -241,60 +198,19 @@ export default {
       };
     },
 
-    async saveAndNew() {
-      this.isSavingAndNewProcess = true;
-      const result = await this.save();
-      this.isSavingAndNewProcess = false;
-      if (result) {
-        this.$emit('update-contacts');
-        if (this.isNewMode) {
-          this.initForm();
-        } else {
-          this.$emit('add-new');
-        }
-      }
-    },
-
-    async saveAndClose() {
-      this.isSavingAndCloseProcess = true;
-      const result = await this.save();
-      this.isSavingAndCloseProcess = false;
-      if (result) {
-        this.$emit('update-contacts');
-        this.$emit('hidepanel');
-      }
-    },
-
-    async save() {
-      const isValidateSuccess = await this.$refs.observer.validate();
-      if (!isValidateSuccess) {
-        this.$root.scrollToFirstError(this.$refs.form, true);
-        return false;
-      }
-      if (this.isNewMode) {
-        const result = await this.$store.dispatch('Contacts/addContact', this.form);
-        return result;
-      }
-      const result = await this.$store.dispatch('Contacts/updateContact', this.form);
-      return result;
-    },
 
     onChangeCountry() {
       this.form.state = null;
     },
 
-    cancel() {
-      this.$emit('hidepanel');
+    async saveItem() {
+      const result = await this.$store.dispatch('Contacts/addContact', this.form);
+      return result;
     },
 
-    deleteAction() {
-      this.isDeleteMode = true;
-    },
-
-    onDeleteContact() {
-      this.$emit('update-contacts');
-      this.$emit('hidepanel');
-      this.isDeleteMode = false;
+    async updateItem() {
+      const result = await this.$store.dispatch('Contacts/updateContact', this.form);
+      return result;
     },
   },
 };
