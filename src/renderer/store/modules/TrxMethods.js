@@ -72,6 +72,18 @@ export default {
       return result;
     },
 
+    async archiveItem(context, id) {
+      let result;
+      try {
+        await Vue.db.run('UPDATE transaction_methods SET is_inactive = 1 WHERE id = ?', [id]);
+        result = true;
+      } catch (err) {
+        console.log('error archive transaction_methods', err);
+        result = false;
+      }
+      return result;
+    },
+
     async deleteItem(context, id) {
       let result;
       try {

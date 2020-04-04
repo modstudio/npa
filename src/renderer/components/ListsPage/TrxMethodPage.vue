@@ -1,8 +1,14 @@
 <template>
   <div>
-    <trx-method-left-side-component
-      v-model="searchText"
-    ></trx-method-left-side-component>
+      <left-side-bar-component
+        v-model="searchText"
+        search-placeholder="Search Trx. Method"
+        :is-filtered="isFiltered"
+      >
+        <inactive-filter-component
+          v-model="inactiveFilter"
+        ></inactive-filter-component>    
+      </left-side-bar-component>
       <div class="d-flex">
         <div class="flex-grow-1">
           {{data.length}}
@@ -32,7 +38,8 @@
               :class="{'active': currentItem && currentItem.id === item.id}">
               <div class="flex-table__row-item col-12 font-weight-bold"
                   tabindex="0">
-                  {{ item.name }}
+                {{ item.name }}
+                <inactive-badge-component class="ml-2" v-if="item.is_inactive"></inactive-badge-component>
               </div>
             </div>
           </div>
@@ -52,14 +59,12 @@
 <script>
 import draggable from 'vuedraggable';
 import SortOrderMixin from '../mixins/sort-order';
-import TrxMethodLeftSideComponent from './TrxMethodPage/TrxMethodLeftSideComponent';
 import TrxMethodSideBarComponent from './TrxMethodPage/TrxMethodSideBarComponent';
 import Bus from '../../shared/EventBus';
 
 export default {
   components: {
     draggable,
-    TrxMethodLeftSideComponent,
     TrxMethodSideBarComponent,
   },
 
@@ -79,17 +84,23 @@ export default {
       currentItem: null,
       searchText: '',
       sortOrderActionName: 'TrxMethods/setSortOrder',
+      inactiveFilter: 0,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!this.searchText && this.inactiveFilter !== 0;
     },
 
     data: {
       get() {
         let { data } = this.$store.state.TrxMethods;
+        if (this.inactiveFilter === 0) {
+          data = data.filter(item => item.is_inactive === 0);
+        } else if (this.inactiveFilter === 2) {
+          data = data.filter(item => item.is_inactive === 1);
+        }
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data

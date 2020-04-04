@@ -8,9 +8,12 @@
     <button type="button" v-else
       @click="$emit('delete')"
       class="btn btn-icon btn-icon--w-text mr-auto">
-      <span>
-        <i class="icon icon-trash-can"></i>Delete
-      </span>
+      <template v-if="hasAssociation">
+        <i class="icon icon-bin"></i><span>Archive</span>
+      </template>
+      <template v-else-if="hasAssociation !== null">
+        <i class="icon icon-trash-can"></i><span>Delete</span>
+      </template>
     </button>
 
     <action-button
@@ -46,6 +49,10 @@ export default {
     isSavingAndCloseProcess: {
       type: Boolean,
       default: false,
+    },
+    hasAssociation: {
+      type: Boolean,
+      default: null,
     },
   },
 };

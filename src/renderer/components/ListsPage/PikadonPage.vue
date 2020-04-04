@@ -1,8 +1,14 @@
 <template>
   <div>
-    <pikadon-left-side-component
+    <left-side-bar-component
       v-model="searchText"
-    ></pikadon-left-side-component>
+      search-placeholder="Search Pikadon"
+      :is-filtered="isFiltered"
+    >
+      <inactive-filter-component
+        v-model="inactiveFilter"
+      ></inactive-filter-component> 
+    </left-side-bar-component>
     <div class="d-flex">
       <div class="flex-grow-1">
         {{data.length}}
@@ -34,11 +40,14 @@
           :class="{'active': currentItem && currentItem.id === item.id}">
           <div class="flex-table__row-item col-4 font-weight-bold"
               tabindex="0">
-              <contact-name-field-component
-                :company-name="item.contact_company_name"
-                :first-name="item.contact_first_name"
-                :last-name="item.contact_last_name"
-              ></contact-name-field-component>
+              <div class="flex-grow-1">
+                <contact-name-field-component
+                  :company-name="item.contact_company_name"
+                  :first-name="item.contact_first_name"
+                  :last-name="item.contact_last_name"
+                ></contact-name-field-component>
+              </div>
+              <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
           </div>
           <div class="flex-table__row-item col-4"
               tabindex="0">
@@ -61,7 +70,6 @@
 </template>
 
 <script>
-import PikadonLeftSideComponent from './PikadonPage/PikadonLeftSideComponent';
 import PikadonSideBarComponent from './PikadonPage/PikadonSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
 import Bus from '../../shared/EventBus';
@@ -69,7 +77,6 @@ import Bus from '../../shared/EventBus';
 const tableSortColumnMixin = require('../mixins/table-sort-column');
 export default {
   components: {
-    PikadonLeftSideComponent,
     PikadonSideBarComponent,
     ContactNameFieldComponent,
   },
@@ -92,17 +99,23 @@ export default {
       refNameSortCol: ['sortName'],
       sortField: 'name',
       sortOrder: 'asc',
+      inactiveFilter: 0,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!this.searchText && this.inactiveFilter !== 0;
     },
 
     data: {
       get() {
         let data = this.$store.getters['Categories/getPikadons'];
+        if (this.inactiveFilter === 0) {
+          data = data.filter(item => item.is_inactive === 0);
+        } else if (this.inactiveFilter === 2) {
+          data = data.filter(item => item.is_inactive === 1);
+        }
         if (this.searchText) {
           const searchString = this.searchText.toLowerCase();
           data = data

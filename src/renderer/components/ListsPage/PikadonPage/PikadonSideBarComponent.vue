@@ -32,7 +32,8 @@
           :item="currentItem"
           item-name="Pikadon"
           store-action-name="Categories/deleteItem"
-          check-action-name="Categories/checkAssociation"
+          archive-action-name="Categories/archiveItem"
+          :has-association="hasAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -43,6 +44,7 @@
           :is-new-mode="isNewMode"
           :is-saving-and-new-process="isSavingAndNewProcess"
           :is-saving-and-close-process="isSavingAndCloseProcess"
+          :has-association="hasAssociation"
           @save-and-new="saveAndNew"
           @save-and-close="saveAndClose"
           @delete="deleteAction"
@@ -55,7 +57,7 @@
 
 <script>
 import ItemDeleteDialogComponent from '../../common/right-side-bar/ItemDeleteDialogComponent';
-import ContactSelectComponent from '../../common/ContactSelectComponent';
+import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
 import sideBarPanelMixin from '../../mixins/side-bar-panel';
 
 export default {
@@ -80,6 +82,12 @@ export default {
       }
       return `${this.currentItem.contact_first_name} ${this.currentItem.contact_last_name}`;
     },
+  },
+
+  data() {
+    return {
+      checkAssociationActionName: 'Categories/checkAssociation',
+    };
   },
 
   methods: {

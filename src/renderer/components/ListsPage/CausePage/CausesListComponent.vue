@@ -18,11 +18,14 @@
         </div>
         <div class="flex-table__row-item col-2"
             tabindex="0">
-          <contact-name-field-component
-            :company-name="item.contact_company_name"
-            :first-name="item.contact_first_name"
-            :last-name="item.contact_last_name"
-          ></contact-name-field-component>
+          <div class="flex-grow-1">
+            <contact-name-field-component
+              :company-name="item.contact_company_name"
+              :first-name="item.contact_first_name"
+              :last-name="item.contact_last_name"
+            ></contact-name-field-component>
+          </div>
+          <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
 

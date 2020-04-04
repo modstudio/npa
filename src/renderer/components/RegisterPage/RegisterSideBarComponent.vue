@@ -132,14 +132,14 @@
 
 <script>
 import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
-import TransactionTypeSelectComponent from '../common/TransactionTypeSelectComponent';
-import TrxMethodSelectComponent from '../common/TrxMethodSelectComponent';
-import CauseSelectComponent from '../common/CauseSelectComponent';
-import LoanSelectComponent from '../common/LoanSelectComponent';
-import PikadonSelectComponent from '../common/PikadonSelectComponent';
-import PledgeSelectComponent from '../common/PledgeSelectComponent';
-import ContactSelectComponent from '../common/ContactSelectComponent';
-import StartingBalanceCategorySelectComponent from '../common/StartingBalanceCategorySelectComponent';
+import TransactionTypeSelectComponent from '../common/form-select-components/TransactionTypeSelectComponent';
+import TrxMethodSelectComponent from '../common/form-select-components/TrxMethodSelectComponent';
+import CauseSelectComponent from '../common/form-select-components/CauseSelectComponent';
+import LoanSelectComponent from '../common/form-select-components/LoanSelectComponent';
+import PikadonSelectComponent from '../common/form-select-components/PikadonSelectComponent';
+import PledgeSelectComponent from '../common/form-select-components/PledgeSelectComponent';
+import ContactSelectComponent from '../common/form-select-components/ContactSelectComponent';
+import StartingBalanceCategorySelectComponent from '../common/form-select-components/StartingBalanceCategorySelectComponent';
 import DebitCreditComponent from '../common/form-elements/DebitCreditComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 

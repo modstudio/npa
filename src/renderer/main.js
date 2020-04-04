@@ -32,6 +32,7 @@ mCustomScrollBar(jQuery);
 window._ = _;
 window.$ = window.jQuery = jQuery;
 window.moment = moment;
+
 require('bootstrap/dist/js/bootstrap');
 require('bootstrap-select/dist/js/bootstrap-select');
 
@@ -66,7 +67,7 @@ Vue.use(HelperStyle);
 EventBus.$on('db-init', () => {
   // Run app after finish migration
   /* eslint-disable no-new */
-  new Vue({
+  const app = new Vue({
     components: { App },
     router,
     store,
@@ -83,4 +84,5 @@ EventBus.$on('db-init', () => {
       };
     },
   }).$mount('#app');
+  window.app = app;
 });

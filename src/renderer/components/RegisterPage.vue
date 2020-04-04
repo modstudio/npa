@@ -15,18 +15,22 @@
           @input="filterData"
         ></range-filter-component>    
         <type-filter-component
+          v-if="isActivePage"
           v-model="typeFilter"
           @filter="filterData"
         ></type-filter-component>
         <category-type-filter-component
+          v-if="isActivePage"
           v-model="categoryFilter"
           @filter="filterData"
         ></category-type-filter-component>
         <method-filter-component
+          v-if="isActivePage"
           v-model="methodFilter"
           @filter="filterData"
         ></method-filter-component>
         <contact-filter-component
+          v-if="isActivePage"
           v-model="contactFilter"
           @filter="filterData"
         ></contact-filter-component>
@@ -147,11 +151,20 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next();
+  },
+
+  activated() {
+    this.isActivePage = true;
     Bus.$emit('open-register-page');
+  },
+
+  deactivated() {
+    this.isActivePage = false;
   },
 
   data() {
     return {
+      isActivePage: false,
       isViewPanel: false,
       isViewTransferPanel: false,
       viewPanelMode: 'edit',

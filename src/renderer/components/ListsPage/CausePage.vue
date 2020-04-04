@@ -1,9 +1,14 @@
 <template>
   <div>
-    <cause-left-side-component
+    <left-side-bar-component
       v-model="searchText"
-      @input="onFilterData"
-    ></cause-left-side-component>
+      search-placeholder="Search Cause"
+      :is-filtered="isFiltered"
+    >
+      <inactive-filter-component
+        v-model="inactiveFilter"
+      ></inactive-filter-component> 
+    </left-side-bar-component>
     <div class="d-flex">
       <div class="flex-grow-1">
         {{totalCauses}} 
@@ -87,7 +92,6 @@
 <script>
 import draggable from 'vuedraggable';
 import SortOrderMixin from '../mixins/sort-order';
-import CauseLeftSideComponent from './CausePage/CauseLeftSideComponent';
 import CauseGroupSideBarComponent from './CausePage/CauseGroupSideBarComponent';
 import CauseSideBarComponent from './CausePage/CauseSideBarComponent';
 import CauseGroupRowComponent from './CausePage/CauseGroupRowComponent';
@@ -97,7 +101,6 @@ import Bus from '../../shared/EventBus';
 export default {
   components: {
     draggable,
-    CauseLeftSideComponent,
     CauseGroupSideBarComponent,
     CauseSideBarComponent,
     CauseGroupRowComponent,
@@ -125,12 +128,13 @@ export default {
       sortOrderActionName: 'CauseGroups/setSortOrder',
       causeGroups: [],
       collapseStatusBeforeFilter: null,
+      inactiveFilter: 0,
     };
   },
 
   computed: {
     isFiltered() {
-      return !!this.searchText;
+      return !!this.searchText && this.inactiveFilter !== 0;
     },
 
     totalCauses() {
@@ -138,9 +142,23 @@ export default {
     },
 
     data() {
+      let data = this.causeGroups;
+      if (this.inactiveFilter === 0) {
+        data = data.map(item => ({
+          ...item,
+          causes: item.causes.filter(cause => cause.is_inactive === 0),
+        }));
+        data = data.filter(item => item.is_inactive === 0 || item.causes.length);
+      } else if (this.inactiveFilter === 2) {
+        data = data.map(item => ({
+          ...item,
+          causes: item.causes.filter(cause => cause.is_inactive === 1),
+        }));
+        data = data.filter(item => item.is_inactive === 1 || item.causes.length);
+      }
       if (this.searchText) {
         const searchString = this.searchText.toLowerCase();
-        return this.causeGroups
+        return data
           .map(item => ({
             ...item,
             causes: item.causes
@@ -154,7 +172,7 @@ export default {
             || item.note.toLowerCase().indexOf(searchString) !== -1
             || item.causes.length);
       }
-      return this.causeGroups;
+      return data;
     },
 
     isAllCollapsed() {

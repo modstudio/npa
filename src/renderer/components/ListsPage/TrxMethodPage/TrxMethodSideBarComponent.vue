@@ -32,7 +32,8 @@
           :item="currentItem"
           item-name="Transaction method"
           store-action-name="TrxMethods/deleteItem"
-          check-action-name="TrxMethods/checkAssociation"
+          archive-action-name="TrxMethods/archiveItem"
+          :has-association="hasAssociation"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -43,6 +44,7 @@
           :is-new-mode="isNewMode"
           :is-saving-and-new-process="isSavingAndNewProcess"
           :is-saving-and-close-process="isSavingAndCloseProcess"
+          :has-association="hasAssociation"
           @save-and-new="saveAndNew"
           @save-and-close="saveAndClose"
           @delete="deleteAction"
@@ -70,6 +72,12 @@ export default {
     name() {
       return this.currentItem ? this.currentItem.name : '';
     },
+  },
+
+  data() {
+    return {
+      checkAssociationActionName: 'TrxMethods/checkAssociation',
+    };
   },
 
   methods: {
