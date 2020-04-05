@@ -4,6 +4,7 @@
       v-model="searchText"
       search-placeholder="Search Pikadon"
       :is-filtered="isFiltered"
+      @resetfilter="resetFilter"
     >
       <inactive-filter-component
         v-model="inactiveFilter"
@@ -105,7 +106,7 @@ export default {
 
   computed: {
     isFiltered() {
-      return !!this.searchText && this.inactiveFilter !== 0;
+      return !!this.searchText || this.inactiveFilter !== 0;
     },
 
     data: {
@@ -168,6 +169,11 @@ export default {
     onUpdate() {
       this.getData();
       Bus.$emit('update-category');
+    },
+
+    resetFilter() {
+      this.searchText = '';
+      this.inactiveFilter = 0;
     },
   },
 };

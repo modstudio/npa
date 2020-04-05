@@ -102,6 +102,18 @@ export default {
       return result;
     },
 
+    async activateItem(context, id) {
+      let result;
+      try {
+        await Vue.db.run('UPDATE category_groups SET is_inactive = 0 WHERE id = ?', [id]);
+        result = true;
+      } catch (err) {
+        console.log('error activate category_group', err);
+        result = false;
+      }
+      return result;
+    },
+
     async deleteItem(context, id) {
       let result;
       try {

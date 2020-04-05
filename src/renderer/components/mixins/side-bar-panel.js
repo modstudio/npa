@@ -28,6 +28,10 @@ export default {
     isNewMode() {
       return this.mode === 'new';
     },
+
+    isInactive() {
+      return this.currentItem && this.currentItem.is_inactive === 1;
+    },
   },
 
   data() {
