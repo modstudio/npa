@@ -165,7 +165,19 @@ export default {
         await Vue.db.run('UPDATE categories SET is_inactive = 1 WHERE id = ?', [id]);
         result = true;
       } catch (err) {
-        console.log('error archive contact', err);
+        console.log('error archive category', err);
+        result = false;
+      }
+      return result;
+    },
+
+    async activateItem(context, id) {
+      let result;
+      try {
+        await Vue.db.run('UPDATE categories SET is_inactive = 0 WHERE id = ?', [id]);
+        result = true;
+      } catch (err) {
+        console.log('error activate category', err);
         result = false;
       }
       return result;

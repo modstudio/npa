@@ -110,6 +110,7 @@
           item-name="Transaction"
           store-action-name="Transactions/deleteItem"
           check-action-name=""
+          :has-association="false"
           @close-dialog="isDeleteMode = false"
           @item-deleted="onDeleteItem"
         ></item-delete-dialog-component>
@@ -120,6 +121,7 @@
           :is-new-mode="isNewMode"
           :is-saving-and-new-process="isSavingAndNewProcess"
           :is-saving-and-close-process="isSavingAndCloseProcess"
+          :has-association="false"
           @save-and-new="saveAndNew"
           @save-and-close="saveAndClose"
           @delete="deleteAction"

@@ -44,6 +44,10 @@
           v-model="notesFilter"
           @filter="filterData"
         ></notes-filter-component>
+        <inactive-filter-component
+          v-model="inactiveFilter"
+          @filter="filterData"
+        ></inactive-filter-component>        
       </template>
       <template #register>
         <register-report-component 
@@ -180,6 +184,7 @@ export default {
       contactFilter: [],
       amountFilter: null,
       notesFilter: 0,
+      inactiveFilter: 0,
       reportData: null,
     };
   },
@@ -188,7 +193,7 @@ export default {
     isFiltered() {
       return !!(this.searchText || this.typeFilter.length || this.categoryFilter.length
         || this.methodFilter.length || this.contactFilter.length || this.amountFilter
-        || this.dateFilter || this.notesFilter);
+        || this.dateFilter || this.notesFilter || this.inactiveFilter);
     },
 
     data: {
@@ -235,6 +240,11 @@ export default {
         }
         if (this.notesFilter === 2) {
           data = data.filter(item => item.note);
+        }
+        if (this.inactiveFilter === 0) {
+          data = data.filter(item => item.category_is_inactive === 0);
+        } else if (this.inactiveFilter === 2) {
+          data = data.filter(item => item.category_is_inactive === 1);
         }
         if (this.searchText) {
           this.searchText.split(' ').forEach((searchItem) => {
@@ -354,6 +364,7 @@ export default {
       this.amountFilter = null;
       this.dateFilter = null;
       this.notesFilter = 0;
+      this.inactiveFilter = 0;
       Bus.$emit('clear-register-filter');
       this.runReport();
     },
@@ -368,6 +379,7 @@ export default {
         amount: this.amountFilter,
         date: this.dateFilter,
         notes: this.notesFilter,
+        inactive: this.inactiveFilter,
       });
       const data = [];
       let currentTypeId = null;

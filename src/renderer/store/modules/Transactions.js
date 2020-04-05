@@ -48,6 +48,11 @@ function buildWhere(filter) {
   if (filter.notes === 2) {
     where.push("transactions.note <> ''");
   }
+  if (filter.inactive === 0) {
+    where.push('categories.is_inactive = 0');
+  } else if (filter.inactive === 2) {
+    where.push('categories.is_inactive = 1');
+  }
   if (filter.search) {
     const whereSearch = [];
     filter.search.split(' ').forEach((search) => {
@@ -152,6 +157,7 @@ export default {
           else ''
         end as category_description,
         categories.category_type_id,
+        categories.is_inactive as category_is_inactive,        
         category_contact.id as category_contact_id,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,

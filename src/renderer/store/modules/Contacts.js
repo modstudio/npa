@@ -111,6 +111,18 @@ export default {
       return result;
     },
 
+    async activateContact(context, id) {
+      let result;
+      try {
+        await Vue.db.run('UPDATE contacts SET is_inactive = 0 WHERE id = ?', [id]);
+        result = true;
+      } catch (err) {
+        console.log('error activate contact', err);
+        result = false;
+      }
+      return result;
+    },
+
     async deleteContact(context, id) {
       let result;
       try {

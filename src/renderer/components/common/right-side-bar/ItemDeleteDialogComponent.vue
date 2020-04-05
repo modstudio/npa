@@ -1,6 +1,13 @@
 <template>
   <div>
-    <template v-if="hasAssociation">
+    <template v-if="isInactive">
+      <div class="info-sidebar__body">
+        <div class="info-sidebar__block-title mb-4">
+          Do you really want to activate {{ itemName }}?
+        </div>
+      </div>
+    </template>    
+    <template v-else-if="hasAssociation">
       <div class="info-sidebar__body">
         <div class="info-sidebar__block-title mb-4">
           Do you really want to archive {{itemName}}?
@@ -16,7 +23,7 @@
       </div>
     </template>
     <div class="info-sidebar__footer">
-      <div class="d-flex justify-content-center align-items-center">
+      <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-block btn-secondary w-156"
           @click="$emit('close-dialog')">
             Hmm.. I will rethink this
@@ -53,6 +60,10 @@ export default {
       type: String,
       default: null,
     },
+    makeActiveActionName: {
+      type: String,
+      default: null,
+    },
     hasAssociation: {
       type: Boolean,
       default: null,
@@ -67,6 +78,10 @@ export default {
     loadingName() {
       return this.hasAssociation ? 'Archiving' : 'Deleting';
     },
+
+    isInactive() {
+      return this.item && this.item.is_inactive === 1;
+    },
   },
 
   data() {
@@ -78,7 +93,9 @@ export default {
   methods: {
     async deleteItem() {
       this.isProcessing = true;
-      if (this.hasAssociation) {
+      if (this.isInactive) {
+        await this.$store.dispatch(this.makeActiveActionName, this.item.id);
+      } else if (this.hasAssociation) {
         await this.$store.dispatch(this.archiveActionName, this.item.id);
       } else {
         await this.$store.dispatch(this.storeActionName, this.item.id);

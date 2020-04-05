@@ -8,11 +8,14 @@
     <button type="button" v-else
       @click="$emit('delete')"
       class="btn btn-icon btn-icon--w-text mr-auto">
-      <template v-if="hasAssociation">
-        <i class="icon icon-bin"></i><span>Archive</span>
+      <template v-if="isInactive">
+        <span>Make active</span>
+      </template>      
+      <template v-else-if="hasAssociation">
+        <i class="icon icon-trash-can"></i><span>Archive</span>
       </template>
       <template v-else-if="hasAssociation !== null">
-        <i class="icon icon-trash-can"></i><span>Delete</span>
+        <i class="icon icon-bin"></i><span>Delete</span>
       </template>
     </button>
 
@@ -53,6 +56,10 @@ export default {
     hasAssociation: {
       type: Boolean,
       default: null,
+    },
+    isInactive: {
+      type: Boolean,
+      default: false,
     },
   },
 };
