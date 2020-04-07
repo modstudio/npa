@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <div class="color-neutral-500">
+    <div class="color-neutral-500 flex-grow-1">
       <div class="nav tabs-inner tabs-inner--sm align-self-center d-none d-sm-flex mt-4 mx-4">
         <button type="button" class="tabs-inner__link px-0"
           @click="setMode('search')"
@@ -32,11 +32,14 @@
       </div>
       </div>
     </div>
+
+    <settings-button-component></settings-button-component>
   </aside>
 </template>
 
 <script>
 import SearchBarComponent from '../common/left-side-bar/SearchBarComponent';
+import SettingsButtonComponent from '../common/left-side-bar/SettingsButtonComponent';
 
 export default {
   props: {
@@ -52,6 +55,7 @@ export default {
 
   components: {
     SearchBarComponent,
+    SettingsButtonComponent,
   },
 
   data() {

@@ -61,6 +61,45 @@ class DataStore {
         }
       });
     });
+    this.backup = (...args) => new Promise((resolve, reject) => {
+      let backup;
+      if (args.length <= 2) {
+        backup = this.db.backup(
+          args[0],
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(this);
+            }
+          },
+        );
+      } else {
+        backup = this.db.backup(
+          args[0],
+          args[1],
+          args[2],
+          args[3],
+          (err) => {
+            if (err) {
+              reject(err);
+            }
+          },
+        );
+      }
+      backup.step(-1, (err) => {
+        if (err) {
+          return reject(err);
+        }
+        backup.finish((err) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve();
+        });
+        return true;
+      });
+    });
   }
 
   async migrate() {
@@ -81,6 +120,21 @@ class DataStore {
       }
     }
     /* eslint-enable no-await-in-loop */
+  }
+
+  async backupDb() {
+    const backupPath = path.resolve(path.join(
+      remote.app.getPath('downloads'),
+      `backup-${moment().format('YYYY-MM-DD-HHmmssSS')}.db`,
+    ));
+    await this.backup(backupPath);
+    return backupPath;
+  }
+
+  async restoreDb(file) {
+    await this.backup(file, 'main', 'main', false);
+    await this.migrate();
+    EventBus.$emit('db-restored');
   }
 }
 

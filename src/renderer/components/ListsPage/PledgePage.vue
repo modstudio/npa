@@ -95,8 +95,7 @@ export default {
     tableSortColumnMixin,
   ],
 
-  beforeRouteEnter(to, from, next) {
-    next();
+  activated() {
     Bus.$emit('open-pledge-page');
   },
 

@@ -41,10 +41,12 @@
           @filter="filterData"
         ></range-filter-component>
         <notes-filter-component
+          v-if="isActivePage"
           v-model="notesFilter"
           @filter="filterData"
         ></notes-filter-component>
         <inactive-filter-component
+          v-if="isActivePage"
           v-model="inactiveFilter"
           @filter="filterData"
         ></inactive-filter-component>        
@@ -152,10 +154,6 @@ export default {
   mixins: [
     tableSortColumnMixin,
   ],
-
-  beforeRouteEnter(to, from, next) {
-    next();
-  },
 
   activated() {
     this.isActivePage = true;
@@ -304,6 +302,7 @@ export default {
     Bus.$on('update-category', this.getData);
     Bus.$on('update-dist-class', this.getData);
     Bus.$on('update-method', this.getData);
+    Bus.$on('db-restored', this.resetFilter);
   },
 
   destroyed() {
@@ -311,6 +310,7 @@ export default {
     Bus.$off('update-category', this.getData);
     Bus.$off('update-dist-class', this.getData);
     Bus.$off('update-method', this.getData);
+    Bus.$off('db-restored', this.resetFilter);
   },
 
   methods: {

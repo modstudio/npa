@@ -7,6 +7,7 @@
       @resetfilter="resetFilter"
     >
       <inactive-filter-component
+        v-if="isActivePage"
         v-model="inactiveFilter"
       ></inactive-filter-component> 
     </left-side-bar-component>
@@ -112,13 +113,18 @@ export default {
     SortOrderMixin,
   ],
 
-  beforeRouteEnter(to, from, next) {
-    next();
+  activated() {
     Bus.$emit('open-cause-page');
+    this.isActivePage = true;
+  },
+
+  deactivated() {
+    this.isActivePage = false;
   },
 
   data() {
     return {
+      isActivePage: false,
       isViewGroupPanel: false,
       viewGroupPanelMode: 'edit',
       currentGroupItem: null,
@@ -187,6 +193,11 @@ export default {
 
   created() {
     this.getData();
+    Bus.$on('db-restored', this.getData);
+  },
+
+  destroyed() {
+    Bus.$off('db-restored', this.getData);
   },
 
   methods: {

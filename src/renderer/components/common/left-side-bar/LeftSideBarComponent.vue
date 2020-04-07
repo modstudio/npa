@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <div class="color-neutral-500">
+    <div class="color-neutral-500 flex-grow-1">
       <div class="sidebar-nav">
         <search-bar-component
           :value="value"
@@ -13,11 +13,14 @@
         <slot></slot>
       </div>
     </div>
+
+    <settings-button-component></settings-button-component>
   </aside>
 </template>
 
 <script>
 import SearchBarComponent from './SearchBarComponent';
+import SettingsButtonComponent from './SettingsButtonComponent';
 
 export default {
   props: {
@@ -37,6 +40,7 @@ export default {
 
   components: {
     SearchBarComponent,
+    SettingsButtonComponent,
   },
 
   methods: {

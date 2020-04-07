@@ -79,8 +79,7 @@ export default {
     SortOrderMixin,
   ],
 
-  beforeRouteEnter(to, from, next) {
-    next();
+  activated() {
     Bus.$emit('open-dist-class-page');
   },
 
