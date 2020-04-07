@@ -47,6 +47,8 @@
               </div>
               <div class="flex-table__row-item col-6"
                   tabindex="0">
+                <amount-info-component class="col-6 text-right"
+                  :amount="Math.abs(item.sum)"></amount-info-component>
               </div>
             </div>
           </div>

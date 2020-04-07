@@ -22,19 +22,21 @@
     </div>
     <div class="flex-table">
       <div class="flex-table__header">
-        <div class="flex-table__header-item col-3" ref="sortName"
+        <div class="flex-table__header-item col-3 col-xl-2" ref="sortName"
           @click="setSortField('name')">
           Contact
           <i class="icon icon-triangle-down"></i>
         </div>
-        <div class="flex-table__header-item col-3">
+        <div class="flex-table__header-item col-3 col-lg-2">
           Description
         </div>
-        <div class="flex-table__header-item col-3">
+        <div class="flex-table__header-item col-4">
           Metrics
         </div>
-        <div class="flex-table__header-item col-3">
+        <div class="flex-table__header-item col-2 col-xl-4" ref="sortMetric_balance"
+          @click="setSortField('metric_balance')">
           Balance
+          <i class="icon icon-triangle-down"></i>
         </div>                     
       </div>
       <div class="position-relative" v-for="item in data"
@@ -42,7 +44,7 @@
         <div class="flex-table__row w-shadow"
           @click="viewItem(item)"
           :class="{'active': currentItem && currentItem.id === item.id}">
-          <div class="flex-table__row-item col-3 font-weight-bold"
+          <div class="flex-table__row-item col-3 col-xl-2 font-weight-bold"
               tabindex="0">
               <div class="flex-grow-1">
                 <contact-name-field-component
@@ -53,15 +55,28 @@
               </div>
               <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
           </div>
-          <div class="flex-table__row-item col-3"
+          <div class="flex-table__row-item col-3 col-xl-2"
               tabindex="0">
             {{item.description}}
           </div>
-          <div class="flex-table__row-item col-3"
+          <div class="flex-table__row-item col-2"
               tabindex="0">
+            <metric-info-component 
+              metric-name="Loaned"
+              :amount="item.metric_debit"
+            ></metric-info-component>              
           </div>
-          <div class="flex-table__row-item col-3"
+          <div class="flex-table__row-item col-2"
               tabindex="0">
+            <metric-info-component 
+              metric-name="Paid"
+              :amount="item.metric_kredit"
+            ></metric-info-component>            
+          </div>          
+          <div class="flex-table__row-item col-2 col-xl-4"
+              tabindex="0">
+            <amount-info-component class="col-12 col-xl-6 px-0 text-right"
+              :amount="item.metric_balance"></amount-info-component>
           </div>                        
         </div>
       </div>
@@ -104,7 +119,7 @@ export default {
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
-      refNameSortCol: ['sortName'],
+      refNameSortCol: ['sortName', 'sortMetric_balance'],
       sortField: 'name',
       sortOrder: 'asc',
       inactiveFilter: 0,

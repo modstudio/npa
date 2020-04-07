@@ -25,6 +25,7 @@ import LeftSideBarComponent from './left-side-bar/LeftSideBarComponent';
 import InactiveBadgeComponent from './InactiveBadgeComponent';
 import FileUploadComponent from './FileUploadComponent';
 import LoaderComponent from './LoaderComponent';
+import MetricInfoComponent from './MetricInfoComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -53,3 +54,4 @@ Vue.component('LeftSideBarComponent', LeftSideBarComponent);
 Vue.component('InactiveBadgeComponent', InactiveBadgeComponent);
 Vue.component('FileUploadComponent', FileUploadComponent);
 Vue.component('LoaderComponent', LoaderComponent);
+Vue.component('MetricInfoComponent', MetricInfoComponent);

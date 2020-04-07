@@ -11,7 +11,7 @@
         :class="{'active': currentItem && currentItem.id === item.id}"
         :aria-expanded="item.isExpanded"
         :aria-controls="`cause-group-${item.id}`">
-        <div class="flex-table__row-item col-8" tabindex="0">
+        <div class="flex-table__row-item col-10" tabindex="0">
           <div class="d-flex mr-2">
             <div class="font-weight-bold">{{ item.name }}</div>
             <span class="color-neutral-500 ml-3"
@@ -22,8 +22,8 @@
           </div>
           <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>          
         </div>
-        <div class="flex-table__row-item col-4 d-flex
-        justify-content-end pr-2"
+        <div class="flex-table__row-item col-2 d-flex
+        justify-content-end"
             tabindex="0">
             <button class="btn btn-icon"
               @mouseover="isViewHover = true"

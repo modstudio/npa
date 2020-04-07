@@ -28,16 +28,26 @@
           <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
-
+          <metric-info-component 
+            metric-name="Raised"
+            :amount="item.metric_kredit"
+          ></metric-info-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
-
+          <metric-info-component 
+            metric-name="Expenses"
+            :amount="item.metric_debit"
+          ></metric-info-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
-
+          <metric-info-component 
+            metric-name="Distributed"
+            :amount="item.metric_distributed"
+          ></metric-info-component>
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
-
+          <amount-info-component class="col-12 col-xl-6 px-0 text-right"
+            :amount="item.metric_balance"></amount-info-component>
         </div>
       </div>
     </div>

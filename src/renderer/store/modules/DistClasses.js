@@ -27,7 +27,18 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all('SELECT * FROM distribution_classes ORDER BY sort_order');
+        const metricSubquery = `
+          SELECT distribution_class_id, sum(amount) as sum
+          FROM transactions JOIN categories ON transactions.category_id = categories.id
+          WHERE distribution_class_id IS NOT NULL and transaction_type_id = 2
+          GROUP by distribution_class_id
+        `;
+        const data = await Vue.db.all(`
+          SELECT *, metrics.sum FROM distribution_classes 
+          LEFT JOIN (${metricSubquery}) metrics
+            ON distribution_classes.id = metrics.distribution_class_id
+          ORDER BY sort_order
+        `);
         context.commit('setData', data);
       } catch (err) {
         console.log('Error get data: ', err);

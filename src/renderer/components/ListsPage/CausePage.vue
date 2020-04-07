@@ -32,19 +32,19 @@
           <div class="flex-table__header-item col-2">
               Recipient
           </div>
-          <div class="flex-table__header-item col-4">
+          <div class="flex-table__header-item col-6">
               Metrics
           </div>
           <div class="flex-table__header-item col-2">
-              Balance
-          </div>          
-          <div class="flex-table__row-item col-4 col-md-2 d-flex justify-content-end pr-2">
-            <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
-              <i class="icon icon-Collapse-all" v-if="this.isAllExpanded">
-              </i>
-              <i class="icon icon-Epand-all" v-else>
-              </i>
-            </button>
+            <div class="flex-grow-1">Balance</div>      
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
+                <i class="icon icon-Collapse-all" v-if="this.isAllExpanded">
+                </i>
+                <i class="icon icon-Epand-all" v-else>
+                </i>
+              </button>
+            </div>
           </div>
       </div>
       <div is="draggable" v-model="causeGroups" tag="div"

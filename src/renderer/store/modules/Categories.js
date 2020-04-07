@@ -52,6 +52,14 @@ export default {
     async getData(context, payload = { mutationName: 'setData', where: '1 = 1' }) {
       const { mutationName, where } = payload;
       try {
+        const metricSubquery = `
+        SELECT category_id, 
+        sum(case when amount < 0 and transaction_type_id <> 2 THEN amount ELSE 0 END) as debit,
+        sum(case when amount > 0 and transaction_type_id <> 2 THEN amount ELSE 0 END) as kredit,
+        sum(case when transaction_type_id = 2 THEN amount ELSE 0 END) as distributed
+        FROM transactions
+        GROUP BY category_id        
+        `;
         const data = await Vue.db.all(`SELECT categories.*,
         category_types.name as category_type_name,
         case 
@@ -71,15 +79,21 @@ export default {
         related_category.name as related_category_name,
         contacts.company_name as contact_company_name, 
         contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
-        category_groups.sort_order as group_sort_order
-        FROM categories 
+        category_groups.sort_order as group_sort_order,
+        metrics.debit as metric_debit,
+        metrics.kredit as metric_kredit,
+        metrics.distributed as metric_distributed,
+        metrics.debit + metrics.kredit + metrics.distributed as metric_balance
+        FROM categories
         JOIN category_types ON categories.category_type_id = category_types.id
         JOIN contacts ON categories.contact_id = contacts.id
         LEFT JOIN category_groups ON categories.category_group_id = category_groups.id
         LEFT JOIN categories related_category 
         ON categories.related_category_id = related_category.id
         LEFT JOIN contacts related_category_contact
-          ON related_category.contact_id = related_category_contact.id        
+          ON related_category.contact_id = related_category_contact.id
+        LEFT JOIN (${metricSubquery}) metrics
+          ON categories.id = metrics.category_id     
         where ${where} 
         ORDER BY categories.category_type_id,
           category_groups.sort_order, categories.sort_order, 
