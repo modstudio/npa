@@ -73,8 +73,7 @@ export default {
     SortOrderMixin,
   ],
 
-  beforeRouteEnter(to, from, next) {
-    next();
+  activated() {
     Bus.$emit('open-trx-method-page');
   },
 

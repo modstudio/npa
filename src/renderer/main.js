@@ -3,6 +3,8 @@ import axios from 'axios';
 import { VBTooltip } from 'bootstrap-vue/esm/directives/tooltip/tooltip';
 import { BTooltip } from 'bootstrap-vue/esm/components/tooltip/tooltip';
 import { CollapsePlugin } from 'bootstrap-vue';
+import VueTelInput from 'vue-tel-input';
+import Notifications from 'vue-notification';
 
 import { DatePicker } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
@@ -12,7 +14,6 @@ import _ from 'lodash';
 import * as jQuery from 'jquery';
 import moment from 'moment';
 import mCustomScrollBar from 'malihu-custom-scrollbar-plugin';
-import VueTelInput from 'vue-tel-input';
 import './validate';
 import HelperStyle from './plugins/helper-style';
 
@@ -63,11 +64,13 @@ Vue.use(DatePicker);
 
 Vue.use(CollapsePlugin);
 Vue.use(VueTelInput);
+Vue.use(Notifications);
 Vue.use(HelperStyle);
+
 EventBus.$on('db-init', () => {
   // Run app after finish migration
   /* eslint-disable no-new */
-  const app = new Vue({
+  new Vue({
     components: { App },
     router,
     store,
@@ -77,12 +80,19 @@ EventBus.$on('db-init', () => {
       require('./components/mixins/scroll-first-error'),
       require('./components/mixins/tooltip'),
       require('./components/mixins/format-date'),
+      require('./components/mixins/notification'),
+      require('./components/mixins/restore-db'),
     ],
+    created() {
+      EventBus.$on('db-restored', this.rereadStore);
+    },
+    destroyed() {
+      EventBus.$off('db-restored', this.rereadStore);
+    },
     data() {
       return {
         config,
       };
     },
   }).$mount('#app');
-  window.app = app;
 });

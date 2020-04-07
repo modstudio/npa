@@ -123,7 +123,8 @@ export default {
 
     source() {
       if (this.sourceType === 'static') {
-        this.getData();
+        this.destroyScrollBar();
+        this.$nextTick(() => this.getData());
       }
     },
   },
@@ -188,7 +189,7 @@ export default {
   created() {
     this.search = this.$root.createDebounce((el) => {
       this.searchText = el.target.value;
-      $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
+      this.destroyScrollBar();
     });
   },
 
@@ -218,7 +219,7 @@ export default {
 
     $(this.$refs.filter).on('hidden.bs.dropdown', () => {
       this.$nextTick(() => {
-        $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
+        this.destroyScrollBar();
         this.searchText = '';
         if (this.$refs.filterSearch) {
           this.$refs.filterSearch.value = '';
@@ -327,6 +328,13 @@ export default {
     setFocusSearchField() {
       if (this.$refs.filterSearch) {
         this.$refs.filterSearch.focus();
+      }
+    },
+
+    destroyScrollBar() {
+      if (this.$refs.filterDropdownMenu
+        && this.isBindedScrollBar(this.$refs.filterDropdownMenu)) {
+        $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
       }
     },
   },

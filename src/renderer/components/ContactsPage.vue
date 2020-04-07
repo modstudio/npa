@@ -7,6 +7,7 @@
       @resetfilter="resetFilter"
     >
       <inactive-filter-component
+        v-if="isActivePage"
         v-model="inactiveFilter"
       ></inactive-filter-component> 
     </left-side-bar-component>    
@@ -96,13 +97,18 @@ export default {
     tableSortColumnMixin,
   ],
 
-  beforeRouteEnter(to, from, next) {
-    next();
+  activated() {
+    this.isActivePage = true;
     Bus.$emit('open-contacts-page');
+  },
+
+  deactivated() {
+    this.isActivePage = false;
   },
 
   data() {
     return {
+      isActivePage: false,
       isViewPanel: false,
       viewPanelMode: 'edit',
       currentItem: null,

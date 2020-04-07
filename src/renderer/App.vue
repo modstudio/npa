@@ -16,15 +16,25 @@
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
+        <settings-component></settings-component>
+        <notification-component></notification-component>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'npa',
-  };
+import SettingsComponent from './components/SettingsComponent';
+import NotificationComponent from './components/common/NotificationComponent';
+
+export default {
+  name: 'npa',
+
+  components: {
+    SettingsComponent,
+    NotificationComponent,
+  },
+};
 </script>
 
 <style>

@@ -15,8 +15,10 @@ export default {
   },
 
   watch: {
-    isShown() {
-      this.initForm();
+    isShown(value) {
+      if (value) {
+        this.initForm();
+      }
     },
 
     currentItem() {

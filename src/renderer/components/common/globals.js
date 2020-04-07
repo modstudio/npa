@@ -23,6 +23,8 @@ import NotesFilterComponent from './left-side-bar/NotesFilterComponent';
 import InactiveFilterComponent from './left-side-bar/InactiveFilterComponent';
 import LeftSideBarComponent from './left-side-bar/LeftSideBarComponent';
 import InactiveBadgeComponent from './InactiveBadgeComponent';
+import FileUploadComponent from './FileUploadComponent';
+import LoaderComponent from './LoaderComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -49,3 +51,5 @@ Vue.component('NotesFilterComponent', NotesFilterComponent);
 Vue.component('InactiveFilterComponent', InactiveFilterComponent);
 Vue.component('LeftSideBarComponent', LeftSideBarComponent);
 Vue.component('InactiveBadgeComponent', InactiveBadgeComponent);
+Vue.component('FileUploadComponent', FileUploadComponent);
+Vue.component('LoaderComponent', LoaderComponent);
