@@ -1,5 +1,5 @@
 <template>
-  <span :class="amountClass">{{amountPrefix}}{{absAmount}}</span>
+  <span :class="amountClass">{{formatAmount}}</span>
 </template>
 
 <script>
@@ -16,8 +16,8 @@ export default {
   },
 
   computed: {
-    absAmount() {
-      return Math.abs(this.amount).toFixed(2);
+    formatAmount() {
+      return this.$root.formatter.format(this.amount);
     },
 
     amountClass() {
@@ -31,10 +31,6 @@ export default {
         return 'color-primary-700';
       }
       return '';
-    },
-
-    amountPrefix() {
-      return this.amount < 0 ? '-$' : '$';
     },
   },
 };
