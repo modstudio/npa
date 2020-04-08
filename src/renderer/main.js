@@ -82,6 +82,7 @@ EventBus.$on('db-init', () => {
       require('./components/mixins/format-date'),
       require('./components/mixins/notification'),
       require('./components/mixins/restore-db'),
+      require('./components/mixins/formatter'),
     ],
     created() {
       EventBus.$on('db-restored', this.rereadStore);

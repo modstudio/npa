@@ -105,9 +105,8 @@ export default {
     async exportDb() {
       this.isExporting = true;
       try {
-        const backupPath = await Vue.db.backupDb();
-        this.$root.showConfirmationMessage(`DB was backuped successfully!<br>
-        The backup is located ${backupPath}`);
+        await Vue.db.backupDb();
+        this.$root.showConfirmationMessage('DB was backuped successfully!');
         this.isExporting = false;
       } catch (err) {
         console.log('Error backup DB', err);
