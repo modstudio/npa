@@ -38,7 +38,7 @@
                 <currency-input-component
                   v-model="form.amount"
                   label="Amount"
-                  rules="required"
+                  rules="required|is_not:0.00"
                   :disable-currency-class="true"
                 ></currency-input-component>
             </ValidationObserver>
@@ -178,6 +178,7 @@ export default {
           this.form.amount = -this.form.amount;
           this.form.transfer_category_id = this.currentItem.transfer_transaction_category_id;
         }
+        this.form.amount = this.$root.formatterAmount.format(this.form.amount);
       }
       if (this.isNewMode) {
         this.form.transaction_type_id = this.transferTypeId;

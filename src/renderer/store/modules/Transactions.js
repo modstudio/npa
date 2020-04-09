@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { buildWhere, buildLimitOffset, queryFrom, querySelect } from './Transations/queryHelpers';
 
 const loanTransactionTypeIds = [3, 4];
 const pikadonTransactionTypeIds = [5, 6];
@@ -9,75 +10,16 @@ const creditTransactionTypeIds = [1, 4, 5, 9];
 const startingBalanceTransactionTypeId = 10;
 const pledgePaymentId = 9;
 
+function parseAmount(amount) {
+  return Number.parseFloat(amount.replace(',', ''));
+}
+
 function getAmountSign(data) {
+  const amount = parseAmount(data.amount);
   return debitTransactionTypeIds.includes(data.transaction_type_id)
     || (data.transaction_type_id === startingBalanceTransactionTypeId
       && data.debit_credit === 'debit')
-    ? -Math.abs(data.amount) : data.amount;
-}
-
-function buildWhere(filter) {
-  const where = ['1 = 1'];
-  if (filter.type.length) {
-    where.push(`transaction_type_id in (${filter.type.join()})`);
-  }
-  if (filter.category.length) {
-    where.push(`categories.category_type_id in (${filter.category.join()})`);
-  }
-  if (filter.method.length) {
-    where.push(`transaction_method_id in (${filter.method.join()})`);
-  }
-  if (filter.contact.length) {
-    where.push(`contact_id in (${filter.contact.join()})`);
-  }
-  if (filter.contact.length) {
-    where.push(`contact_id in (${filter.contact.join()})`);
-  }
-  if (filter.amount && filter.amount.from) {
-    where.push(`amount >= ${filter.amount.from}`);
-  }
-  if (filter.amount && filter.amount.to) {
-    where.push(`amount <= ${filter.amount.to}`);
-  }
-  if (filter.date && filter.date.from) {
-    where.push(`date >= '${moment(filter.date.from).format('YYYY-MM-DD')}'`);
-  }
-  if (filter.date && filter.date.to) {
-    where.push(`date <= '${moment(filter.date.to).format('YYYY-MM-DD')}'`);
-  }
-  if (filter.notes === 2) {
-    where.push("transactions.note <> ''");
-  }
-  if (filter.inactive === 0) {
-    where.push('categories.is_inactive = 0');
-  } else if (filter.inactive === 2) {
-    where.push('categories.is_inactive = 1');
-  }
-  if (filter.search) {
-    const whereSearch = [];
-    filter.search.split(' ').forEach((search) => {
-      const whereOr = [
-        `contacts.company_name like '%${search}%'`,
-        `contacts.first_name like '%${search}%'`,
-        `contacts.last_name like '%${search}%'`,
-        `transaction_types.name like '%${search}%'`,
-        `transaction_methods.name like '%${search}%'`,
-        `transactions.number like '%${search}%'`,
-        `category_name like '%${search}%'`,
-        `(transaction_type_id <> 11 AND categories.description like '%${search}%')`,
-        `transactions.amount like '%${search}%'`,
-      ];
-      if (filter.notes === 1) {
-        whereOr.push(`transactions.note like '%${search}%'`);
-      }
-      if (filter.category.includes(2)) {
-        whereOr.push(`related_category.name like '%${search}%'`);
-      }
-      whereSearch.push(`(${whereOr.join(' OR ')})`);
-    });
-    where.push(`(${whereSearch.join(' AND ')})`);
-  }
-  return where.join(' AND ');
+    ? -Math.abs(amount) : amount;
 }
 
 export default {
@@ -85,6 +27,11 @@ export default {
   // -----------------------------------------------------------------
   state: {
     data: [],
+    page: 1,
+    infiniteId: +new Date(),
+    cacheData: [],
+    filters: null,
+    totalRows: null,
     reportData: [],
   },
   // -----------------------------------------------------------------
@@ -110,6 +57,27 @@ export default {
     setData(state, data) {
       state.data = data;
     },
+    setCacheData(state, data) {
+      state.cacheData = data;
+    },
+    setTotalRows(state, value) {
+      state.totalRows = value;
+    },
+    setFilters(state, value) {
+      state.filters = value;
+    },
+    setPage(state, value) {
+      state.page = value;
+    },
+    resetInfiniter(state) {
+      state.page = 1;
+      state.data = [];
+      state.cacheData = [];
+      state.infiniteId += 1;
+    },
+    incrementInfiniter(state) {
+      state.infiniteId += 1;
+    },
     updateItem(state, data) {
       const index = state.data.findIndex(item => item.id === data.id);
       if (index !== -1) {
@@ -122,75 +90,45 @@ export default {
   },
   // -----------------------------------------------------------------
   actions: {
-    async getData(context) {
-      const transactionSubquery = `
-        select transactions.*,
-        categories.category_type_id,
-          case 
-                when categories.category_type_id = 1 THEN categories.name
-                else case 
-                      when category_contact.company_name <> '' then category_contact.company_name
-                      else category_contact.first_name || ' ' || category_contact.last_name
-                    end
-              end as category_name,
-          categories.description as category_description,
-              related_category.name as related_category_name
-        from transactions 
-        JOIN categories ON transactions.category_id = categories.id
-        JOIN contacts category_contact ON categories.contact_id = category_contact.id
-        LEFT JOIN categories related_category 
-        ON categories.related_category_id = related_category.id      
-      `;
+    async getDataPage(context, params) {
+      const where = buildWhere(context.state.filters);
+      const queryOrder = ` ORDER BY date ${params.sortOrder}, created_at ${params.sortOrder}`;
       try {
-        const data = await Vue.db.all(`SELECT transactions.*,
-        transaction_types.name as type_name,
-        transaction_methods.name as method_name,
-        case 
-          when categories.category_type_id = 1 THEN categories.name
-          else case 
-                when category_contact.company_name <> '' then category_contact.company_name
-                else category_contact.first_name || ' ' || category_contact.last_name
-              end
-        end as category_name,
-        case
-          when categories.category_type_id = 3 then categories.description
-          else ''
-        end as category_description,
-        categories.category_type_id,
-        categories.is_inactive as category_is_inactive,        
-        category_contact.id as category_contact_id,
-        contacts.company_name as contact_company_name, 
-        contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
-        related_category.name as related_category_name,
-        -- transaction TO
-        transfer_transaction.id as transfer_transaction_id,
-        transfer_transaction.category_id as transfer_transaction_category_id,
-        transfer_transaction.category_name as transfer_transation_category_name,
-        transfer_transaction.category_type_id as transfer_transaction_category_type_id,
-        transfer_transaction.category_description as transfer_transaction_category_description,
-        transfer_transaction.related_category_name as transfer_transaction_related_category_name,
-        -- transaction FROM 
-        related_transaction.category_id as related_transaction_category_id,
-        related_transaction.category_name as related_transaction_category_name,
-        related_transaction.category_type_id as related_transaction_category_type_id,
-        related_transaction.category_description as related_transaction_category_description,
-        related_transaction.related_category_name as related_transaction_related_category_name
-        FROM transactions 
-          LEFT JOIN contacts ON transactions.contact_id = contacts.id
-          JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
-          LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
-          JOIN categories ON transactions.category_id = categories.id
-          JOIN contacts category_contact ON categories.contact_id = category_contact.id
-          LEFT JOIN categories related_category 
-            ON categories.related_category_id = related_category.id
-          -- Get transaction TO item
-          LEFT JOIN (${transactionSubquery}) transfer_transaction
-            ON transactions.id = transfer_transaction.related_transaction_id
-          -- Get transaction from item
-          LEFT JOIN (${transactionSubquery}) related_transaction
-            ON transactions.related_transaction_id = related_transaction.id                     
-        ORDER BY date DESC, created_at, id`);
-        context.commit('setData', data);
+        // get Total Rows
+        const totalRows = await Vue.db.get(`SELECT COUNT(*) as cnt
+          ${queryFrom} WHERE ${where}`);
+        context.commit('setTotalRows', totalRows.cnt);
+        let data = [];
+        if (context.state.cacheData.length) {
+          data = context.state.cacheData;
+        } else {
+          // Get Data
+          const queryLimit = buildLimitOffset(context.state.page);
+          data = await Vue.db.all(`
+            ${querySelect}
+            ${queryFrom}
+            WHERE ${where}
+            ${queryOrder}
+            ${queryLimit}
+          `);
+        }
+        context.commit('setData', [...context.state.data, ...data]);
+        if (data.length) {
+          // Get cache data:
+          const nextPage = context.state.page + 1;
+          const cacheQueryLimit = buildLimitOffset(nextPage);
+          const cacheData = await Vue.db.all(`
+            ${querySelect}
+            ${queryFrom}
+            WHERE ${where}
+            ${queryOrder}
+            ${cacheQueryLimit}
+          `);
+          context.commit('setCacheData', cacheData);
+          context.commit('setPage', nextPage);
+        } else {
+          context.commit('setCacheData', []);
+        }
       } catch (err) {
         console.log('Error get data: ', err);
       }
@@ -226,6 +164,7 @@ export default {
     async addTransfer(context, data) {
       let result;
       try {
+        const amount = parseAmount(data.amount);
         await Vue.db.serialize(async () => {
           await Vue.db.run('BEGIN TRANSACTION');
           const stm = await Vue.db.run(`INSERT INTO transactions (
@@ -238,7 +177,7 @@ export default {
             $date: moment(data.date).format('YYYY-MM-DD'),
             $transaction_type_id: data.transaction_type_id,
             $category_id: data.category_id,
-            $amount: -data.amount,
+            $amount: -amount,
           });
           await Vue.db.run(`INSERT INTO transactions (
             date, transaction_type_id, category_id, related_transaction_id,
@@ -251,7 +190,7 @@ export default {
             $transaction_type_id: data.transaction_type_id,
             $category_id: data.transfer_category_id,
             $related_transaction_id: stm.lastID,
-            $amount: data.amount,
+            $amount: amount,
           });
           await Vue.db.run('COMMIT');
         });
@@ -299,6 +238,7 @@ export default {
     async updateTransfer(context, data) {
       let result;
       try {
+        const amount = parseAmount(data.amount);
         await Vue.db.serialize(async () => {
           await Vue.db.run('BEGIN TRANSACTION');
           const fromTransactionId = data.related_transaction_id
@@ -315,7 +255,7 @@ export default {
             $id: fromTransactionId,
             $date: moment(data.date).format('YYYY-MM-DD'),
             $category_id: data.category_id,
-            $amount: -data.amount,
+            $amount: -amount,
           });
           await Vue.db.run(`UPDATE transactions SET
             date = $date,
@@ -327,7 +267,7 @@ export default {
             $id: toTransactionId,
             $date: moment(data.date).format('YYYY-MM-DD'),
             $category_id: data.transfer_category_id,
-            $amount: data.amount,
+            $amount: amount,
           });
           await Vue.db.run('COMMIT');
         });
@@ -374,8 +314,8 @@ export default {
       return result;
     },
 
-    async runReport(context, filter) {
-      const where = buildWhere(filter);
+    async runReport(context) {
+      const where = buildWhere(context.state.filters);
       try {
         const data = await Vue.db.all(`
         SELECT categories.category_type_id,

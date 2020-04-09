@@ -5,6 +5,7 @@ import { BTooltip } from 'bootstrap-vue/esm/components/tooltip/tooltip';
 import { CollapsePlugin } from 'bootstrap-vue';
 import VueTelInput from 'vue-tel-input';
 import Notifications from 'vue-notification';
+import InfiniteLoading from 'vue-infinite-loading';
 
 import { DatePicker } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
@@ -65,6 +66,8 @@ Vue.use(DatePicker);
 Vue.use(CollapsePlugin);
 Vue.use(VueTelInput);
 Vue.use(Notifications);
+Vue.use(InfiniteLoading, { props: { distance: 450 } });
+
 Vue.use(HelperStyle);
 
 EventBus.$on('db-init', () => {
