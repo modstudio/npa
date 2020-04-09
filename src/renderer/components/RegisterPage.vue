@@ -61,7 +61,7 @@
     <layouts-container-lg-component>
       <div class="d-flex">
         <div class="flex-grow-1 d-flex">
-          {{data.length}}
+          {{totalRows}}
           <template v-if="isFiltered">results</template>
           <template v-else>total</template> 
           <div v-if="isFiltered" class="ml-3">
@@ -110,13 +110,17 @@
           ></register-row-component>
         </div>
       </div>
+      <infinity-loading-component
+        :infiniteId="infiniteId"
+        @infinite="infiniteHandler"
+      ></infinity-loading-component>
 
       <register-transfer-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewTransferPanel"
         :mode="viewPanelMode"
         @hidepanel="hidePanel"
-        @update="getData"
+        @update="onUpdate"
         @add-new="addNewTransfer"
       ></register-transfer-side-bar-component> 
       <register-side-bar-component
@@ -124,7 +128,7 @@
         :is-shown="isViewPanel"
         :mode="viewPanelMode"
         @hidepanel="hidePanel"
-        @update="getData"
+        @update="onUpdate"
         @add-new="addItem"
       ></register-side-bar-component>     
     </layouts-container-lg-component>
@@ -132,13 +136,14 @@
 </template>
 
 <script>
+import Bus from '../shared/EventBus';
 import RegisterLeftSideComponent from './RegisterPage/RegisterLeftSideComponent';
 import RegisterSideBarComponent from './RegisterPage/RegisterSideBarComponent';
 import RegisterTransferSideBarComponent from './RegisterPage/RegisterTransferSideBarComponent';
 import ContactNameFieldComponent from './common/ContactNameFieldComponent';
 import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
 import RegisterReportComponent from './RegisterPage/RegisterReportComponent';
-import Bus from '../shared/EventBus';
+import InfinityLoadingComponent from './common/InfinityLoadingComponent';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -149,6 +154,7 @@ export default {
     ContactNameFieldComponent,
     RegisterRowComponent,
     RegisterReportComponent,
+    InfinityLoadingComponent,
   },
 
   mixins: [
@@ -158,6 +164,7 @@ export default {
   activated() {
     this.isActivePage = true;
     Bus.$emit('open-register-page');
+    this.$store.commit('Transactions/incrementInfiniter');
   },
 
   deactivated() {
@@ -194,97 +201,20 @@ export default {
         || this.dateFilter || this.notesFilter || this.inactiveFilter);
     },
 
-    data: {
-      get() {
-        let { data } = this.$store.state.Transactions;
-        if (this.typeFilter.length) {
-          data = data.filter(item => this.typeFilter.includes(item.transaction_type_id));
-        }
-        if (this.categoryFilter.length) {
-          data = data.filter(item => this.categoryFilter.includes(item.category_type_id)
-            || this.categoryFilter.includes(item.transfer_category_type_id));
-        }
-        if (this.methodFilter.length) {
-          data = data.filter(item => this.methodFilter.includes(item.transaction_method_id));
-        }
-        if (this.contactFilter.length) {
-          data = data.filter(item => this.contactFilter.includes(item.contact_id)
-            || this.contactFilter.includes(item.category_contact_id)
-            || this.contactFilter.includes(item.transfer_category_contact_id));
-        }
-        if (this.amountFilter) {
-          data = data.filter((item) => {
-            let rule = true;
-            if (this.amountFilter.from) {
-              rule = rule && item.amount >= this.amountFilter.from;
-            }
-            if (this.amountFilter.to) {
-              rule = rule && item.amount <= this.amountFilter.to;
-            }
-            return rule;
-          });
-        }
-        if (this.dateFilter) {
-          data = data.filter((item) => {
-            let rule = true;
-            if (this.dateFilter.from) {
-              rule = rule && moment(item.date).isSameOrAfter(this.dateFilter.from);
-            }
-            if (this.dateFilter.to) {
-              rule = rule && moment(item.date).isSameOrBefore(this.dateFilter.to);
-            }
-            return rule;
-          });
-        }
-        if (this.notesFilter === 2) {
-          data = data.filter(item => item.note);
-        }
-        if (this.inactiveFilter === 0) {
-          data = data.filter(item => item.category_is_inactive === 0);
-        } else if (this.inactiveFilter === 2) {
-          data = data.filter(item => item.category_is_inactive === 1);
-        }
-        if (this.searchText) {
-          this.searchText.split(' ').forEach((searchItem) => {
-            const searchString = searchItem.toLowerCase();
-            data = data
-              .filter(item => (item.contact_id
-                    && (item.contact_company_name.toLowerCase().indexOf(searchString) !== -1
-                    || item.contact_first_name.toLowerCase().indexOf(searchString) !== -1
-                    || item.contact_last_name.toLowerCase().indexOf(searchString) !== -1))
-                  || item.type_name.toLowerCase().indexOf(searchString) !== -1
-                  || (item.method_name
-                    && item.method_name.toLowerCase().indexOf(searchString) !== -1)
-                  || (item.number && item.number.toLowerCase().indexOf(searchString) !== -1)
-                  || item.category_name.toLowerCase().indexOf(searchString) !== -1
-                  || (item.transaction_type_id !== this.transferTypeId
-                    && item.category_description
-                    && item.category_description.toLowerCase().indexOf(searchString) !== -1)
-                  || item.amount.toString().toLowerCase().indexOf(searchString) !== -1
-                  || (this.notesFilter === 1 && item.note
-                    && item.note.toLowerCase().indexOf(searchString) !== -1)
-                  || (this.categoryFilter.includes(2) && item.related_category_name
-                    && item.related_category_name.toString()
-                      .toLowerCase().indexOf(searchString) !== -1));
-          });
-        }
-        let sortFields = [this.sortField];
-        let sortOrders = [this.sortOrder];
-        if (this.sortField === 'name') {
-          sortFields = [function (item) {
-            return item.contact_company_name ? item.contact_company_name
-              : `${item.contact_first_name} ${item.contact_last_name}`;
-          }];
-          sortOrders = [this.sortOrder];
-        }
-        if (this.currentItem && !_.find(data, { id: this.currentItem.id })) {
-          this.hidePanel();
-        }
-        return _.orderBy(data, sortFields, sortOrders);
-      },
-      async set(data) {
-        await this.$store.commit('Transactions/setData', data);
-      },
+    page() {
+      return this.$store.state.Transactions.page;
+    },
+
+    infiniteId() {
+      return this.$store.state.Transactions.infiniteId;
+    },
+
+    data() {
+      return this.$store.state.Transactions.data;
+    },
+
+    totalRows() {
+      return this.$store.state.Transactions.totalRows;
     },
 
     subtotal() {
@@ -297,25 +227,35 @@ export default {
   },
 
   created() {
-    this.getData();
-    Bus.$on('update-contacts', this.getData);
-    Bus.$on('update-category', this.getData);
-    Bus.$on('update-dist-class', this.getData);
-    Bus.$on('update-method', this.getData);
+    this.setFilters();
+    Bus.$on('update-contacts', this.onUpdate);
+    Bus.$on('update-category', this.onUpdate);
+    Bus.$on('update-dist-class', this.onUpdate);
+    Bus.$on('update-method', this.onUpdate);
     Bus.$on('db-restored', this.resetFilter);
   },
 
   destroyed() {
-    Bus.$off('update-contacts', this.getData);
-    Bus.$off('update-category', this.getData);
-    Bus.$off('update-dist-class', this.getData);
-    Bus.$off('update-method', this.getData);
+    Bus.$off('update-contacts', this.onUpdate);
+    Bus.$off('update-category', this.onUpdate);
+    Bus.$off('update-dist-class', this.onUpdate);
+    Bus.$off('update-method', this.onUpdate);
     Bus.$off('db-restored', this.resetFilter);
   },
 
   methods: {
-    getData() {
-      this.$store.dispatch('Transactions/getData');
+    async infiniteHandler($state) {
+      await this.$store.dispatch('Transactions/getDataPage', {
+        sortOrder: this.sortOrder,
+      });
+      $state.loaded();
+      if (this.totalRows === this.data.length) {
+        $state.complete();
+      }
+    },
+
+    onUpdate() {
+      this.resetInfinter();
       this.runReport();
     },
 
@@ -351,8 +291,28 @@ export default {
       }
     },
 
+    resetInfinter() {
+      this.$store.commit('Transactions/resetInfiniter');
+    },
+
     filterData() {
+      this.setFilters();
+      this.resetInfinter();
       this.runReport();
+    },
+
+    setFilters() {
+      this.$store.commit('Transactions/setFilters', {
+        search: this.searchText,
+        type: this.typeFilter,
+        category: this.categoryFilter,
+        method: this.methodFilter,
+        contact: this.contactFilter,
+        amount: this.amountFilter,
+        date: this.dateFilter,
+        notes: this.notesFilter,
+        inactive: this.inactiveFilter,
+      });
     },
 
     resetFilter() {
@@ -366,21 +326,11 @@ export default {
       this.notesFilter = 0;
       this.inactiveFilter = 0;
       Bus.$emit('clear-register-filter');
-      this.runReport();
+      this.filterData();
     },
 
     async runReport() {
-      await this.$store.dispatch('Transactions/runReport', {
-        search: this.searchText,
-        type: this.typeFilter,
-        category: this.categoryFilter,
-        method: this.methodFilter,
-        contact: this.contactFilter,
-        amount: this.amountFilter,
-        date: this.dateFilter,
-        notes: this.notesFilter,
-        inactive: this.inactiveFilter,
-      });
+      await this.$store.dispatch('Transactions/runReport');
       const data = [];
       let currentTypeId = null;
       const expandedIds = this.reportData ? this.reportData
@@ -409,6 +359,11 @@ export default {
         });
       });
       this.reportData = data;
+    },
+
+    sortData() {
+      this.setSortClasses();
+      this.resetInfinter();
     },
   },
 };

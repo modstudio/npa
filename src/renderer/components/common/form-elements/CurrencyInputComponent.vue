@@ -88,11 +88,13 @@ export default {
       if (this.disableCurrencyClass) {
         return null;
       }
-      if (this.value < 0 || (this.value > 0 && this.isDebit)) {
+      const value = typeof (this.value) === 'string'
+        ? Number.parseFloat(this.value.replace(',', '')) : this.value;
+      if (value < 0 || (value > 0 && this.isDebit)) {
         return { 'color-secondary-700': true };
       }
 
-      if (this.value > 0) {
+      if (value > 0) {
         return { 'color-primary-700': true };
       }
       return null;
@@ -109,7 +111,8 @@ export default {
     },
 
     onChange($event) {
-      const value = Number.parseFloat($event.target.value).toFixed(2);
+      const value = this.$root.formatterAmount.format($event.target
+        .value.replace(',', ''));
       this.$emit('input', value);
       this.$emit('change', value);
     },

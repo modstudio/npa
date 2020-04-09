@@ -60,8 +60,9 @@ export default {
     reportData() {
       if (this.searchReport) {
         let { data } = this;
+        data = data || [];
         if (!this.expandedIdsBeforeSearching) {
-          this.expandedIdsBeforeSearching = this.data
+          this.expandedIdsBeforeSearching = data
             .filter(item => item.isExpanded)
             .map(item => item.id);
         }

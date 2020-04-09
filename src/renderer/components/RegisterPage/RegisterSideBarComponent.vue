@@ -94,7 +94,7 @@
               <currency-input-component
                 v-model="form.amount"
                 label="Amount"
-                rules="required"
+                rules="required|is_not:0.00"
                 :is-debit="isDebit"
               ></currency-input-component>                      
               <!-- Note -->
@@ -255,6 +255,7 @@ export default {
         if (this.isDebit) {
           this.form.amount = Math.abs(this.form.amount);
         }
+        this.form.amount = this.$root.formatterAmount.format(this.form.amount);
       }
       await this.$store.dispatch('Categories/getStartingBalanceCategories', this.form.id || 0);
       if (!this.isNewMode && this.currentItem && this.isStartingBalance) {
