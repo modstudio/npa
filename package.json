@@ -1,8 +1,8 @@
 {
   "name": "accounting",
   "version": "0.1.1",
-  "author": "Serg Volodko <svolodko@gmail.com>",
-  "description": "Non Profit Accounting vuejs-electron project",
+  "author": "modstud.io <hey@modstud.io>",
+  "description": "Non-Profit Accounting Application",
   "license": "LICENSE",
   "main": "./dist/electron/main.js",
   "scripts": {
