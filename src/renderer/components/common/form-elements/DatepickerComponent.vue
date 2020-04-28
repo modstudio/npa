@@ -1,6 +1,6 @@
 <template>
   <ValidationProvider :name="label" :rules="rules" v-slot="{ errors }">
-    <div class="form-group form-group--enter">
+    <div class="form-group form-group--enter mb-0">
         <el-date-picker v-if="inputComponent === 'el-date'"
           ref="datepicker"
           class="order-1 text-small w-auto"

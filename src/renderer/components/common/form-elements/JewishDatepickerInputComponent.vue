@@ -37,6 +37,7 @@ export default {
   mounted() {
     this.calendar = $(this.$refs.datepicker).flexcal({
       position: 'bl',
+      duration: 50,
       calendars: ['he-jewish', 'en'],
       commit: (event, date) => {
         this.$emit('input', date);

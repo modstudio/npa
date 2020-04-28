@@ -13,9 +13,9 @@
         <span class="text-small">{{nameFilter}}</span>
       </button>
       <b-collapse v-model="isExpanded" @shown="onShown">
-        <div class="d-flex" v-if="type === 'date'">
+        <div class="search-nav-block__item-range" v-if="type === 'date'">
           <div class="flex-grow-1 mr-1">
-            From
+            <label>From</label>
             <datepicker-component ref="from"
               :value="fromValue"
               @input="onInputFrom"
@@ -23,18 +23,18 @@
             ></datepicker-component>
           </div>
           <div class="flex-grow-1 ml-1">
-            To
+            <label>To</label>
             <datepicker-component ref="to"
-              :value="toValue" 
+              :value="toValue"
               @input="onInputTo"
               @blur="onBlurDatePicker"
             ></datepicker-component>
           </div>
-        </div>        
+        </div>
         <div class="d-flex" v-else>
           <div class="flex-grow-1 mr-1">
             From
-            <input type="number" ref="from" 
+            <input type="number" ref="from"
               class="form-control form-control--enter"
               :value="fromValue"
               @input="onInputFrom"
@@ -46,7 +46,7 @@
             To
             <input type="number" ref="to"
               class="form-control form-control--enter"
-              :value="toValue" 
+              :value="toValue"
               @input="onInputTo"
               @blur="onBlurInput"
               @change="$emit('filter')"
@@ -54,7 +54,7 @@
           </div>
         </div>
       </b-collapse>
-  </div>  
+  </div>
 </template>
 
 <script>

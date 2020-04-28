@@ -88,6 +88,7 @@
 /*------------------------
 	icons
 -------------------------*/
+
 .icon-zoom::before {
   content: "\ea03";
 }
@@ -182,4 +183,20 @@
 
 .icon-drag::before {
   content: "\ea1a";
+}
+
+.icon-search-reports::before {
+  content: "\ea1b";
+}
+
+.icon-check::before {
+  content: "\ea1d";
+}
+
+.icon-arrow-right::before {
+  content: "\ea1e";
+}
+
+.icon-arrow-left::before {
+  content: "\ea1f";
 }

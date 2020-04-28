@@ -72,24 +72,36 @@
     overflow: hidden;
     background: $color-neutral-200;
     &--sm{
-      border: 1px solid $color-neutral-200;
       .tabs-inner__link{
-        height: 22px;
+        height: 20px;
         @include fsz(12px);
-        font-family: $font-medium;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+    &--dark{
+      background: $color-black;
+      border: 2px solid $color-black;
+      .tabs-inner__link{
+        background: none;
+        color: $color-neutral-500;
+        &:hover{
+          color: $color-neutral-50;
+        }
+        &.active{
+          background: $color-neutral-900;
+          color: $color-neutral-50;
+        }
       }
     }
     &__link{
         height: 44px;
-        color: $color-neutral-600;
+        color: $color-neutral-700;
         flex: 1 1 0;
         display: flex;
         align-items: center;
         justify-content: center;
         @include fsz(14px);
-        font-family: $font-medium;
         cursor: pointer;
         transition: 200ms;
         padding: 0 8px;

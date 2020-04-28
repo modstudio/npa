@@ -6,7 +6,7 @@
     top: 0;
     bottom: 0;
     width: $sidebar-width-lg;
-    background-color: $color-neutral-800;
+    background-color: $color-neutral-900;
     min-height: calc(100vh - #{$navbar-height});
     display: flex;
     flex-direction: column;
@@ -291,10 +291,7 @@
 }
 
 .sidebar-nav {
-    padding: 48px 0 32px;
-    @include respond-to(md) {
-        padding: 24px 0;
-    }
+    padding: 24px 0;
     @include respond-to(xs) {
         padding-bottom: 48px;
     }

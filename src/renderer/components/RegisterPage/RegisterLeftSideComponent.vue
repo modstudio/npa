@@ -1,33 +1,36 @@
 <template>
   <aside class="sidebar">
     <div class="color-neutral-500 flex-grow-1">
-      <div class="nav tabs-inner tabs-inner--sm align-self-center d-none d-sm-flex mt-4 mx-4">
-        <button type="button" class="tabs-inner__link px-0"
-          @click="setMode('search')"
-          :disabled="isSearchMode"
-          :class="{'active': isSearchMode}">
-          Search & Filter
-        </button>
-        <button type="button" class="tabs-inner__link px-0"
-          @click="setMode('report')"
-          :disabled="isReportMode"
-          :class="{'active': isReportMode}">
-          Quick Reports
-        </button>
+      <div class="px-4 pt-4">
+        <div class="nav tabs-inner tabs-inner--sm tabs-inner--dark align-self-center d-none d-sm-flex">
+          <button type="button" class="tabs-inner__link px-0"
+            @click="setMode('search')"
+            :disabled="isSearchMode"
+            :class="{'active': isSearchMode}">
+            Search & Filter
+          </button>
+          <button type="button" class="tabs-inner__link px-0"
+            @click="setMode('report')"
+            :disabled="isReportMode"
+            :class="{'active': isReportMode}">
+            Quick Reports
+          </button>
+        </div>
       </div>
       <div class="sidebar-nav">
       <search-bar-component
         :value="value"
         :is-filtered="isFiltered"
         :search-placeholder="searchPlaceholder"
+        :search-icon="searchIcon"
         @input="searchText => $emit('input', searchText)"
         @resetfilter="$emit('resetfilter')"
         @search="$emit('search')"
-      ></search-bar-component>        
-      <div v-show="isSearchMode">
+      ></search-bar-component>
+      <div class="px-4" v-show="isSearchMode">
         <slot name="search"></slot>
       </div>
-      <div v-show="isReportMode">
+      <div class="px-4" v-show="isReportMode">
         <slot name="register"></slot>
       </div>
       </div>
@@ -75,6 +78,10 @@ export default {
 
     searchPlaceholder() {
       return this.isSearchMode ? 'Search Register' : 'Search Reports';
+    },
+
+    searchIcon() {
+      return this.isSearchMode ? 'icon icon-zoom' : 'icon icon-search-reports text-regular';
     },
   },
 

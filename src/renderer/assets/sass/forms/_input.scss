@@ -65,7 +65,7 @@ fieldset[disabled] {
     caret-color: $color-primary-500;
     transition: 200ms;
     background: $color-white;
-    font-family: $font-regular;
+    font-family: $font-light;
     @include fsz(13px);
     -webkit-appearance: none;
     border-radius: $border-radius-default;
@@ -197,11 +197,16 @@ fieldset[disabled] {
     &--search{
         border-radius: 0;
         border: none;
-        padding-left: 28px;
+        padding-left: 52px;
+        height: 48px;
+        background: rgba($color-neutral-800, 0.5);
+        color: $color-neutral-50;
         @include placeholder(){
             color: $color-neutral-500;
         }
-        &:focus{
+        &:focus:not([readonly]){
+            background: rgba($color-neutral-800, 0.5);
+            color: $color-neutral-50;
             border: none !important;
         }
         &:hover{
@@ -214,9 +219,12 @@ fieldset[disabled] {
     &--search-icon{
         @include fsz(16px);
         @include center-v();
-        left: 0;
+        left: 24px;
         color: $color-neutral-400;
         transition: 200ms;
+        i{
+          display: block;
+        }
         &.active{
             color: $color-primary-500;
         }
