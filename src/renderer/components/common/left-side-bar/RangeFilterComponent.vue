@@ -31,9 +31,9 @@
             ></datepicker-component>
           </div>
         </div>
-        <div class="d-flex" v-else>
+        <div class="search-nav-block__item-range" v-else>
           <div class="flex-grow-1 mr-1">
-            From
+            <label>From</label>
             <input type="number" ref="from"
               class="form-control form-control--enter"
               :value="fromValue"
@@ -43,7 +43,7 @@
             >
           </div>
           <div class="flex-grow-1 ml-1">
-            To
+            <label>To</label>
             <input type="number" ref="to"
               class="form-control form-control--enter"
               :value="toValue"

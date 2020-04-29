@@ -6,15 +6,17 @@
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
     >
-      <inactive-filter-component
-        v-if="isActivePage"
-        v-model="inactiveFilter"
-      ></inactive-filter-component> 
-    </left-side-bar-component>    
+      <div class="px-4">
+        <inactive-filter-component
+          v-if="isActivePage"
+          v-model="inactiveFilter"
+        ></inactive-filter-component>
+      </div>
+    </left-side-bar-component>
     <layouts-container-lg-component>
       <div class="d-flex align-items-center mb-4 pb-2">
         <div class="flex-grow-1">
-          {{data.length}} 
+          {{data.length}}
           <template v-if="isFiltered">results</template>
           <template v-else>total</template>
         </div>

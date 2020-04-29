@@ -6,15 +6,18 @@
         :is-filtered="isFiltered"
         @resetfilter="resetFilter"
       >
+      <div class="px-4">
         <inactive-filter-component
           v-model="inactiveFilter"
-        ></inactive-filter-component>      
+        ></inactive-filter-component>
+      </div>
+
       </left-side-bar-component>
       <div class="d-flex">
         <div class="flex-grow-1">
           {{data.length}}
           <template v-if="isFiltered">results</template>
-          <template v-else>total</template>          
+          <template v-else>total</template>
         </div>
         <button type="button" class="btn btn-secondary btn-sm" @click="addDistClass">
           Add Dist. Class
@@ -27,7 +30,7 @@
           </div>
           <div class="flex-table__header-item col-6">
             Distribution to date
-          </div>         
+          </div>
         </div>
         <div is="draggable" v-model="data" tag="div"
           handle=".list-components__item-move"
@@ -53,7 +56,7 @@
             </div>
           </div>
         </div>
-      </div>      
+      </div>
       <dist-class-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
@@ -61,7 +64,7 @@
         @hidepanel="hidePanel"
         @update="onUpdate"
         @add-new="addDistClass"
-      ></dist-class-side-bar-component>   
+      ></dist-class-side-bar-component>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <filter-component
-    v-bind="$attrs" 
+    v-bind="$attrs"
     v-on="$listeners"
     :is-multiple-select="false"
     name-filter="Inactive"

@@ -6,14 +6,16 @@
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
     >
-      <inactive-filter-component
-        v-if="isActivePage"
-        v-model="inactiveFilter"
-      ></inactive-filter-component> 
+      <div class="px-4">
+        <inactive-filter-component
+          v-if="isActivePage"
+          v-model="inactiveFilter"
+        ></inactive-filter-component>
+      </div>
     </left-side-bar-component>
     <div class="d-flex">
       <div class="flex-grow-1">
-        {{totalCauses}} 
+        {{totalCauses}}
         <template v-if="isFiltered">results</template>
         <template v-else>total</template>
       </div>
@@ -36,7 +38,7 @@
               Metrics
           </div>
           <div class="flex-table__header-item col-2">
-            <div class="flex-grow-1">Balance</div>      
+            <div class="flex-grow-1">Balance</div>
             <div class="d-flex justify-content-end">
               <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
                 <i class="icon icon-Collapse-all" v-if="this.isAllExpanded">
@@ -66,8 +68,8 @@
                 :current-item="currentCauseItem"
                 :is-filtered="isFiltered"
                 @view="viewCause"
-              ></causes-list-component>  
-            </b-collapse>                   
+              ></causes-list-component>
+            </b-collapse>
           </div>
       </div>
     </div>
@@ -87,7 +89,7 @@
       @hidepanel="hideCausePanel"
       @update="onUpdate"
       @add-new="addCause"
-    ></cause-side-bar-component>    
+    ></cause-side-bar-component>
   </div>
 </template>
 

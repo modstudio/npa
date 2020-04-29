@@ -6,15 +6,17 @@
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
     >
-      <inactive-filter-component
-        v-model="inactiveFilter"
-      ></inactive-filter-component>     
+      <div class="px-4">
+        <inactive-filter-component
+          v-model="inactiveFilter"
+        ></inactive-filter-component>
+      </div>
     </left-side-bar-component>
     <div class="d-flex">
       <div class="flex-grow-1">
         {{data.length}}
         <template v-if="isFiltered">results</template>
-        <template v-else>total</template>        
+        <template v-else>total</template>
       </div>
       <button type="button" class="btn btn-secondary btn-sm" @click="addItem">
         Add Pledge
@@ -39,7 +41,7 @@
           @click="setSortField('metric_balance')">
           Balance
           <i class="icon icon-triangle-down"></i>
-        </div>                     
+        </div>
       </div>
       <div class="position-relative" v-for="item in data"
         :key="item.id">
@@ -63,26 +65,26 @@
           </div>
           <div class="flex-table__row-item col-2"
               tabindex="0">
-            <metric-info-component 
+            <metric-info-component
               metric-name="Pledged"
               :amount="item.metric_debit"
             ></metric-info-component>
           </div>
           <div class="flex-table__row-item col-2"
               tabindex="0">
-            <metric-info-component 
+            <metric-info-component
               metric-name="Paid"
               :amount="item.metric_kredit"
             ></metric-info-component>
-          </div>          
+          </div>
           <div class="flex-table__row-item col-2 col-xl-4"
               tabindex="0">
             <amount-info-component class="col-12 col-xl-6 px-0 text-right"
               :amount="item.metric_balance"></amount-info-component>
-          </div>                        
+          </div>
         </div>
       </div>
-    </div>      
+    </div>
     <pledge-side-bar-component
       :current-item="currentItem"
       :is-shown="isViewPanel"
@@ -90,7 +92,7 @@
       @hidepanel="hidePanel"
       @update="onUpdate"
       @add-new="addItem"
-    ></pledge-side-bar-component>         
+    ></pledge-side-bar-component>
   </div>
 </template>
 

@@ -6,15 +6,18 @@
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
     >
+    <div class="px-4">
       <inactive-filter-component
         v-model="inactiveFilter"
-      ></inactive-filter-component> 
+      ></inactive-filter-component>
+    </div>
+
     </left-side-bar-component>
     <div class="d-flex">
       <div class="flex-grow-1">
         {{data.length}}
         <template v-if="isFiltered">results</template>
-        <template v-else>total</template>        
+        <template v-else>total</template>
       </div>
       <button type="button" class="btn btn-secondary btn-sm" @click="addItem">
         Add Pikadon
@@ -34,7 +37,7 @@
           @click="setSortField('metric_balance')">
           Balance
           <i class="icon icon-triangle-down"></i>
-        </div>                     
+        </div>
       </div>
       <div class="position-relative" v-for="item in data"
         :key="item.id">
@@ -54,26 +57,26 @@
           </div>
           <div class="flex-table__row-item col-2"
               tabindex="0">
-            <metric-info-component 
+            <metric-info-component
               metric-name="Received"
               :amount="item.metric_kredit"
-            ></metric-info-component>              
+            ></metric-info-component>
           </div>
           <div class="flex-table__row-item col-2"
               tabindex="0">
-            <metric-info-component 
+            <metric-info-component
               metric-name="Returned"
               :amount="item.metric_debit"
-            ></metric-info-component>              
-          </div>          
+            ></metric-info-component>
+          </div>
           <div class="flex-table__row-item col-2 col-xl-4"
               tabindex="0">
             <amount-info-component class="col-12 col-xl-6 px-0 text-right"
-              :amount="item.metric_balance"></amount-info-component>              
-          </div>                        
+              :amount="item.metric_balance"></amount-info-component>
+          </div>
         </div>
       </div>
-    </div>      
+    </div>
     <pikadon-side-bar-component
       :current-item="currentItem"
       :is-shown="isViewPanel"
@@ -81,7 +84,7 @@
       @hidepanel="hidePanel"
       @update="onUpdate"
       @add-new="addItem"
-    ></pikadon-side-bar-component>         
+    ></pikadon-side-bar-component>
   </div>
 </template>
 
