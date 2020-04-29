@@ -37,6 +37,7 @@
                   <!-- number -->
                   <text-input-component
                     v-model="form.number"
+                    :rules="{required: isRequredNumber}"
                     label="Number"
                   ></text-input-component>
                 </div>
@@ -217,6 +218,16 @@ export default {
       return this.$store.getters['Transactions/isDebit'](this.form.transaction_type_id);
     },
 
+    isRequredNumber() {
+      if (!this.form.transaction_method_id) {
+        return false;
+      }
+      const method = this.$store.getters['TrxMethods/getItem'](this.form.transaction_method_id);
+      if (method) {
+        return method.number_required === 1;
+      }
+      return false;
+    },
   },
 
   methods: {
