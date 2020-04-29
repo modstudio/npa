@@ -20,11 +20,16 @@
                 :rules="{required: true, uniqueTrxMethod: form.id}"
                 label="Name"
               ></text-input-component>
+              <!-- Number required -->
+              <checkbox-component
+                v-model="form.number_required"
+                label="Number required"
+              ></checkbox-component>
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
                 label="Note"
-              ></textarea-component>            
+              ></textarea-component>              
             </ValidationObserver>
         </div>
 
@@ -87,6 +92,7 @@ export default {
       return {
         id: null,
         name: '',
+        number_required: 0,
         note: '',
       };
     },

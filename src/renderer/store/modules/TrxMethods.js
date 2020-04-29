@@ -38,10 +38,12 @@ export default {
       let result;
       try {
         await Vue.db.run(`INSERT INTO transaction_methods (
-          name, note, sort_order
-        ) VALUES ($name, $note, (select ifnull(max(sort_order), 0) + 1 from distribution_classes))
+          name, number_required, note, sort_order
+        ) VALUES ($name, $number_required,
+          $note, (select ifnull(max(sort_order), 0) + 1 from distribution_classes))
         `, {
           $name: data.name,
+          $number_required: data.number_required,
           $note: data.note,
         });
         result = true;
@@ -57,11 +59,13 @@ export default {
       try {
         await Vue.db.run(`UPDATE transaction_methods SET
           name = $name, 
+          number_required = $number_required,
           note = $note
           WHERE id = $id
         `, {
           $id: data.id,
           $name: data.name,
+          $number_required: data.number_required,
           $note: data.note,
         });
         result = true;
