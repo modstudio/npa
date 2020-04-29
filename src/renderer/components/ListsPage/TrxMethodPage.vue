@@ -49,12 +49,9 @@
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-=======
 
       <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
 
->>>>>>> NPA-25 No results and bug fix
       <trx-method-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
