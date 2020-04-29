@@ -26,6 +26,7 @@ import InactiveBadgeComponent from './InactiveBadgeComponent';
 import FileUploadComponent from './FileUploadComponent';
 import LoaderComponent from './LoaderComponent';
 import MetricInfoComponent from './MetricInfoComponent';
+import NoResultFoundComponent from './NoResultFoundComponent';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -55,3 +56,4 @@ Vue.component('InactiveBadgeComponent', InactiveBadgeComponent);
 Vue.component('FileUploadComponent', FileUploadComponent);
 Vue.component('LoaderComponent', LoaderComponent);
 Vue.component('MetricInfoComponent', MetricInfoComponent);
+Vue.component('NoResultFoundComponent', NoResultFoundComponent);

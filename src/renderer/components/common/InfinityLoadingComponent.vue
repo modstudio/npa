@@ -10,9 +10,6 @@
         </div>
       </div>
       <div slot="no-more">
-        <div class="position-relative mt-5">
-            The end
-        </div>
       </div>
       <div slot="no-results"></div>
   </infinite-loading>

@@ -8,7 +8,6 @@ module.exports = {
       this.$store.dispatch('CauseGroups/getData');
       this.$store.dispatch('Categories/getData');
       this.$store.dispatch('Contacts/getData');
-      this.$store.dispatch('Transactions/getData');
     },
   },
 };

@@ -56,7 +56,14 @@
             </div>
           </div>
         </div>
+<<<<<<< HEAD
       </div>
+=======
+      </div>      
+
+      <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
+      
+>>>>>>> NPA-25 No results and bug fix
       <dist-class-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"

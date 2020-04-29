@@ -115,6 +115,8 @@
         @infinite="infiniteHandler"
       ></infinity-loading-component>
 
+      <no-result-found-component v-show="isFiltered && !totalRows"></no-result-found-component>
+
       <register-transfer-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewTransferPanel"
@@ -233,6 +235,7 @@ export default {
     Bus.$on('update-dist-class', this.onUpdate);
     Bus.$on('update-method', this.onUpdate);
     Bus.$on('db-restored', this.resetFilter);
+    Bus.$on('show-settings', this.hidePanel);
   },
 
   destroyed() {
@@ -241,6 +244,7 @@ export default {
     Bus.$off('update-dist-class', this.onUpdate);
     Bus.$off('update-method', this.onUpdate);
     Bus.$off('db-restored', this.resetFilter);
+    Bus.$off('show-settings', this.hidePanel);
   },
 
   methods: {
