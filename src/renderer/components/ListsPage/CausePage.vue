@@ -74,6 +74,8 @@
       </div>
     </div>
 
+    <no-result-found-component v-show="isFiltered && !totalCauses"></no-result-found-component>
+
     <cause-group-side-bar-component
       :current-item="currentGroupItem"
       :is-shown="isViewGroupPanel"

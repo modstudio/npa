@@ -73,6 +73,9 @@
           </div>
         </div>
       </div>
+
+      <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
+      
       <contact-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
@@ -158,6 +161,11 @@ export default {
 
   created() {
     this.getData();
+    Bus.$on('show-settings', this.hidePanel);
+  },
+
+  destroyed() {
+    Bus.$off('show-settings', this.hidePanel);
   },
 
   methods: {

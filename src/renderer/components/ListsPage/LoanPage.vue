@@ -83,7 +83,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>      
+
+    <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
+    
     <loan-side-bar-component
       :current-item="currentItem"
       :is-shown="isViewPanel"

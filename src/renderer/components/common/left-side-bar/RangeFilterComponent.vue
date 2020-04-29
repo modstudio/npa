@@ -1,6 +1,7 @@
 <template>
   <div ref="filter"
     class="dropdown search-nav-block__item search-nav-block__dropdown show-tick mx-auto mb-2"
+    :class="{show: isExpanded}"
   >
       <button class="btn dropdown-toggle"
         ref="toggleButton"

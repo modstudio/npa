@@ -38,7 +38,6 @@
                   <text-input-component
                     v-model="form.number"
                     label="Number"
-                    :rules="{required: this.form.transaction_method_id === 1}"
                   ></text-input-component>
                 </div>
               </div>

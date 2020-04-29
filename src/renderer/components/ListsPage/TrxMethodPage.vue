@@ -49,6 +49,9 @@
           </div>
         </div>
       </div>
+
+      <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
+
       <trx-method-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
