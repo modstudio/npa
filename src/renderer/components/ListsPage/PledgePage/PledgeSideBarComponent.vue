@@ -23,7 +23,7 @@
               <!-- Cause -->
               <cause-select-component
                 v-model="form.related_category_id"
-                label="Name"
+                label="Cause"
                 rules="required"
               ></cause-select-component>              
               <!-- Note -->

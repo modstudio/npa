@@ -15,12 +15,6 @@
               <h4>Cause</h4>
           </div>
             <ValidationObserver ref="observer">
-              <!-- Name -->
-              <text-input-component
-                v-model="form.name"
-                :rules="{required: true, uniqueCause: form.id}"
-                label="Name"
-              ></text-input-component>
               <!-- Group -->
               <cause-group-select-component
                 v-model="form.category_group_id"
@@ -33,6 +27,11 @@
                 placeholder="Choose recipient"
                 rules="required"
               ></contact-select-component>
+              <!-- Description -->
+              <text-input-component
+                v-model="form.description"
+                label="Description"
+              ></text-input-component>              
               <!-- Distribution Class -->
               <dist-class-select-component
                 v-model="form.distribution_class_id"
@@ -117,7 +116,7 @@ export default {
         category_group_id: null,
         contact_id: null,
         distribution_class_id: null,
-        name: '',
+        description: '',
         note: '',
       };
     },

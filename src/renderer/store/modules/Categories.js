@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { categoryName, relatedCategoryName, categorySubText } from './queryHelpers/categoryQueryHelpers';
 
 const causeId = 1;
 const pledgeId = 2;
@@ -62,23 +63,12 @@ export default {
         `;
         const data = await Vue.db.all(`SELECT categories.*,
         category_types.name as category_type_name,
-        case 
-          when categories.category_type_id = 1 THEN categories.name
-          else case 
-                when contacts.company_name <> '' then contacts.company_name
-                else contacts.first_name || ' ' || contacts.last_name
-              end
-        end as category_name,
-        case 
-          when categories.category_type_id = 1 THEN ''
-          when categories.category_type_id = 2 THEN related_category.name
-          when categories.category_type_id = 3 THEN categories.description
-          when contacts.company_name <> '' then contacts.first_name || ' ' || contacts.last_name
-          else ''
-        end as category_subtext,
-        related_category.name as related_category_name,
-        contacts.company_name as contact_company_name, 
-        contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
+        ${categoryName} as category_name,
+        ${relatedCategoryName} as related_category_name,        
+        ${categorySubText} as category_subtext,
+        category_contact.company_name as contact_company_name, 
+        category_contact.first_name as contact_first_name,
+        category_contact.last_name as contact_last_name,
         category_groups.sort_order as group_sort_order,
         metrics.debit as metric_debit,
         metrics.kredit as metric_kredit,
@@ -86,7 +76,7 @@ export default {
         metrics.debit + metrics.kredit + metrics.distributed as metric_balance
         FROM categories
         JOIN category_types ON categories.category_type_id = category_types.id
-        JOIN contacts ON categories.contact_id = contacts.id
+        JOIN contacts category_contact ON categories.contact_id = category_contact.id
         LEFT JOIN category_groups ON categories.category_group_id = category_groups.id
         LEFT JOIN categories related_category 
         ON categories.related_category_id = related_category.id
@@ -98,8 +88,8 @@ export default {
         ORDER BY categories.category_type_id,
           category_groups.sort_order, categories.sort_order, 
           case 
-            when contacts.company_name <> '' then contacts.company_name
-            else contacts.first_name || ' ' || contacts.last_name
+            when category_contact.company_name <> '' then category_contact.company_name
+            else category_contact.first_name || ' ' || category_contact.last_name
           end
         `);
         context.commit(mutationName, data);
@@ -113,11 +103,11 @@ export default {
       try {
         await Vue.db.run(`INSERT INTO categories (
           category_type_id,  category_group_id, contact_id, related_category_id, 
-          distribution_class_id, name,
+          distribution_class_id,
           description, note,
           sort_order
         ) VALUES ($category_type_id, $category_group_id, $contact_id, $related_category_id, 
-          $distribution_class_id, $name,
+          $distribution_class_id,
           $description, $note,
           case
             when $category_type_id = 1 then
@@ -131,7 +121,6 @@ export default {
           $category_group_id: data.category_group_id,
           $related_category_id: data.related_category_id,
           $distribution_class_id: data.distribution_class_id,
-          $name: data.name,
           $description: data.description,
           $note: data.note,
         });
@@ -151,7 +140,6 @@ export default {
           category_group_id = $category_group_id,
           related_category_id = $related_category_id,
           distribution_class_id = $distribution_class_id,
-          name = $name,
           description = $description,
           note = $note
           WHERE id = $id
@@ -161,7 +149,6 @@ export default {
           $category_group_id: data.category_group_id,
           $related_category_id: data.related_category_id,
           $distribution_class_id: data.distribution_class_id,
-          $name: data.name,
           $description: data.description,
           $note: data.note,
         });

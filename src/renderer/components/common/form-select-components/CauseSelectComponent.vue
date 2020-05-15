@@ -28,7 +28,8 @@ export default {
         .filter(item => item.is_inactive === 0 || item.id === this.value)
         .map(item => ({
           value: item.id,
-          label: item.name,
+          label: item.category_name,
+          subtext: item.category_subtext,
           disabled: (item.is_inactive === 1),
           ...item,
         }));

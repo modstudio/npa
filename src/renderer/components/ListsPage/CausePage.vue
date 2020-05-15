@@ -29,10 +29,10 @@
     <div class="flex-table mt-3">
       <div class="flex-table__header">
           <div class="flex-table__header-item col-2">
-              Name
+              Recipient/Name
           </div>
           <div class="flex-table__header-item col-2">
-              Recipient
+              Description
           </div>
           <div class="flex-table__header-item col-6">
               Metrics

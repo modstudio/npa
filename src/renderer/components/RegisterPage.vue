@@ -230,6 +230,7 @@ export default {
 
   created() {
     this.setFilters();
+    this.runReport();
     Bus.$on('update-contacts', this.onUpdate);
     Bus.$on('update-category', this.onUpdate);
     Bus.$on('update-dist-class', this.onUpdate);

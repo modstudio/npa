@@ -12,10 +12,6 @@
       <div class="flex-table__row w-shadow"
         @click="$emit('view', item)"
         :class="{'active': currentItem && currentItem.id === item.id}">
-        <div class="flex-table__row-item col-2 font-weight-bold"
-            tabindex="0">
-            {{item.name}}
-        </div>
         <div class="flex-table__row-item col-2"
             tabindex="0">
           <div class="flex-grow-1">
@@ -26,6 +22,9 @@
             ></contact-name-field-component>
           </div>
           <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
+        </div>
+        <div class="flex-table__row-item col-2" tabindex="0">
+            {{item.description}}
         </div>
         <div class="flex-table__row-item col-2"  tabindex="0">
           <metric-info-component 
