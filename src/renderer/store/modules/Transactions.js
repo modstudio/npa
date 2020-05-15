@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import { buildWhere, buildLimitOffset, queryFrom, querySelect } from './Transations/queryHelpers';
+import { buildWhere, buildLimitOffset, queryFrom, querySelect } from './queryHelpers/transactionQueryHelpers';
+import { categoryName, relatedCategoryName } from './queryHelpers/categoryQueryHelpers';
 
 const loanTransactionTypeIds = [3, 4];
 const pikadonTransactionTypeIds = [5, 6];
@@ -321,14 +322,8 @@ export default {
         SELECT categories.category_type_id,
         category_types.name as category_type_name,
         category_id,
-        case 
-          when categories.category_type_id = 1 THEN categories.name
-          else case 
-                when category_contact.company_name <> '' then category_contact.company_name
-                else category_contact.first_name || ' ' || category_contact.last_name
-              end
-        end as category_name,
-        related_category.name as related_category_name,
+        ${categoryName} as category_name,
+        ${relatedCategoryName} as related_category_name,
         categories.description as category_description,
         categories.category_type_id,
         round(sum(amount), 2) as sum_amount
@@ -341,6 +336,8 @@ export default {
           JOIN category_types ON categories.category_type_id = category_types.id
           LEFT JOIN categories related_category 
             ON categories.related_category_id = related_category.id
+          LEFT JOIN contacts related_category_contact
+            ON related_category.contact_id = related_category_contact.id            
           WHERE ${where}
           group by category_id
           order BY categories.category_type_id, category_name           

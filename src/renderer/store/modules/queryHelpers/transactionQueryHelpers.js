@@ -1,3 +1,5 @@
+import { categoryName, relatedCategoryName } from './categoryQueryHelpers';
+
 function buildWhere(filter) {
   if (!filter) {
     return '1 = 1';
@@ -45,13 +47,7 @@ function buildWhere(filter) {
         `transaction_types.name like '%${search}%'`,
         `transaction_methods.name like '%${search}%'`,
         `transactions.number like '%${search}%'`,
-        `case 
-            when categories.category_type_id = 1 THEN categories.name
-            else case 
-                  when category_contact.company_name <> '' then category_contact.company_name
-                  else category_contact.first_name || ' ' || category_contact.last_name
-                end
-          end like '%${search}%'`,
+        `${categoryName} like '%${search}%'`,
         `(transactions.transaction_type_id <> 11 AND categories.description like '%${search}%')`,
         `transactions.amount like '%${search}%'`,
       ];
@@ -59,7 +55,7 @@ function buildWhere(filter) {
         whereOr.push(`transactions.note like '%${search}%'`);
       }
       if (filter.category.includes(2)) {
-        whereOr.push(`related_category.name like '%${search}%'`);
+        whereOr.push(`${relatedCategoryName} like '%${search}%'`);
       }
       whereSearch.push(`(${whereOr.join(' OR ')})`);
     });
@@ -75,20 +71,16 @@ function buildLimitOffset(page, pageSize = 50) {
 const transactionSubquery = `
   select transactions.*,
   categories.category_type_id,
-    case 
-          when categories.category_type_id = 1 THEN categories.name
-          else case 
-                when category_contact.company_name <> '' then category_contact.company_name
-                else category_contact.first_name || ' ' || category_contact.last_name
-              end
-        end as category_name,
+    ${categoryName} as category_name,
     categories.description as category_description,
-        related_category.name as related_category_name
+    ${relatedCategoryName} as related_category_name
   from transactions 
   JOIN categories ON transactions.category_id = categories.id
   JOIN contacts category_contact ON categories.contact_id = category_contact.id
   LEFT JOIN categories related_category 
-  ON categories.related_category_id = related_category.id      
+  ON categories.related_category_id = related_category.id
+  LEFT JOIN contacts related_category_contact
+  ON related_category.contact_id = related_category_contact.id    
 `;
 const queryFrom = `
   FROM transactions 
@@ -99,6 +91,8 @@ const queryFrom = `
   JOIN contacts category_contact ON categories.contact_id = category_contact.id
   LEFT JOIN categories related_category 
     ON categories.related_category_id = related_category.id
+  LEFT JOIN contacts related_category_contact
+    ON related_category.contact_id = related_category_contact.id     
   -- Get transaction TO item
   LEFT JOIN (${transactionSubquery}) transfer_transaction
     ON transactions.id = transfer_transaction.related_transaction_id
@@ -110,13 +104,7 @@ const queryFrom = `
 const querySelect = `SELECT transactions.*,
   transaction_types.name as type_name,
   transaction_methods.name as method_name,
-  case 
-    when categories.category_type_id = 1 THEN categories.name
-    else case 
-          when category_contact.company_name <> '' then category_contact.company_name
-          else category_contact.first_name || ' ' || category_contact.last_name
-        end
-  end as category_name,
+  ${categoryName} as category_name,
   case
     when categories.category_type_id = 3 then categories.description
     else ''
@@ -126,7 +114,7 @@ const querySelect = `SELECT transactions.*,
   category_contact.id as category_contact_id,
   contacts.company_name as contact_company_name, 
   contacts.first_name as contact_first_name, contacts.last_name as contact_last_name,
-  related_category.name as related_category_name,
+  ${relatedCategoryName} as related_category_name,
   -- transaction TO
   transfer_transaction.id as transfer_transaction_id,
   transfer_transaction.category_id as transfer_transaction_category_id,

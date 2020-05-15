@@ -23,7 +23,6 @@
               <!-- Description -->
               <text-input-component
                 v-model="form.description"
-                rules="required"
                 label="Description"
               ></text-input-component>             
               <!-- Note -->
