@@ -71,6 +71,13 @@
             ></amount-info-component>
           </div>       
         </div>
+        <button type="button" class="btn btn-sm"
+          :disabled="!isChecked || isProcessing"
+          @click="duplicate"
+        >
+         <img class="mr-2" src="static/images/copy.svg">
+          Duplicate
+        </button>        
         <button type="button" class="btn btn-secondary btn-sm" @click="addNewTransfer">
           Add Transfer
         </button>
@@ -103,6 +110,13 @@
         </div>
         <div class="position-relative" v-for="item in data"
           :key="item.id">
+          <label class="form-checkbox form-checkbox--no-text form-checkbox--light list-components__item-move"
+            @click.stop.prevent="selectItem(item)">
+              <input type="checkbox"
+                  v-model="item.checked" name="checked"
+                  class="form-check-input">
+              <span></span>
+          </label>
           <register-row-component
             :item="item"
             :current-item="currentItem"
@@ -124,6 +138,7 @@
         @hidepanel="hidePanel"
         @update="onUpdate"
         @add-new="addNewTransfer"
+        @duplicate="duplicateCurrentItem"
       ></register-transfer-side-bar-component> 
       <register-side-bar-component
         :current-item="currentItem"
@@ -132,6 +147,7 @@
         @hidepanel="hidePanel"
         @update="onUpdate"
         @add-new="addItem"
+        @duplicate="duplicateCurrentItem"
       ></register-side-bar-component>     
     </layouts-container-lg-component>
   </div>
@@ -193,6 +209,7 @@ export default {
       notesFilter: 0,
       inactiveFilter: 0,
       reportData: null,
+      isProcessing: false,
     };
   },
 
@@ -225,6 +242,10 @@ export default {
 
     transferTypeId() {
       return this.$store.getters['TransactionTypes/transferTypeId'];
+    },
+
+    isChecked() {
+      return this.data.some(item => item.checked);
     },
   },
 
@@ -278,15 +299,24 @@ export default {
       this.isViewTransferPanel = false;
     },
 
+    duplicateCurrentItem() {
+      this.currentItem = {
+        ...this.currentItem,
+        id: null,
+        date: new Date(),
+        amount: 0,
+      };
+      this.viewPanelMode = 'duplicate';
+      this.viewPanel();
+    },
+
     hidePanel() {
       this.isViewPanel = false;
       this.isViewTransferPanel = false;
       this.currentItem = null;
     },
 
-    viewItem(item) {
-      this.currentItem = item;
-      this.viewPanelMode = 'edit';
+    viewPanel() {
       if (this.currentItem.transaction_type_id === this.transferTypeId) {
         this.isViewTransferPanel = true;
         this.isViewPanel = false;
@@ -294,6 +324,12 @@ export default {
         this.isViewPanel = true;
         this.isViewTransferPanel = false;
       }
+    },
+
+    viewItem(item) {
+      this.currentItem = item;
+      this.viewPanelMode = 'edit';
+      this.viewPanel();
     },
 
     resetInfinter() {
@@ -369,6 +405,45 @@ export default {
     sortData() {
       this.setSortClasses();
       this.resetInfinter();
+    },
+
+    selectItem(item) {
+      const checked = !item.checked;
+      this.$store.commit('Transactions/updateItem', {
+        ...item,
+        checked,
+      });
+      // Update related item for transfer
+      if (item.transaction_type_id === this.transferTypeId) {
+        let relatedItem;
+        if (item.related_transaction_id) {
+          relatedItem = this.data
+            .find(transaction => (transaction.id === item.related_transaction_id));
+        } else {
+          relatedItem = this.data
+            .find(transaction => (transaction.related_transaction_id === item.id));
+        }
+        if (relatedItem) {
+          this.$store.commit('Transactions/updateItem', {
+            ...relatedItem,
+            checked,
+          });
+        }
+      }
+      this.hidePanel();
+    },
+
+    async duplicate() {
+      this.isProcessing = true;
+      await Promise.all(this.data.filter(item => item.checked)
+        .map(async (item) => {
+          // for transfer use second transaction record only
+          if (item.transaction_type_id !== this.transferTypeId || item.related_transaction_id) {
+            await this.$store.dispatch('Transactions/duplicate', item);
+          }
+        }));
+      this.resetInfinter();
+      this.isProcessing = false;
     },
   },
 };

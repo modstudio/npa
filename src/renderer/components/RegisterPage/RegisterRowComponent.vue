@@ -1,7 +1,7 @@
 <template>
   <div class="flex-table__row flex-table__row--double w-shadow"
     @click="$emit('view')"
-    :class="{'active': isActiveRow}">
+    :class="{'active': isActiveRow, 'flex-table__row--double--checked': item.checked}">
     <div class="flex-table__row-item col-2"
         tabindex="0">
       {{$root.formatDate(item.date)}}
@@ -69,7 +69,7 @@ export default {
 
   computed: {
     isActiveRow() {
-      return this.currentItem && (this.currentItem.id === this.item.id
+      return this.currentItem && this.currentItem.id && (this.currentItem.id === this.item.id
         || this.currentItem.id === this.item.related_transaction_id
         || this.currentItem.related_transaction_id === this.item.id);
     },
