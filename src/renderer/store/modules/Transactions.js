@@ -10,8 +10,12 @@ const debitTransactionTypeIds = [2, 7, 3, 6];
 const creditTransactionTypeIds = [1, 4, 5, 9];
 const startingBalanceTransactionTypeId = 10;
 const pledgePaymentId = 9;
+const transferId = 11;
 
 function parseAmount(amount) {
+  if (typeof (amount) === 'number') {
+    return amount;
+  }
   return Number.parseFloat(amount.replace(',', ''));
 }
 
@@ -345,6 +349,29 @@ export default {
         context.commit('setReportData', data);
       } catch (err) {
         console.log('Error get data: ', err);
+      }
+    },
+
+    async duplicate(context, item) {
+      const date = moment().format('YYYY-MM-DD');
+      if (item.transaction_type_id !== transferId) {
+        await context.dispatch('addData', {
+          ...item,
+          date,
+        });
+      } else {
+        const relatedTransaction = context.state.data
+          .find(transaction => transaction.id === item.related_transaction_id);
+        if (relatedTransaction) {
+          await context.dispatch('addTransfer', {
+            ...item,
+            category_id: relatedTransaction.category_id,
+            transfer_category_id: item.category_id,
+            date,
+          });
+        } else {
+          console.log('Error add transfer, can not find related transaction', item.related_transaction_id);
+        }
       }
     },
   },

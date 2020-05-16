@@ -12,6 +12,12 @@
         <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
             <div class="info-sidebar__block-header">
               <h4>Transaction</h4>
+              <button type="button" class="btn btn-sm" v-if="!isNewMode"
+                @click="duplicate"
+              >
+                <img class="mr-2" src="static/images/copy.svg">
+                Duplicate
+              </button> 
             </div>
             <ValidationObserver ref="observer">
               <!-- Date -->
@@ -163,7 +169,7 @@ export default {
 
   computed: {
     isNewMode() {
-      return this.mode === 'new';
+      return this.mode === 'new' || this.mode === 'duplicate';
     },
 
     headerName() {
@@ -254,7 +260,7 @@ export default {
         this.$root.scrollUp(this.$refs.form);
       }
       this.form = this.newForm();
-      if (!this.isNewMode && this.currentItem) {
+      if ((!this.isNewMode || this.mode === 'duplicate') && this.currentItem) {
         this.form = { ...this.form, ...this.currentItem };
         this.form.date = moment(this.form.date).toDate();
         if (this.isStartingBalance) {
@@ -292,6 +298,10 @@ export default {
 
     callNewForm() {
       this.$emit('add-new');
+    },
+
+    duplicate() {
+      this.$emit('duplicate');
     },
   },
 };

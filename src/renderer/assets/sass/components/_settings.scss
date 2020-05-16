@@ -180,6 +180,9 @@
             align-items: flex-start;
             line-height: 2.12;
           }
+          &--checked {
+            background: linear-gradient(to bottom, rgba($color-primary-200, .25) 50%, $color-primary-200 51%);
+          }
         }
     }
     &__row-item {
