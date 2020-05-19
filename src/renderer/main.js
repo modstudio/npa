@@ -89,6 +89,7 @@ EventBus.$on('db-init', () => {
     ],
     created() {
       EventBus.$on('db-restored', this.rereadStore);
+      this.$store.dispatch('Settings/getData');
     },
     destroyed() {
       EventBus.$off('db-restored', this.rereadStore);

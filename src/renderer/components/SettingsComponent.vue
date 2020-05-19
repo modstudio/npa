@@ -17,6 +17,7 @@
               @change="importDb"
               v-model="importFile"
             ></file-upload-component>
+
             <div class="info-sidebar__block-header">
               <h4>Export database</h4>
             </div>
@@ -27,7 +28,16 @@
               <i class="icon icon-Export"></i>
               <span>Export</span>
               <loader-component :is-shown="isExporting"></loader-component>
-            </button>           
+            </button>
+
+            <div class="info-sidebar__block-header">
+              <h4>Pledge donation</h4>
+            </div>
+            <checkbox-component
+              v-model="form.autoCreateDonationForPledge"
+              label="Automatically create a donation entry for each pledge"
+            ></checkbox-component>
+
           </div>
           <div class="info-sidebar__footer">
             <div class="d-flex justify-content-end">
@@ -67,6 +77,9 @@ export default {
       isImportDialog: false,
       importFile: null,
       isExporting: false,
+      form: {
+        autoCreateDonationForPledge: false,
+      },
     };
   },
   created() {
@@ -77,8 +90,19 @@ export default {
     Bus.$off('show-settings', this.showPanel);
   },
 
+  computed: {
+    autoCreateDonationForPledge() {
+      return this.$store.getters['Settings/autoCreateDonationForPledge'];
+    },
+  },
+
   methods: {
+    initForm() {
+      this.form.autoCreateDonationForPledge = Number(this.autoCreateDonationForPledge);
+    },
+
     showPanel() {
+      this.initForm();
       this.isShown = true;
     },
 
@@ -88,7 +112,15 @@ export default {
       this.importFile = null;
     },
 
-    save() {
+    async save() {
+      this.isProcessing = true;
+      await this.$store.dispatch('Settings/updateItem', {
+        itemName: 'is_auto_create_donation_for_pledge',
+        value: this.form.autoCreateDonationForPledge,
+      });
+      await this.$store.dispatch('Settings/getData');
+      this.initForm();
+      this.isProcessing = false;
       this.hidePanel();
     },
 
