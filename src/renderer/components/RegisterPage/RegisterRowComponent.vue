@@ -42,7 +42,10 @@
       ></amount-info-component>
     </div>
     <div class="flex-table__row-item col-2 text-wrap"
-        tabindex="0">
+      v-b-tooltip="{trigger: $root.tooltipTrigger,
+        title: item.note}"
+      ischecktooltip="true"
+      tabindex="0">
       {{ item.note }}
     </div>                                               
   </div>

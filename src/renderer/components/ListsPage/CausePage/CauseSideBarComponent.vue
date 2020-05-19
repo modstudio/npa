@@ -26,7 +26,7 @@
                 label="Recipient"
                 placeholder="Choose recipient"
                 rules="required"
-                @add-new="addNewContact"
+                @add-new="$emit('add-new-contact')"
               ></contact-select-component>
               <!-- Description -->
               <text-input-component
@@ -139,11 +139,6 @@ export default {
     async updateItem() {
       const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
-    },
-
-    addNewContact() {
-      console.log('====', this.form.contact_id);
-      this.$emit('add-new-contact');
     },
 
     setNewContactId(id) {

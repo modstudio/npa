@@ -54,6 +54,7 @@ export default {
                 subtext: item.category_subtext,
                 name: `${item.category_name} ${item.category_subtext}`,
                 disabled: (item.is_inactive === 1),
+                is_inactive: item.is_inactive,
               }],
             });
             currentTypeId = item.category_type_id;
@@ -64,6 +65,7 @@ export default {
               subtext: item.category_subtext,
               name: `${item.category_name} ${item.category_subtext}`,
               disabled: (item.is_inactive === 1),
+              is_inactive: item.is_inactive,
             });
           }
           return data;

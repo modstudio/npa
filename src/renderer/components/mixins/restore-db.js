@@ -1,6 +1,7 @@
 module.exports = {
   methods: {
     rereadStore() {
+      this.$store.dispatch('Settings/getData');
       this.$store.dispatch('CategoryTypes/getData');
       this.$store.dispatch('TrxMethods/getData');
       this.$store.dispatch('TransactionTypes/getData');
