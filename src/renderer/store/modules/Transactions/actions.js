@@ -96,7 +96,7 @@ export default {
           transaction_type_id: donationId,
           category_id: data.category_id,
           amount: data.amount,
-          note: `Automatically added for the pledge with ID num #${stm.lastID}`,
+          note: `Added for pledge taken ID ${stm.lastID}`,
         });
       }
       result = true;
