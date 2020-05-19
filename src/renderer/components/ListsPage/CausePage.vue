@@ -91,7 +91,16 @@
       @hidepanel="hideCausePanel"
       @update="onUpdate"
       @add-new="addCause"
+      @add-new-contact="showContactForm"
     ></cause-side-bar-component>
+
+    <contact-side-bar-component
+      :is-shown="isViewContactForm"
+      :is-add-new-contact="true"
+      mode="new"
+      @hidepanel="hideContactForm"
+      @update="onUpdateContact"
+    ></contact-side-bar-component>    
   </div>
 </template>
 
@@ -103,6 +112,8 @@ import CauseSideBarComponent from './CausePage/CauseSideBarComponent';
 import CauseGroupRowComponent from './CausePage/CauseGroupRowComponent';
 import CausesListComponent from './CausePage/CausesListComponent';
 import Bus from '../../shared/EventBus';
+import ContactSideBarComponent from '../ContactsPage/ContactSideBarComponent';
+import addNewContactMixin from '../mixins/add-new-contact';
 
 export default {
   components: {
@@ -111,10 +122,12 @@ export default {
     CauseSideBarComponent,
     CauseGroupRowComponent,
     CausesListComponent,
+    ContactSideBarComponent,
   },
 
   mixins: [
     SortOrderMixin,
+    addNewContactMixin,
   ],
 
   activated() {
@@ -140,6 +153,7 @@ export default {
       causeGroups: [],
       collapseStatusBeforeFilter: null,
       inactiveFilter: 0,
+      addNewContactEvent: 'cause-new-contact-id',
     };
   },
 
@@ -228,6 +242,7 @@ export default {
     },
 
     viewCauseGroup(item) {
+      this.hideContactForm();
       this.hideCausePanel();
       this.currentGroupItem = item;
       this.viewGroupPanelMode = 'edit';
@@ -247,6 +262,7 @@ export default {
     },
 
     viewCause(item) {
+      this.hideContactForm();
       this.hideGroupPanel();
       this.currentCauseItem = item;
       this.viewCausePanelMode = 'edit';

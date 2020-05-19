@@ -20,7 +20,6 @@ export default {
   computed: {
     data() {
       return this.$store.state.TrxMethods.data
-        .filter(item => item.is_inactive === 0 || item.id === this.value)
         .map(item => ({
           value: item.id,
           label: item.name,

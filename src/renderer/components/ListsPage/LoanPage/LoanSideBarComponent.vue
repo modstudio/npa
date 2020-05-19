@@ -19,6 +19,7 @@
                 v-model="form.contact_id"
                 label="Name"
                 rules="required"
+                @add-new="$emit('add-new-contact')"
               ></contact-select-component>
               <!-- Description -->
               <text-input-component
@@ -66,6 +67,7 @@
 import ItemDeleteDialogComponent from '../../common/right-side-bar/ItemDeleteDialogComponent';
 import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
 import sideBarPanelMixin from '../../mixins/side-bar-panel';
+import Bus from '../../../shared/EventBus';
 
 export default {
   components: {
@@ -97,6 +99,14 @@ export default {
     };
   },
 
+  created() {
+    Bus.$on('loan-new-contact-id', this.setNewContactId);
+  },
+
+  destroyed() {
+    Bus.$off('loan-new-contact-id', this.setNewContactId);
+  },
+
   methods: {
     newForm() {
       return {
@@ -115,6 +125,10 @@ export default {
     async updateItem() {
       const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
+    },
+
+    setNewContactId(id) {
+      this.form.contact_id = id;
     },
   },
 };

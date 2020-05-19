@@ -148,7 +148,17 @@
         @update="onUpdate"
         @add-new="addItem"
         @duplicate="duplicateCurrentItem"
-      ></register-side-bar-component>     
+        @add-new-contact="showContactForm"
+      ></register-side-bar-component>
+
+      <contact-side-bar-component
+        :is-shown="isViewContactForm"
+        :is-add-new-contact="true"
+        mode="new"
+        @hidepanel="hideContactForm"
+        @update="onUpdateContact"
+      ></contact-side-bar-component>
+  
     </layouts-container-lg-component>
   </div>
 </template>
@@ -162,6 +172,8 @@ import ContactNameFieldComponent from './common/ContactNameFieldComponent';
 import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
 import RegisterReportComponent from './RegisterPage/RegisterReportComponent';
 import InfinityLoadingComponent from './common/InfinityLoadingComponent';
+import ContactSideBarComponent from './ContactsPage/ContactSideBarComponent';
+import addNewContactMixin from './mixins/add-new-contact';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -173,10 +185,12 @@ export default {
     RegisterRowComponent,
     RegisterReportComponent,
     InfinityLoadingComponent,
+    ContactSideBarComponent,
   },
 
   mixins: [
     tableSortColumnMixin,
+    addNewContactMixin,
   ],
 
   activated() {
@@ -210,6 +224,7 @@ export default {
       inactiveFilter: 0,
       reportData: null,
       isProcessing: false,
+      addNewContactEvent: 'transaction-new-contact-id',
     };
   },
 
@@ -324,6 +339,7 @@ export default {
         this.isViewPanel = true;
         this.isViewTransferPanel = false;
       }
+      this.hideContactForm();
     },
 
     viewItem(item) {
@@ -431,6 +447,7 @@ export default {
         }
       }
       this.hidePanel();
+      this.hideContactForm();
     },
 
     async duplicate() {

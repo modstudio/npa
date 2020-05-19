@@ -95,6 +95,7 @@
                 v-model="form.contact_id"
                 label="Payee"
                 :rules="{required: isDistribution}"
+                @add-new="$emit('add-new-contact')"
               ></contact-select-component>
               <!-- Amount -->
               <currency-input-component
@@ -139,6 +140,7 @@
 </template>
 
 <script>
+import Bus from '../../shared/EventBus';
 import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
 import TransactionTypeSelectComponent from '../common/form-select-components/TransactionTypeSelectComponent';
 import TrxMethodSelectComponent from '../common/form-select-components/TrxMethodSelectComponent';
@@ -236,6 +238,14 @@ export default {
     },
   },
 
+  created() {
+    Bus.$on('transaction-new-contact-id', this.setNewContactId);
+  },
+
+  destroyed() {
+    Bus.$off('transaction-new-contact-id', this.setNewContactId);
+  },
+
   methods: {
     newForm() {
       return {
@@ -302,6 +312,10 @@ export default {
 
     duplicate() {
       this.$emit('duplicate');
+    },
+
+    setNewContactId(id) {
+      this.form.contact_id = id;
     },
   },
 };
