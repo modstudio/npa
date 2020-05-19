@@ -95,7 +95,16 @@
       @hidepanel="hidePanel"
       @update="onUpdate"
       @add-new="addItem"
+      @add-new-contact="showContactForm"      
     ></pledge-side-bar-component>
+
+    <contact-side-bar-component
+      :is-shown="isViewContactForm"
+      :is-add-new-contact="true"
+      mode="new"
+      @hidepanel="hideContactForm"
+      @update="onUpdateContact"
+    ></contact-side-bar-component>     
   </div>
 </template>
 
@@ -103,16 +112,20 @@
 import PledgeSideBarComponent from './PledgePage/PledgeSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
 import Bus from '../../shared/EventBus';
+import ContactSideBarComponent from '../ContactsPage/ContactSideBarComponent';
+import addNewContactMixin from '../mixins/add-new-contact';
 
 const tableSortColumnMixin = require('../mixins/table-sort-column');
 export default {
   components: {
     PledgeSideBarComponent,
     ContactNameFieldComponent,
+    ContactSideBarComponent,
   },
 
   mixins: [
     tableSortColumnMixin,
+    addNewContactMixin,
   ],
 
   activated() {
@@ -129,6 +142,7 @@ export default {
       sortField: 'name',
       sortOrder: 'asc',
       inactiveFilter: 0,
+      addNewContactEvent: 'pledge-new-contact-id',
     };
   },
 
@@ -190,6 +204,7 @@ export default {
     },
 
     viewItem(item) {
+      this.hideContactForm();
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.isViewPanel = true;

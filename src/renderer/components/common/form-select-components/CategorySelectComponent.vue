@@ -44,7 +44,6 @@ export default {
       }
       let currentTypeId = null;
       return this.data
-        .filter(item => (item.is_inactive === 0 || item.id === this.value))
         .reduce((data, item) => {
           if (currentTypeId !== item.category_type_id) {
             data.push({

@@ -25,7 +25,6 @@ export default {
   computed: {
     data() {
       return this.$store.getters['Categories/getPledges']
-        .filter(item => item.is_inactive === 0 || item.id === this.value)
         .map(item => ({
           value: item.id,
           label: (item.contact_company_name ? item.contact_company_name

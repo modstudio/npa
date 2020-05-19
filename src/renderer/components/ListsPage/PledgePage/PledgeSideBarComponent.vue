@@ -19,6 +19,7 @@
                 v-model="form.contact_id"
                 label="Contact"
                 rules="required"
+                @add-new="$emit('add-new-contact')"
               ></contact-select-component>
               <!-- Cause -->
               <cause-select-component
@@ -68,6 +69,7 @@ import ItemDeleteDialogComponent from '../../common/right-side-bar/ItemDeleteDia
 import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
 import CauseSelectComponent from '../../common/form-select-components/CauseSelectComponent';
 import sideBarPanelMixin from '../../mixins/side-bar-panel';
+import Bus from '../../../shared/EventBus';
 
 export default {
   components: {
@@ -100,6 +102,14 @@ export default {
     };
   },
 
+  created() {
+    Bus.$on('pledge-new-contact-id', this.setNewContactId);
+  },
+
+  destroyed() {
+    Bus.$off('pledge-new-contact-id', this.setNewContactId);
+  },
+
   methods: {
     newForm() {
       return {
@@ -119,6 +129,10 @@ export default {
     async updateItem() {
       const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
+    },
+
+    setNewContactId(id) {
+      this.form.contact_id = id;
     },
   },
 };

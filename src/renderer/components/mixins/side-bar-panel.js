@@ -61,7 +61,7 @@ export default {
       }
       this.form = this.newForm();
       if (!this.isNewMode && this.currentItem) {
-        this.form = { ...this.currentItem };
+        this.form = { ...this.form, ...this.currentItem };
         this.checkAssociation();
       }
     },
@@ -93,7 +93,7 @@ export default {
       const result = await this.save();
       this.isSavingAndCloseProcess = false;
       if (result) {
-        this.$emit('update');
+        this.$emit('update', result);
         this.$emit('hidepanel');
       }
     },

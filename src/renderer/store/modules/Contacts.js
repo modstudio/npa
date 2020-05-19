@@ -35,7 +35,7 @@ export default {
     async addContact(context, contact) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO contacts (
+        const stm = await Vue.db.run(`INSERT INTO contacts (
           company_name, first_name, last_name, phone_number, phone_ext, address,
           city, state, zip, country, id_number
         ) VALUES ($company_name, $first_name, $last_name, $phone_number, $phone_ext, $address, 
@@ -53,7 +53,7 @@ export default {
           $country: contact.country,
           $id_number: contact.id_number,
         });
-        result = true;
+        result = stm.lastID;
       } catch (err) {
         console.log('error insert contact', err);
         result = false;

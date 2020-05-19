@@ -29,6 +29,7 @@
                 v-for="item in group.data" :key="item.id"
                 :item="item"
                 :search-text="searchText"
+                :selected-value="selected"
                 :class="{'d-flex': item.icon}">
               </option-item-component>     
             </optgroup>
@@ -37,6 +38,7 @@
             v-for="item in data" :key="item.id"
             :item="item"
             :search-text="searchText"
+            :selected-value="selected"
             :class="{'d-flex': item.icon}">
           </option-item-component>
       </select>
@@ -201,14 +203,16 @@ export default {
       }
     },
 
-    sourceData(newData) {
-      if (newData) {
-        this.data = newData;
-      } else if (this.data.length) {
-        this.data = [];
-      }
-      if (this.isMounted) {
-        this.$nextTick(() => this.setValueSelectpicker());
+    sourceData(newData, oldData) {
+      if (!_.isEqual(newData, oldData)) {
+        if (newData) {
+          this.data = newData;
+        } else if (this.data.length) {
+          this.data = [];
+        }
+        if (this.isMounted && !_.isEqual(newData, oldData)) {
+          this.$nextTick(() => this.setValueSelectpicker());
+        }
       }
     },
 
@@ -339,7 +343,8 @@ export default {
      * on change event
      *
      */
-    onChange(e, clickedIndex, isSelected, previousValue) {
+    onChange(e, clickedIndex) {
+      const previousValue = this.value;
       const selectedData = _.filter(
         this.data,
         item => (Array.isArray(this.selected)

@@ -1,5 +1,5 @@
 <template>
-  <option v-show="!shouldBeHidden"
+  <option v-show="!shouldBeHidden && isActive"
     :value="item.value"
     :data-icon="item.icon"
     :data-subtext="item.subtext"
@@ -22,6 +22,11 @@ export default {
       type: String,
       default: null,
     },
+
+    selectedValue: {
+      type: [Number, String, Array],
+      default: null,
+    },
   },
 
   computed: {
@@ -30,6 +35,13 @@ export default {
         return this.item.name.toLowerCase().indexOf(this.searchText.toLowerCase()) === -1;
       }
       return false;
+    },
+
+    // Check if item is active
+    isActive() {
+      return !this.item.is_inactive
+        || (Array.isArray(this.selectedValue)
+          ? this.selectedValue.includes(this.item.id) : this.item.id === this.selectedValue);
     },
 
     content() {

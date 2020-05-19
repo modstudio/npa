@@ -26,6 +26,7 @@
                 label="Recipient"
                 placeholder="Choose recipient"
                 rules="required"
+                @add-new="addNewContact"
               ></contact-select-component>
               <!-- Description -->
               <text-input-component
@@ -81,6 +82,7 @@ import sideBarPanelMixin from '../../mixins/side-bar-panel';
 import CauseGroupSelectComponent from '../../common/form-select-components/CauseGroupSelectComponent';
 import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
 import DistClassSelectComponent from '../../common/form-select-components/DistClassSelectComponent';
+import Bus from '../../../shared/EventBus';
 
 export default {
   components: {
@@ -98,7 +100,7 @@ export default {
     },
 
     name() {
-      return this.currentItem ? this.currentItem.name : '';
+      return this.currentItem ? this.currentItem.category_name : '';
     },
   },
 
@@ -106,6 +108,14 @@ export default {
     return {
       checkAssociationActionName: 'Categories/checkAssociation',
     };
+  },
+
+  created() {
+    Bus.$on('cause-new-contact-id', this.setNewContactId);
+  },
+
+  destroyed() {
+    Bus.$off('cause-new-contact-id', this.setNewContactId);
   },
 
   methods: {
@@ -129,6 +139,15 @@ export default {
     async updateItem() {
       const result = await this.$store.dispatch('Categories/updateData', this.form);
       return result;
+    },
+
+    addNewContact() {
+      console.log('====', this.form.contact_id);
+      this.$emit('add-new-contact');
+    },
+
+    setNewContactId(id) {
+      this.form.contact_id = id;
     },
   },
 };

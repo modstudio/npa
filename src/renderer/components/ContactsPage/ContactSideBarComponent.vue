@@ -105,7 +105,7 @@
       </div>
       <div class="info-sidebar__footer" v-show="!isDeleteMode">
         <footer-buttons-component
-          v-if="!isDeleteMode"
+          v-if="!isDeleteMode && !isAddNewContact"
           :is-new-mode="isNewMode"
           :is-saving-and-new-process="isSavingAndNewProcess"
           :is-saving-and-close-process="isSavingAndCloseProcess"
@@ -116,6 +116,21 @@
           @delete="deleteAction"
           @cancel="$emit('hidepanel')"
         ></footer-buttons-component>
+        <!-- Add new contact mode -->
+        <div class="d-flex justify-content-end align-items-center" v-if="isAddNewContact">
+            <action-button
+              button-name="Cancel"
+              additional-class="btn-secondary w-156"
+              @click="$emit('hidepanel')"
+            ></action-button>
+            <action-button
+              button-name="Save and Resume"
+              loading-name="Saving"
+              additional-class="w-156 ml-4"
+              @click="saveAndClose"
+              :form-busy="isSavingAndCloseProcess"
+            ></action-button>
+        </div>
       </div>
     </right-side-bar-component>
   </div>
@@ -129,6 +144,13 @@ import states from '../common/states-component/states';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 
 export default {
+  props: {
+    // Property is true if we use contact sidebar separately for adding a new contact
+    isAddNewContact: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     SelectCountriesComponent,
     SelectStatesComponent,
@@ -139,6 +161,9 @@ export default {
 
   computed: {
     headerName() {
+      if (this.isAddNewContact && this.isNewMode) {
+        return 'Add new contact';
+      }
       return this.isNewMode ? 'New Contact' : `${this.name}`;
     },
 
