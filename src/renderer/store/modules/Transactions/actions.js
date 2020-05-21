@@ -91,10 +91,12 @@ export default {
       });
       const isAutoCreateDonationForPledge = (context.rootGetters['Settings/autoCreateDonationForPledge'] === '1');
       if (data.transaction_type_id === pledgeId && isAutoCreateDonationForPledge) {
+        const relatedCategory = await Vue.db.get(`SELECT related_category_id 
+          FROM categories WHERE id = ${data.category_id}`);
         await context.dispatch('addData', {
           date: data.date,
           transaction_type_id: donationId,
-          category_id: data.category_id,
+          category_id: relatedCategory.related_category_id,
           amount: data.amount,
           note: `Added for pledge taken ID ${stm.lastID}`,
         });
