@@ -101,7 +101,7 @@ export default {
     async addData(context, data) {
       let result;
       try {
-        await Vue.db.run(`INSERT INTO categories (
+        const stm = await Vue.db.run(`INSERT INTO categories (
           category_type_id,  category_group_id, contact_id, related_category_id, 
           distribution_class_id,
           description, note,
@@ -124,7 +124,7 @@ export default {
           $description: data.description,
           $note: data.note,
         });
-        result = true;
+        result = stm.lastID;
       } catch (err) {
         console.log('error insert loans', err);
         result = false;

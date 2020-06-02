@@ -95,13 +95,20 @@
       @hidepanel="hidePanel"
       @update="onUpdate"
       @add-new="addItem"
-      @add-new-contact="showContactForm"      
+      @add-new-contact="showContactForm"
+      @add-new-cause="showCauseForm"     
     ></pledge-side-bar-component>
 
+    <cause-side-bar-component
+      :is-shown="isViewCauseForm"
+      mode="dialog-add-new"
+      @hidepanel="hideCauseForm"
+      @update="onUpdateCause"
+      @add-new-contact="showContactForm"
+    ></cause-side-bar-component>
     <contact-side-bar-component
       :is-shown="isViewContactForm"
-      :is-add-new-contact="true"
-      mode="new"
+      mode="dialog-add-new"
       @hidepanel="hideContactForm"
       @update="onUpdateContact"
     ></contact-side-bar-component>     
@@ -113,7 +120,9 @@ import PledgeSideBarComponent from './PledgePage/PledgeSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
 import Bus from '../../shared/EventBus';
 import ContactSideBarComponent from '../ContactsPage/ContactSideBarComponent';
+import CauseSideBarComponent from './CausePage/CauseSideBarComponent';
 import addNewContactMixin from '../mixins/add-new-contact';
+import addNewCauseMixin from '../mixins/add-new-cause';
 
 const tableSortColumnMixin = require('../mixins/table-sort-column');
 export default {
@@ -121,11 +130,13 @@ export default {
     PledgeSideBarComponent,
     ContactNameFieldComponent,
     ContactSideBarComponent,
+    CauseSideBarComponent,
   },
 
   mixins: [
     tableSortColumnMixin,
     addNewContactMixin,
+    addNewCauseMixin,
   ],
 
   activated() {
@@ -142,7 +153,6 @@ export default {
       sortField: 'name',
       sortOrder: 'asc',
       inactiveFilter: 0,
-      addNewContactEvent: 'pledge-new-contact-id',
     };
   },
 

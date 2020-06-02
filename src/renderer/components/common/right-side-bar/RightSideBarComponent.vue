@@ -39,7 +39,7 @@ export default {
       default: '',
     },
     additionalClass: {
-      type: String,
+      type: [String, Object],
       default: null,
     },
     initEventName: {

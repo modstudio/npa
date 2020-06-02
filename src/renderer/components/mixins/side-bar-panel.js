@@ -28,7 +28,12 @@ export default {
 
   computed: {
     isNewMode() {
-      return this.mode === 'new';
+      return this.mode === 'new' || this.isAddNewDialog;
+    },
+
+    // Property is true if we use sidebar separately for adding a new item
+    isAddNewDialog() {
+      return this.mode === 'dialog-add-new';
     },
 
     isInactive() {

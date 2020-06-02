@@ -1,16 +1,15 @@
-import Bus from '../../shared/EventBus';
-
 export default {
   data() {
     return {
       isViewContactForm: false,
-      addNewContactEvent: 'add-new-contact-id',
+      newContactFormCallback: null,
     };
   },
 
   methods: {
-    showContactForm() {
+    showContactForm(callback = null) {
       this.isViewContactForm = true;
+      this.newContactFormCallback = callback;
     },
 
     hideContactForm() {
@@ -20,7 +19,9 @@ export default {
     onUpdateContact(lastId) {
       this.$store.dispatch('Contacts/getData')
         .then(() => {
-          Bus.$emit(this.addNewContactEvent, lastId);
+          if (typeof this.newContactFormCallback === 'function') {
+            this.newContactFormCallback(lastId);
+          }
         });
     },
   },

@@ -26,7 +26,7 @@
                 label="Recipient"
                 placeholder="Choose recipient"
                 rules="required"
-                @add-new="$emit('add-new-contact')"
+                @add-new="onAddNewContact"
               ></contact-select-component>
               <!-- Description -->
               <text-input-component
@@ -59,7 +59,7 @@
 
         <div class="info-sidebar__footer" v-show="!isDeleteMode">
           <footer-buttons-component
-            v-if="!isDeleteMode"
+            v-if="!isDeleteMode && !isAddNewDialog"
             :is-new-mode="isNewMode"
             :is-saving-and-new-process="isSavingAndNewProcess"
             :is-saving-and-close-process="isSavingAndCloseProcess"
@@ -70,6 +70,21 @@
             @delete="deleteAction"
             @cancel="$emit('hidepanel')"
           ></footer-buttons-component>
+          <!-- Add new item mode -->
+          <div class="d-flex justify-content-end align-items-center" v-if="isAddNewDialog">
+              <action-button
+                button-name="Cancel"
+                additional-class="btn-secondary w-156"
+                @click="$emit('hidepanel')"
+              ></action-button>
+              <action-button
+                button-name="Save and Resume"
+                loading-name="Saving"
+                additional-class="w-156 ml-4"
+                @click="saveAndClose"
+                :form-busy="isSavingAndCloseProcess"
+              ></action-button>
+          </div>          
         </div>
       </div>
     </right-side-bar-component>
@@ -82,9 +97,15 @@ import sideBarPanelMixin from '../../mixins/side-bar-panel';
 import CauseGroupSelectComponent from '../../common/form-select-components/CauseGroupSelectComponent';
 import ContactSelectComponent from '../../common/form-select-components/ContactSelectComponent';
 import DistClassSelectComponent from '../../common/form-select-components/DistClassSelectComponent';
-import Bus from '../../../shared/EventBus';
 
 export default {
+  props: {
+    // Property is true if we use contact sidebar separately for adding a new contact
+    isAddNew: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     ItemDeleteDialogComponent,
     CauseGroupSelectComponent,
@@ -96,6 +117,9 @@ export default {
 
   computed: {
     headerName() {
+      if (this.isAddNewDialog) {
+        return 'Add new cause';
+      }
       return this.isNewMode ? 'New Cause' : `${this.name}`;
     },
 
@@ -108,14 +132,6 @@ export default {
     return {
       checkAssociationActionName: 'Categories/checkAssociation',
     };
-  },
-
-  created() {
-    Bus.$on('cause-new-contact-id', this.setNewContactId);
-  },
-
-  destroyed() {
-    Bus.$off('cause-new-contact-id', this.setNewContactId);
   },
 
   methods: {
@@ -141,8 +157,10 @@ export default {
       return result;
     },
 
-    setNewContactId(id) {
-      this.form.contact_id = id;
+    onAddNewContact() {
+      this.$emit('add-new-contact', (id) => {
+        this.form.contact_id = id;
+      });
     },
   },
 };

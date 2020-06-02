@@ -6,7 +6,17 @@
     :label="label"
     placeholder="Choose Cause"    
     :source-data="data"
-  ></select-component>
+    @change="onChange"
+  >
+      <template v-slot:option>
+      <option class="color-neutral-500"
+        data-icon="icon icon-e-add"
+        :value="-1"
+      >
+        Add new cause
+      </option>      
+    </template>
+  </select-component>
 </template>
 
 <script>
@@ -42,8 +52,16 @@ export default {
 
   methods: {
     initData() {
-      if (!this.$store.state.Categories.data) {
+      if (!this.data.length) {
         this.$store.dispatch('Categories/getData');
+      }
+    },
+    onChange(value, selectedData, previousValue) {
+      if (value === -1) {
+        this.$nextTick(() => {
+          this.$emit('input', Number(previousValue));
+        });
+        this.$emit('add-new');
       }
     },
   },
