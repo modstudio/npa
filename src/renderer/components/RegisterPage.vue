@@ -387,13 +387,21 @@ export default {
         this.isViewPanel = true;
         this.isViewTransferPanel = false;
       }
-      this.hideContactForm();
+      this.hideAllForms();
     },
 
     viewItem(item) {
       this.currentItem = item;
       this.viewPanelMode = 'edit';
       this.viewPanel();
+    },
+
+    hideAllForms() {
+      this.hideContactForm();
+      this.hidePledgeForm();
+      this.hideCauseForm();
+      this.hideLoanForm();
+      this.hidePikadonForm();
     },
 
     resetInfinter() {
@@ -495,7 +503,7 @@ export default {
         }
       }
       this.hidePanel();
-      this.hideContactForm();
+      this.hideAllForms();
     },
 
     async duplicate() {
