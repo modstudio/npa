@@ -54,6 +54,7 @@
                 v-model="form.category_id"
                 label="Category"
                 rules="required"
+                @add-new="onAddNewCause"
               ></cause-select-component>
               <!-- Loan -->
               <loan-select-component
@@ -61,6 +62,7 @@
                 v-model="form.category_id"
                 label="Category"
                 rules="required"
+                @add-new="onAddNewLoan"
               ></loan-select-component>
               <!-- Pikadon -->
               <pikadon-select-component
@@ -68,6 +70,7 @@
                 v-model="form.category_id"
                 label="Category"
                 rules="required"
+                @add-new="onAddNewPikadon"
               ></pikadon-select-component>
               <!-- Pledge -->
               <pledge-select-component
@@ -75,6 +78,7 @@
                 v-model="form.category_id"
                 label="Category"
                 rules="required"
+                @add-new="onAddNewPledge"
               ></pledge-select-component>
               <!-- Starting Balance -->
               <starting-balance-category-select-component
@@ -95,7 +99,7 @@
                 v-model="form.contact_id"
                 label="Payee"
                 :rules="{required: isDistribution}"
-                @add-new="$emit('add-new-contact')"
+                @add-new="onAddNewContact"
               ></contact-select-component>
               <!-- Amount -->
               <currency-input-component
@@ -140,7 +144,6 @@
 </template>
 
 <script>
-import Bus from '../../shared/EventBus';
 import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
 import TransactionTypeSelectComponent from '../common/form-select-components/TransactionTypeSelectComponent';
 import TrxMethodSelectComponent from '../common/form-select-components/TrxMethodSelectComponent';
@@ -238,14 +241,6 @@ export default {
     },
   },
 
-  created() {
-    Bus.$on('transaction-new-contact-id', this.setNewContactId);
-  },
-
-  destroyed() {
-    Bus.$off('transaction-new-contact-id', this.setNewContactId);
-  },
-
   methods: {
     newForm() {
       return {
@@ -314,8 +309,34 @@ export default {
       this.$emit('duplicate');
     },
 
-    setNewContactId(id) {
-      this.form.contact_id = id;
+    onAddNewContact() {
+      this.$emit('add-new-contact', (id) => {
+        this.form.contact_id = id;
+      });
+    },
+
+    onAddNewCause() {
+      this.$emit('add-new-cause', (id) => {
+        this.form.category_id = id;
+      });
+    },
+
+    onAddNewPledge() {
+      this.$emit('add-new-pledge', (id) => {
+        this.form.category_id = id;
+      });
+    },
+
+    onAddNewLoan() {
+      this.$emit('add-new-loan', (id) => {
+        this.form.category_id = id;
+      });
+    },
+
+    onAddNewPikadon() {
+      this.$emit('add-new-pikadon', (id) => {
+        this.form.category_id = id;
+      });
     },
   },
 };

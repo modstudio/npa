@@ -149,12 +149,44 @@
         @add-new="addItem"
         @duplicate="duplicateCurrentItem"
         @add-new-contact="showContactForm"
+        @add-new-cause="showCauseForm"
+        @add-new-pledge="showPledgeForm"
+        @add-new-loan="showLoanForm"
+        @add-new-pikadon="showPikadonForm"
       ></register-side-bar-component>
 
+      <pledge-side-bar-component
+        :is-shown="isViewPledgeForm"
+        mode="dialog-add-new"
+        @hidepanel="hidePledgeForm"
+        @update="onUpdatePledge"
+        @add-new-contact="showContactForm"
+        @add-new-cause="showCauseForm"
+      ></pledge-side-bar-component>
+      <cause-side-bar-component
+        :is-shown="isViewCauseForm"
+        mode="dialog-add-new"
+        @hidepanel="hideCauseForm"
+        @update="onUpdateCause"
+        @add-new-contact="showContactForm"
+      ></cause-side-bar-component>
+      <loan-side-bar-component
+        :is-shown="isViewLoanForm"
+        mode="dialog-add-new"
+        @hidepanel="hideLoanForm"
+        @update="onUpdateLoan"
+        @add-new-contact="showContactForm"
+      ></loan-side-bar-component>
+      <pikadon-side-bar-component
+        :is-shown="isViewPikadonForm"
+        mode="dialog-add-new"
+        @hidepanel="hidePikadonForm"
+        @update="onUpdatePikadon"
+        @add-new-contact="showContactForm"
+      ></pikadon-side-bar-component>         
       <contact-side-bar-component
         :is-shown="isViewContactForm"
-        :is-add-new-contact="true"
-        mode="new"
+        mode="dialog-add-new"
         @hidepanel="hideContactForm"
         @update="onUpdateContact"
       ></contact-side-bar-component>
@@ -173,7 +205,15 @@ import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
 import RegisterReportComponent from './RegisterPage/RegisterReportComponent';
 import InfinityLoadingComponent from './common/InfinityLoadingComponent';
 import ContactSideBarComponent from './ContactsPage/ContactSideBarComponent';
+import CauseSideBarComponent from './ListsPage/CausePage/CauseSideBarComponent';
+import PledgeSideBarComponent from './ListsPage/PledgePage/PledgeSideBarComponent';
+import LoanSideBarComponent from './ListsPage/LoanPage/LoanSideBarComponent';
+import PikadonSideBarComponent from './ListsPage/PikadonPage/PikadonSideBarComponent';
 import addNewContactMixin from './mixins/add-new-contact';
+import addNewCauseMixin from './mixins/add-new-cause';
+import addNewPledgeMixin from './mixins/add-new-pledge';
+import addNewLoanMixin from './mixins/add-new-loan';
+import addNewPikadonMixin from './mixins/add-new-pikadon';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -186,11 +226,19 @@ export default {
     RegisterReportComponent,
     InfinityLoadingComponent,
     ContactSideBarComponent,
+    CauseSideBarComponent,
+    PledgeSideBarComponent,
+    LoanSideBarComponent,
+    PikadonSideBarComponent,
   },
 
   mixins: [
     tableSortColumnMixin,
     addNewContactMixin,
+    addNewCauseMixin,
+    addNewPledgeMixin,
+    addNewLoanMixin,
+    addNewPikadonMixin,
   ],
 
   activated() {

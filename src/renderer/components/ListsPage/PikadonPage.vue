@@ -92,8 +92,7 @@
 
     <contact-side-bar-component
       :is-shown="isViewContactForm"
-      :is-add-new-contact="true"
-      mode="new"
+      mode="dialog-add-new"
       @hidepanel="hideContactForm"
       @update="onUpdateContact"
     ></contact-side-bar-component>     

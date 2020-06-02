@@ -40,7 +40,7 @@ export default {
 
   methods: {
     initData() {
-      if (!this.$store.state.CauseGroups.data) {
+      if (!this.data.length) {
         this.$store.dispatch('CauseGroups/getData');
       }
     },
