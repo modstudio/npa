@@ -272,7 +272,8 @@ export default {
       inactiveFilter: 0,
       reportData: null,
       isProcessing: false,
-      addNewContactEvent: 'transaction-new-contact-id',
+      isLoading: false,
+      delayTimerId: null,
     };
   },
 
@@ -334,6 +335,7 @@ export default {
 
   methods: {
     async infiniteHandler($state) {
+      this.isLoading = true;
       await this.$store.dispatch('Transactions/getDataPage', {
         sortOrder: this.sortOrder,
       });
@@ -341,10 +343,11 @@ export default {
       if (this.totalRows === this.data.length) {
         $state.complete();
       }
+      this.isLoading = false;
     },
 
     onUpdate() {
-      this.resetInfinter();
+      this.resetInfiniter();
       this.runReport();
     },
 
@@ -404,13 +407,24 @@ export default {
       this.hidePikadonForm();
     },
 
-    resetInfinter() {
+    resetInfiniter() {
+      if (this.isLoading) {
+        if (this.delayTimerId) {
+          clearTimeout(this.delayTimerId);
+        }
+        this.delayTimerId = _.delay(this.resetInfiniter, 100);
+        return true;
+      }
+      if (this.delayTimerId) {
+        clearTimeout(this.delayTimerId);
+      }
       this.$store.commit('Transactions/resetInfiniter');
+      return true;
     },
 
     filterData() {
       this.setFilters();
-      this.resetInfinter();
+      this.resetInfiniter();
       this.runReport();
     },
 
@@ -476,7 +490,7 @@ export default {
 
     sortData() {
       this.setSortClasses();
-      this.resetInfinter();
+      this.resetInfiniter();
     },
 
     selectItem(item) {
@@ -515,7 +529,7 @@ export default {
             await this.$store.dispatch('Transactions/duplicate', item);
           }
         }));
-      this.resetInfinter();
+      this.resetInfiniter();
       this.isProcessing = false;
     },
   },

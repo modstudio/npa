@@ -106,7 +106,8 @@ const querySelect = `SELECT transactions.*,
   transaction_methods.name as method_name,
   ${categoryName} as category_name,
   case
-    when categories.category_type_id = 3 then categories.description
+    when categories.category_type_id = 1 OR categories.category_type_id = 3
+      then categories.description
     else ''
   end as category_description,
   categories.category_type_id,
