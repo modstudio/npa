@@ -61,7 +61,7 @@ export default {
         FROM transactions
         GROUP BY category_id        
         `;
-        const data = await Vue.db.all(`SELECT categories.*,
+        const categoryQuery = `SELECT categories.*,
         category_types.name as category_type_name,
         ${categoryName} as category_name,
         ${relatedCategoryName} as related_category_name,        
@@ -91,7 +91,8 @@ export default {
             when category_contact.company_name <> '' then category_contact.company_name
             else category_contact.first_name || ' ' || category_contact.last_name
           end
-        `);
+        `;
+        const data = await Vue.db.all(categoryQuery);
         context.commit(mutationName, data);
       } catch (err) {
         console.log('Error get data: ', err);
