@@ -20,7 +20,12 @@
                 label="Contact"
                 rules="required"
                 @add-new="onAddNewContact"
-              ></contact-select-component>         
+              ></contact-select-component> 
+              <!-- Exclude from full export -->
+              <checkbox-component
+                v-model="form.is_excluded_from_full_export"
+                label="Exclude from full export"
+              ></checkbox-component>        
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
@@ -117,6 +122,7 @@ export default {
         id: null,
         category_type_id: 4,
         contact_id: null,
+        is_excluded_from_full_export: 0,
         note: '',
       };
     },

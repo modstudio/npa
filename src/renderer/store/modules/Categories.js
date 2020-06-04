@@ -105,11 +105,11 @@ export default {
         const stm = await Vue.db.run(`INSERT INTO categories (
           category_type_id,  category_group_id, contact_id, related_category_id, 
           distribution_class_id,
-          description, note,
+          description, is_excluded_from_full_export, note,
           sort_order
         ) VALUES ($category_type_id, $category_group_id, $contact_id, $related_category_id, 
           $distribution_class_id,
-          $description, $note,
+          $description, $is_excluded_from_full_export, $note,
           case
             when $category_type_id = 1 then
               (select ifnull(max(sort_order), 0) + 1 from categories 
@@ -123,6 +123,7 @@ export default {
           $related_category_id: data.related_category_id,
           $distribution_class_id: data.distribution_class_id,
           $description: data.description,
+          $is_excluded_from_full_export: data.is_excluded_from_full_export,
           $note: data.note,
         });
         result = stm.lastID;
@@ -142,6 +143,7 @@ export default {
           related_category_id = $related_category_id,
           distribution_class_id = $distribution_class_id,
           description = $description,
+          is_excluded_from_full_export = $is_excluded_from_full_export,
           note = $note
           WHERE id = $id
         `, {
@@ -151,6 +153,7 @@ export default {
           $related_category_id: data.related_category_id,
           $distribution_class_id: data.distribution_class_id,
           $description: data.description,
+          $is_excluded_from_full_export: data.is_excluded_from_full_export,
           $note: data.note,
         });
         result = true;
