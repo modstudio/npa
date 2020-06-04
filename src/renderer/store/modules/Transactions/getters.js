@@ -7,6 +7,7 @@ import {
   creditTransactionTypeIds,
   pledgePaymentId,
   startingBalanceTransactionTypeId,
+  depositTransactionTypeId,
 } from './constants';
 
 export default {
@@ -22,6 +23,8 @@ export default {
     transactionTypeId === pledgePaymentId,
   isStartingBalance: () => transactionTypeId =>
     transactionTypeId === startingBalanceTransactionTypeId,
+  isDeposit: () => transactionTypeId =>
+    transactionTypeId === depositTransactionTypeId,
   transaction: state => transactionId => _.find(state.data, { id: transactionId }),
   reportForCategoryType: state => categoryTypeId => state.data
     .filter(item => item.category_type_id === categoryTypeId),

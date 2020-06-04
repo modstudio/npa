@@ -32,7 +32,7 @@
                 rules="required"
                 @change="onTypeChange"
               ></transaction-type-select-component>
-              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance">
+              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance && !isDeposit">
                 <div class="col-12 col-sm-6">
                   <!-- Transaction method -->
                   <trx-method-select-component
@@ -48,66 +48,73 @@
                   ></text-input-component>
                 </div>
               </div>
-              <!-- Cause -->
-              <cause-select-component
-                v-if="isCause"
-                v-model="form.category_id"
-                label="Category"
-                rules="required"
-                @add-new="onAddNewCause"
-              ></cause-select-component>
-              <!-- Loan -->
-              <loan-select-component
-                v-if="isLoan"
-                v-model="form.category_id"
-                label="Category"
-                rules="required"
-                @add-new="onAddNewLoan"
-              ></loan-select-component>
-              <!-- Pikadon -->
-              <pikadon-select-component
-                v-if="isPikadon"
-                v-model="form.category_id"
-                label="Category"
-                rules="required"
-                @add-new="onAddNewPikadon"
-              ></pikadon-select-component>
-              <!-- Pledge -->
-              <pledge-select-component
-                v-if="isPledge"
-                v-model="form.category_id"
-                label="Category"
-                rules="required"
-                @add-new="onAddNewPledge"
-              ></pledge-select-component>
-              <!-- Starting Balance -->
-              <starting-balance-category-select-component
-                v-if="isStartingBalance"
-                v-model="form.category_id"
-                label="Category"
-                rules="required"
-              ></starting-balance-category-select-component>
-              <!-- Debit/Credit -->
-              <debit-credit-component
-                v-if="isStartingBalance"
-                label="Starting Balance (+/-)"
-                v-model="form.debit_credit"
-              ></debit-credit-component>
-              <!-- Payee -->
-              <contact-select-component
-                v-if="!isPledge && !isStartingBalance"
-                v-model="form.contact_id"
-                label="Payee"
-                :rules="{required: isDistribution}"
-                @add-new="onAddNewContact"
-              ></contact-select-component>
+              <div v-show="!isDeposit">
+                <!-- Cause -->
+                <cause-select-component
+                  v-if="isCause"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                  @add-new="onAddNewCause"
+                ></cause-select-component>
+                <!-- Loan -->
+                <loan-select-component
+                  v-if="isLoan"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                  @add-new="onAddNewLoan"
+                ></loan-select-component>
+                <!-- Pikadon -->
+                <pikadon-select-component
+                  v-if="isPikadon"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                  @add-new="onAddNewPikadon"
+                ></pikadon-select-component>
+                <!-- Pledge -->
+                <pledge-select-component
+                  v-if="isPledge"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                  @add-new="onAddNewPledge"
+                ></pledge-select-component>
+                <!-- Starting Balance -->
+                <starting-balance-category-select-component
+                  v-if="isStartingBalance"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                ></starting-balance-category-select-component>
+                <!-- Debit/Credit -->
+                <debit-credit-component
+                  v-if="isStartingBalance"
+                  label="Starting Balance (+/-)"
+                  v-model="form.debit_credit"
+                ></debit-credit-component>
+                <!-- Payee -->
+                <contact-select-component
+                  v-if="!isPledge && !isStartingBalance"
+                  v-model="form.contact_id"
+                  label="Payee"
+                  :rules="{required: isDistribution}"
+                  @add-new="onAddNewContact"
+                ></contact-select-component>
+              </div>
               <!-- Amount -->
               <currency-input-component
                 v-model="form.amount"
                 label="Amount"
                 rules="required|is_not:0.00"
                 :is-debit="isDebit"
-              ></currency-input-component>                      
+              ></currency-input-component>
+              <!-- Exclude from full export -->
+              <checkbox-component v-show="!isDebit && !isDeposit"
+                v-model="form.is_deposit"
+                label="Is a deposit"
+              ></checkbox-component> 
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
@@ -218,6 +225,10 @@ export default {
       return this.$store.getters['Transactions/isStartingBalance'](this.form.transaction_type_id);
     },
 
+    isDeposit() {
+      return this.$store.getters['Transactions/isDeposit'](this.form.transaction_type_id);
+    },
+
     isDistribution() {
       return this.form.transaction_type_id === 2;
     },
@@ -253,6 +264,7 @@ export default {
         contact_id: null,
         debit_credit: 'credit',
         amount: null,
+        is_deposit: 0,
         note: '',
       };
     },
@@ -298,6 +310,11 @@ export default {
       if (this.isPledge) {
         this.form.transaction_method_id = null;
         this.form.number = '';
+      } else if (this.isDeposit) {
+        this.form.transaction_method_id = null;
+        this.form.number = '';
+        this.form.category_id = null;
+        this.form.contact_id = null;
       }
     },
 
