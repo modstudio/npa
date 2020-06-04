@@ -37,7 +37,12 @@
               <dist-class-select-component
                 v-model="form.distribution_class_id"
                 rules="required"
-              ></dist-class-select-component>                    
+              ></dist-class-select-component>
+              <!-- Exclude from full export -->
+              <checkbox-component
+                v-model="form.is_excluded_from_full_export"
+                label="Exclude from full export"
+              ></checkbox-component>                
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
@@ -143,6 +148,7 @@ export default {
         contact_id: null,
         distribution_class_id: null,
         description: '',
+        is_excluded_from_full_export: 0,
         note: '',
       };
     },

@@ -27,7 +27,12 @@
                 label="Cause"
                 rules="required"
                 @add-new="onAddNewCause"
-              ></cause-select-component>              
+              ></cause-select-component>
+              <!-- Exclude from full export -->
+              <checkbox-component
+                v-model="form.is_excluded_from_full_export"
+                label="Exclude from full export"
+              ></checkbox-component>            
               <!-- Note -->
               <textarea-component
                 v-model="form.note"
@@ -127,6 +132,7 @@ export default {
         category_type_id: 2,
         contact_id: null,
         related_category_id: null,
+        is_excluded_from_full_export: 0,
         note: '',
       };
     },
