@@ -17,12 +17,19 @@ function parseAmount(amount) {
   return Number.parseFloat(amount.replace(',', ''));
 }
 
+function isDebit(data) {
+  return debitTransactionTypeIds.includes(data.transaction_type_id)
+  || (data.transaction_type_id === startingBalanceTransactionTypeId
+    && data.debit_credit === 'debit');
+}
+
 function getAmountSign(data) {
   const amount = parseAmount(data.amount);
-  return debitTransactionTypeIds.includes(data.transaction_type_id)
-    || (data.transaction_type_id === startingBalanceTransactionTypeId
-      && data.debit_credit === 'debit')
-    ? -Math.abs(amount) : amount;
+  return isDebit(data) ? -Math.abs(amount) : amount;
+}
+
+function checkDeposit(data) {
+  return data.is_deposit && !isDebit(data) ? 1 : 0;
 }
 
 export default {
@@ -75,7 +82,7 @@ export default {
     try {
       const stm = await Vue.db.run(`INSERT INTO transactions (
         date, transaction_type_id, transaction_method_id, number, category_id,
-        contact_id, amount, note, created_at, updated_at
+        contact_id, is_deposit, amount, note, created_at, updated_at
       ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $category_id,
         $contact_id, $amount, $note, DATETIME('now'), DATETIME('now')
       )
@@ -86,6 +93,7 @@ export default {
         $number: data.number,
         $category_id: data.category_id,
         $contact_id: data.contact_id,
+        $is_deposit: checkDeposit(data),
         $amount: getAmountSign(data),
         $note: data.note,
       });
@@ -160,6 +168,7 @@ export default {
         number = $number,
         category_id = $category_id,
         contact_id = $contact_id,
+        is_deposit = $is_deposit,
         amount = $amount,
         note = $note, 
         updated_at = DATETIME('now')
@@ -172,6 +181,7 @@ export default {
         $number: data.number,
         $category_id: data.category_id,
         $contact_id: data.contact_id,
+        $is_deposit: checkDeposit(data),
         $amount: getAmountSign(data),
         $note: data.note,
       });

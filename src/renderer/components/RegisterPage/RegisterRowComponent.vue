@@ -41,12 +41,13 @@
         :amount="item.amount"
       ></amount-info-component>
     </div>
-    <div class="flex-table__row-item col-2 text-wrap"
+    <div class="flex-table__row-item col-2 text-wrap justify-content-between"
       v-b-tooltip="{trigger: $root.tooltipTrigger,
         title: item.note}"
       ischecktooltip="true"
       tabindex="0">
       {{ item.note }}
+      <img class="ml-auto mt-2" src="static/images/bank.svg" v-if="isDeposit">
     </div>                                               
   </div>
 </template>
@@ -98,6 +99,10 @@ export default {
 
     isPledge() {
       return this.item.category_type_id === 2;
+    },
+
+    isDeposit() {
+      return this.$store.getters['Transactions/isDeposit'](this.item.transaction_type_id) || this.item.is_deposit;
     },
 
     fromTransactionSubtext() {

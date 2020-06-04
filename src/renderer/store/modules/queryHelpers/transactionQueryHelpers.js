@@ -32,11 +32,14 @@ function buildWhere(filter) {
   if (filter.notes === 2) {
     where.push("transactions.note <> ''");
   }
+  let categoryCondition = '(categories.id IS NULL OR ';
   if (filter.inactive === 0) {
-    where.push('categories.is_inactive = 0');
+    categoryCondition += 'categories.is_inactive = 0)';
   } else if (filter.inactive === 2) {
-    where.push('categories.is_inactive = 1');
+    categoryCondition += 'categories.is_inactive = 1)';
   }
+  where.push(categoryCondition);
+
   if (filter.search) {
     const whereSearch = [];
     filter.search.split(' ').forEach((search) => {
@@ -75,8 +78,8 @@ const transactionSubquery = `
     categories.description as category_description,
     ${relatedCategoryName} as related_category_name
   from transactions 
-  JOIN categories ON transactions.category_id = categories.id
-  JOIN contacts category_contact ON categories.contact_id = category_contact.id
+  LEFT JOIN categories ON transactions.category_id = categories.id
+  LEFT JOIN contacts category_contact ON categories.contact_id = category_contact.id
   LEFT JOIN categories related_category 
   ON categories.related_category_id = related_category.id
   LEFT JOIN contacts related_category_contact
@@ -87,8 +90,8 @@ const queryFrom = `
   LEFT JOIN contacts ON transactions.contact_id = contacts.id
   JOIN transaction_types ON transactions.transaction_type_id = transaction_types.id
   LEFT JOIN transaction_methods ON transactions.transaction_method_id = transaction_methods.id
-  JOIN categories ON transactions.category_id = categories.id
-  JOIN contacts category_contact ON categories.contact_id = category_contact.id
+  LEFT JOIN categories ON transactions.category_id = categories.id
+  LEFT JOIN contacts category_contact ON categories.contact_id = category_contact.id
   LEFT JOIN categories related_category 
     ON categories.related_category_id = related_category.id
   LEFT JOIN contacts related_category_contact
