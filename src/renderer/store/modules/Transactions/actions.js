@@ -84,7 +84,7 @@ export default {
         date, transaction_type_id, transaction_method_id, number, category_id,
         contact_id, is_deposit, amount, note, created_at, updated_at
       ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $category_id,
-        $contact_id, $amount, $note, DATETIME('now'), DATETIME('now')
+        $contact_id, $is_deposit, $amount, $note, DATETIME('now'), DATETIME('now')
       )
       `, {
         $date: moment(data.date).format('YYYY-MM-DD'),
