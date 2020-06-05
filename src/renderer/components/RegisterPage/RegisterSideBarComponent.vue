@@ -81,6 +81,14 @@
                   rules="required"
                   @add-new="onAddNewPledge"
                 ></pledge-select-component>
+                <!-- General Donation -->
+                <general-donation-select-component
+                  v-if="isGeneralDonation"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                  @add-new="onAddNewGeneralDonation"
+                ></general-donation-select-component>
                 <!-- Starting Balance -->
                 <starting-balance-category-select-component
                   v-if="isStartingBalance"
@@ -159,6 +167,7 @@ import LoanSelectComponent from '../common/form-select-components/LoanSelectComp
 import PikadonSelectComponent from '../common/form-select-components/PikadonSelectComponent';
 import PledgeSelectComponent from '../common/form-select-components/PledgeSelectComponent';
 import ContactSelectComponent from '../common/form-select-components/ContactSelectComponent';
+import GeneralDonationSelectComponent from '../common/form-select-components/GeneralDonationSelectComponent';
 import StartingBalanceCategorySelectComponent from '../common/form-select-components/StartingBalanceCategorySelectComponent';
 import DebitCreditComponent from '../common/form-elements/DebitCreditComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
@@ -172,6 +181,7 @@ export default {
     LoanSelectComponent,
     PikadonSelectComponent,
     PledgeSelectComponent,
+    GeneralDonationSelectComponent,
     ContactSelectComponent,
     StartingBalanceCategorySelectComponent,
     DebitCreditComponent,
@@ -223,6 +233,10 @@ export default {
 
     isStartingBalance() {
       return this.$store.getters['Transactions/isStartingBalance'](this.form.transaction_type_id);
+    },
+
+    isGeneralDonation() {
+      return this.$store.getters['Transactions/isGeneralDonation'](this.form.transaction_type_id);
     },
 
     isDeposit() {
@@ -352,6 +366,12 @@ export default {
 
     onAddNewPikadon() {
       this.$emit('add-new-pikadon', (id) => {
+        this.form.category_id = id;
+      });
+    },
+
+    onAddNewGeneralDonation() {
+      this.$emit('add-new-general-donation', (id) => {
         this.form.category_id = id;
       });
     },

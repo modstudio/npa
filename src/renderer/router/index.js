@@ -20,6 +20,10 @@ export default new Router({
           component: require('@/components/ListsPage/CausePage').default,
         },
         {
+          path: 'general-donation',
+          component: require('@/components/ListsPage/GeneralDonationPage').default,
+        },
+        {
           path: 'pledge',
           component: require('@/components/ListsPage/PledgePage').default,
         },

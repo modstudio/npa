@@ -6,6 +6,9 @@
           <router-link to='cause' tag="button" class="tabs-inner__link">
             Cause
           </router-link>
+          <router-link to='general-donation' tag="button" class="tabs-inner__link">
+            GD
+          </router-link>
           <router-link to='pledge' tag="button" class="tabs-inner__link">
             Pledge
           </router-link>

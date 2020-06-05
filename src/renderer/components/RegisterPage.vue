@@ -153,6 +153,7 @@
         @add-new-pledge="showPledgeForm"
         @add-new-loan="showLoanForm"
         @add-new-pikadon="showPikadonForm"
+        @add-new-general-donation="showGeneralDonationForm"
       ></register-side-bar-component>
 
       <pledge-side-bar-component
@@ -183,7 +184,14 @@
         @hidepanel="hidePikadonForm"
         @update="onUpdatePikadon"
         @add-new-contact="showContactForm"
-      ></pikadon-side-bar-component>         
+      ></pikadon-side-bar-component>
+      <general-donation-side-bar-component
+        :is-shown="isViewGeneralDonationForm"
+        mode="dialog-add-new"
+        @hidepanel="hideGeneralDonationForm"
+        @update="onUpdateGeneralDonation"
+        @add-new-contact="showContactForm"
+      ></general-donation-side-bar-component>         
       <contact-side-bar-component
         :is-shown="isViewContactForm"
         mode="dialog-add-new"
@@ -209,11 +217,13 @@ import CauseSideBarComponent from './ListsPage/CausePage/CauseSideBarComponent';
 import PledgeSideBarComponent from './ListsPage/PledgePage/PledgeSideBarComponent';
 import LoanSideBarComponent from './ListsPage/LoanPage/LoanSideBarComponent';
 import PikadonSideBarComponent from './ListsPage/PikadonPage/PikadonSideBarComponent';
+import GeneralDonationSideBarComponent from './ListsPage/GeneralDonationPage/GeneralDonationSideBarComponent';
 import addNewContactMixin from './mixins/add-new-contact';
 import addNewCauseMixin from './mixins/add-new-cause';
 import addNewPledgeMixin from './mixins/add-new-pledge';
 import addNewLoanMixin from './mixins/add-new-loan';
 import addNewPikadonMixin from './mixins/add-new-pikadon';
+import addNewGeneralDonationMixin from './mixins/add-new-general-donation';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -230,6 +240,7 @@ export default {
     PledgeSideBarComponent,
     LoanSideBarComponent,
     PikadonSideBarComponent,
+    GeneralDonationSideBarComponent,
   },
 
   mixins: [
@@ -239,6 +250,7 @@ export default {
     addNewPledgeMixin,
     addNewLoanMixin,
     addNewPikadonMixin,
+    addNewGeneralDonationMixin,
   ],
 
   activated() {

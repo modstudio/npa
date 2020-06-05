@@ -5,6 +5,7 @@ const causeId = 1;
 const pledgeId = 2;
 const loanId = 3;
 const pikadonId = 4;
+const generalDonationId = 5;
 
 export default {
   namespaced: true,
@@ -22,6 +23,8 @@ export default {
     getPledges: state => state.data.filter(item => item.category_type_id === pledgeId),
     getLoans: state => state.data.filter(item => item.category_type_id === loanId),
     getPikadons: state => state.data.filter(item => item.category_type_id === pikadonId),
+    getGeneralDonations: state => state.data
+      .filter(item => item.category_type_id === generalDonationId),
     category: state => categoryId => _.find(state.data, { id: categoryId }),
   },
   // -----------------------------------------------------------------
