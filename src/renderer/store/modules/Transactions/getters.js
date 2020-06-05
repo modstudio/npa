@@ -8,6 +8,7 @@ import {
   pledgePaymentId,
   startingBalanceTransactionTypeId,
   depositTransactionTypeId,
+  generalDonationTransactionTypeId,
 } from './constants';
 
 export default {
@@ -23,6 +24,8 @@ export default {
     transactionTypeId === pledgePaymentId,
   isStartingBalance: () => transactionTypeId =>
     transactionTypeId === startingBalanceTransactionTypeId,
+  isGeneralDonation: () => transactionTypeId =>
+    transactionTypeId === generalDonationTransactionTypeId,
   isDeposit: () => transactionTypeId =>
     transactionTypeId === depositTransactionTypeId,
   transaction: state => transactionId => _.find(state.data, { id: transactionId }),

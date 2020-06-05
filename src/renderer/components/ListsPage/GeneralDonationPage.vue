@@ -2,7 +2,7 @@
   <div>
     <left-side-bar-component
       v-model="searchText"
-      search-placeholder="Search Pikadon"
+      search-placeholder="Search General Donation"
       :is-filtered="isFiltered"
       @resetfilter="resetFilter"
     >
@@ -20,7 +20,7 @@
         <template v-else>total</template>
       </div>
       <button type="button" class="btn btn-secondary btn-sm" @click="addItem">
-        Add Pikadon
+        Add GD
       </button>
     </div>
     <div class="flex-table">
@@ -80,7 +80,7 @@
 
     <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
 
-    <pikadon-side-bar-component
+    <general-donation-side-bar-component
       :current-item="currentItem"
       :is-shown="isViewPanel"
       :mode="viewPanelMode"
@@ -88,7 +88,7 @@
       @update="onUpdate"
       @add-new="addItem"
       @add-new-contact="showContactForm"
-    ></pikadon-side-bar-component>
+    ></general-donation-side-bar-component>
 
     <contact-side-bar-component
       :is-shown="isViewContactForm"
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import PikadonSideBarComponent from './PikadonPage/PikadonSideBarComponent';
+import GeneralDonationSideBarComponent from './GeneralDonationPage/GeneralDonationSideBarComponent';
 import ContactNameFieldComponent from '../common/ContactNameFieldComponent';
 import Bus from '../../shared/EventBus';
 import ContactSideBarComponent from '../ContactsPage/ContactSideBarComponent';
@@ -109,7 +109,7 @@ import addNewContactMixin from '../mixins/add-new-contact';
 const tableSortColumnMixin = require('../mixins/table-sort-column');
 export default {
   components: {
-    PikadonSideBarComponent,
+    GeneralDonationSideBarComponent,
     ContactNameFieldComponent,
     ContactSideBarComponent,
   },
@@ -120,7 +120,7 @@ export default {
   ],
 
   activated() {
-    Bus.$emit('open-pikadon-page');
+    Bus.$emit('open-general-donation-page');
   },
 
   data() {
@@ -143,7 +143,7 @@ export default {
 
     data: {
       get() {
-        let data = this.$store.getters['Categories/getPikadons'];
+        let data = this.$store.getters['Categories/getGeneralDonations'];
         if (this.inactiveFilter === 0) {
           data = data.filter(item => item.is_inactive === 0);
         } else if (this.inactiveFilter === 2) {

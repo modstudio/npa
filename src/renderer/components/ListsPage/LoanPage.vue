@@ -141,7 +141,6 @@ export default {
       sortField: 'name',
       sortOrder: 'asc',
       inactiveFilter: 0,
-      addNewContactEvent: 'loan-new-contact-id',
     };
   },
 
