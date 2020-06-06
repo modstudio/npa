@@ -7,6 +7,7 @@ const creditTransactionTypeIds = [1, 4, 5, 9];
 const startingBalanceTransactionTypeId = 10;
 const depositTransactionTypeId = 12;
 const generalDonationTransactionTypeId = 13;
+const adjustmentTransactionTypeId = 14;
 const donationId = 1;
 const pledgeId = 8;
 const pledgePaymentId = 9;
@@ -22,6 +23,7 @@ export {
   startingBalanceTransactionTypeId,
   depositTransactionTypeId,
   generalDonationTransactionTypeId,
+  adjustmentTransactionTypeId,
   donationId,
   pledgeId,
   pledgePaymentId,

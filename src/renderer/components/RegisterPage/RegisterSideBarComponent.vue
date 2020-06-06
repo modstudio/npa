@@ -32,7 +32,7 @@
                 rules="required"
                 @change="onTypeChange"
               ></transaction-type-select-component>
-              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance && !isDeposit">
+              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance && !isDeposit && !isAdjustment">
                 <div class="col-12 col-sm-6">
                   <!-- Transaction method -->
                   <trx-method-select-component
@@ -96,15 +96,28 @@
                   label="Category"
                   rules="required"
                 ></starting-balance-category-select-component>
+                <!-- Adjustment -->
+                <category-select-component
+                  v-if="isAdjustment"
+                  v-model="form.category_id"
+                  label="Category"
+                  rules="required"
+                ></category-select-component>
                 <!-- Debit/Credit -->
                 <debit-credit-component
                   v-if="isStartingBalance"
                   label="Starting Balance (+/-)"
                   v-model="form.debit_credit"
                 ></debit-credit-component>
+                <!-- Debit/Credit -->
+                <debit-credit-component
+                  v-if="isAdjustment"
+                  label="Adjustment (+/-)"
+                  v-model="form.debit_credit"
+                ></debit-credit-component>
                 <!-- Payee -->
                 <contact-select-component
-                  v-if="!isPledge && !isStartingBalance"
+                  v-if="!isPledge && !isStartingBalance && !isAdjustment"
                   v-model="form.contact_id"
                   label="Payee"
                   :rules="{required: isDistribution}"
@@ -169,6 +182,7 @@ import PledgeSelectComponent from '../common/form-select-components/PledgeSelect
 import ContactSelectComponent from '../common/form-select-components/ContactSelectComponent';
 import GeneralDonationSelectComponent from '../common/form-select-components/GeneralDonationSelectComponent';
 import StartingBalanceCategorySelectComponent from '../common/form-select-components/StartingBalanceCategorySelectComponent';
+import CategorySelectComponent from '../common/form-select-components/CategorySelectComponent';
 import DebitCreditComponent from '../common/form-elements/DebitCreditComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 
@@ -184,6 +198,7 @@ export default {
     GeneralDonationSelectComponent,
     ContactSelectComponent,
     StartingBalanceCategorySelectComponent,
+    CategorySelectComponent,
     DebitCreditComponent,
   },
 
@@ -239,6 +254,10 @@ export default {
       return this.$store.getters['Transactions/isGeneralDonation'](this.form.transaction_type_id);
     },
 
+    isAdjustment() {
+      return this.$store.getters['Transactions/isAdjustment'](this.form.transaction_type_id);
+    },
+
     isDeposit() {
       return this.$store.getters['Transactions/isDeposit'](this.form.transaction_type_id);
     },
@@ -248,7 +267,7 @@ export default {
     },
 
     isDebit() {
-      if (this.isStartingBalance) {
+      if (this.isStartingBalance || this.isAdjustment) {
         return this.form.debit_credit === 'debit';
       }
       return this.$store.getters['Transactions/isDebit'](this.form.transaction_type_id);
@@ -294,7 +313,7 @@ export default {
       if ((!this.isNewMode || this.mode === 'duplicate') && this.currentItem) {
         this.form = { ...this.form, ...this.currentItem };
         this.form.date = moment(this.form.date).toDate();
-        if (this.isStartingBalance) {
+        if (this.isStartingBalance || this.isAdjustment) {
           this.form.debit_credit = this.form.amount < 0
             ? 'debit' : 'credit';
         }
