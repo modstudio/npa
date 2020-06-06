@@ -36,6 +36,10 @@ export default new Router({
           component: require('@/components/ListsPage/PikadonPage').default,
         },
         {
+          path: 'cities',
+          component: require('@/components/ListsPage/CitiesPage').default,
+        },
+        {
           path: 'dist-class',
           component: require('@/components/ListsPage/DistClassPage').default,
         },
