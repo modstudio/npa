@@ -5,6 +5,7 @@ import { categoryName, relatedCategoryName } from '../queryHelpers/categoryQuery
 import {
   debitTransactionTypeIds,
   startingBalanceTransactionTypeId,
+  adjustmentTransactionTypeId,
   transferId,
   pledgeId,
   donationId,
@@ -19,8 +20,11 @@ function parseAmount(amount) {
 
 function isDebit(data) {
   return debitTransactionTypeIds.includes(data.transaction_type_id)
-  || (data.transaction_type_id === startingBalanceTransactionTypeId
-    && data.debit_credit === 'debit');
+  || (
+    (data.transaction_type_id === startingBalanceTransactionTypeId
+      || data.transaction_type_id === adjustmentTransactionTypeId)
+    && data.debit_credit === 'debit'
+  );
 }
 
 function getAmountSign(data) {
