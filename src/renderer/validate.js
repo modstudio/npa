@@ -62,6 +62,17 @@ extend('uniqueDistClass', {
   },
 });
 
+extend('uniqueCity', {
+  message: () => 'City, Country must be unique',
+  async validate(value, args) {
+    const countItems = await Vue.db.get(
+      'SELECT count(*) as count FROM cities where city = ? and country = ? and id <> IFNULL(?, 0)',
+      [value, args[0], args[1]],
+    );
+    return countItems.count === 0;
+  },
+});
+
 extend('uniqueTrxMethod', {
   message: () => 'Transaction method name must be unique',
   async validate(value, args) {

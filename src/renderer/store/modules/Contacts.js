@@ -37,9 +37,9 @@ export default {
       try {
         const stm = await Vue.db.run(`INSERT INTO contacts (
           company_name, first_name, last_name, phone_number, phone_ext, address,
-          city, state, zip, country, id_number
+          city_id, id_number
         ) VALUES ($company_name, $first_name, $last_name, $phone_number, $phone_ext, $address, 
-          $city, $state, $zip, $country, $id_number)
+          $city_id, $id_number)
         `, {
           $company_name: contact.company_name,
           $first_name: contact.first_name,
@@ -47,10 +47,7 @@ export default {
           $phone_number: contact.phone_number,
           $phone_ext: contact.$phone_ext,
           $address: contact.address,
-          $city: contact.city,
-          $state: contact.state,
-          $zip: contact.zip,
-          $country: contact.country,
+          $city_id: contact.city_id,
           $id_number: contact.id_number,
         });
         result = stm.lastID;
@@ -71,10 +68,7 @@ export default {
           phone_number = $phone_number, 
           phone_ext = $phone_ext, 
           address = $address, 
-          city = $city, 
-          state = $state,
-          zip = $zip, 
-          country = $country,
+          city_id = $city_id, 
           id_number = $id_number
           WHERE id = $id
         `, {
@@ -85,10 +79,7 @@ export default {
           $phone_number: contact.phone_number,
           $phone_ext: contact.phone_ext,
           $address: contact.address,
-          $city: contact.city,
-          $state: contact.state,
-          $zip: contact.zip,
-          $country: contact.country,
+          $city_id: contact.city_id,
           $id_number: contact.id_number,
         });
         result = true;

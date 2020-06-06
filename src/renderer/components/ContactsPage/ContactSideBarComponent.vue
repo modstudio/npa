@@ -1,6 +1,6 @@
 <template>
   <div v-show="isShown">
-    <right-side-bar-component
+    <right-side-bar-component v-show="!isViewCityForm"
       header-image-url="./static/images/contacts.svg"
       header-image-style="background-size: auto;"
       init-event-name="open-contacts-page"
@@ -62,33 +62,11 @@
                 label="Address"
               ></text-input-component>
               <!-- City -->
-              <text-input-component
-                v-model="form.city"
+              <city-select-component
+                v-model="form.city_id"
                 label="City"
-              ></text-input-component>
-              <div class="row gutter-8">
-                  <div class="col-12 col-sm-6" v-show="countryHasStates">
-                      <!-- State -->
-                      <select-states-component
-                        v-model="form.state"
-                        :country="form.country"
-                      ></select-states-component>
-                  </div>
-                  <div class="col-12" :class="{'col-sm-6': countryHasStates}">
-                      <!-- Organization ZIP -->
-                      <text-input-component
-                        v-model="form.zip"
-                        type="tel"
-                        :rules="{postcode: form.country }"
-                        :label="form.country === 'US' ? 'Zip' : 'Postal Code'"
-                      ></text-input-component>
-                  </div>
-              </div>
-              <!-- Country -->
-              <select-countries-component
-                v-model="form.country"
-                @change="onChangeCountry"
-              ></select-countries-component>
+                @add-new="onAddNewCity"
+              ></city-select-component>
             </ValidationObserver>
         </div>
 
@@ -133,24 +111,34 @@
         </div>
       </div>
     </right-side-bar-component>
+    <cities-side-bar-component
+      :is-shown="isViewCityForm"
+      mode="dialog-add-new"
+      @hidepanel="hideCityForm"
+      @update="onUpdateCity"
+    ></cities-side-bar-component>
   </div>
 </template>
 
 <script>
-import SelectCountriesComponent from '../common/countries-component/SelectCountriesComponent';
-import SelectStatesComponent from '../common/states-component/SelectStatesComponent';
+import CitySelectComponent from '../common/form-select-components/CitySelectComponent';
 import ItemDeleteDialogComponent from '../common/right-side-bar/ItemDeleteDialogComponent';
+import CitiesSideBarComponent from '../ListsPage/CitiesPage/CitiesSideBarComponent';
 import states from '../common/states-component/states';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
+import addNewCityMixin from '../mixins/add-new-city';
 
 export default {
   components: {
-    SelectCountriesComponent,
-    SelectStatesComponent,
+    CitySelectComponent,
     ItemDeleteDialogComponent,
+    CitiesSideBarComponent,
   },
 
-  mixins: [sideBarPanelMixin],
+  mixins: [
+    sideBarPanelMixin,
+    addNewCityMixin,
+  ],
 
   computed: {
     headerName() {
@@ -206,10 +194,7 @@ export default {
         phone_number: '',
         phone_ext: '',
         address: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: 'US',
+        city_id: null,
         id_numbers: null,
       };
     },
@@ -227,6 +212,12 @@ export default {
     async updateItem() {
       const result = await this.$store.dispatch('Contacts/updateContact', this.form);
       return result;
+    },
+
+    onAddNewCity() {
+      this.showCityForm((id) => {
+        this.form.city_id = id;
+      });
     },
   },
 };

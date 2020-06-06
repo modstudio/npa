@@ -18,6 +18,9 @@
           <router-link to='pikadon' tag="button" class="tabs-inner__link">
             Pikadon
           </router-link>
+          <router-link to='cities' tag="button" class="tabs-inner__link">
+            Cities
+          </router-link>
           <router-link to='dist-class' tag="button" class="tabs-inner__link">
             Dist.Class
           </router-link>
