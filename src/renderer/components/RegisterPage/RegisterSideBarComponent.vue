@@ -27,127 +27,157 @@
                 rules="required"
               ></datepicker-component>
               <!-- Transaction type -->
-              <transaction-type-select-component
+              <transaction-type-select-component v-show="isNewMode || !isTransfer"
                 v-model="form.transaction_type_id"
                 rules="required"
                 @change="onTypeChange"
               ></transaction-type-select-component>
-              <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance && !isDeposit && !isAdjustment">
-                <div class="col-12 col-sm-6">
-                  <!-- Transaction method -->
-                  <trx-method-select-component
-                    v-model="form.transaction_method_id"
-                  ></trx-method-select-component>
-                </div>
-                <div class="col-12 col-sm-6">
-                  <!-- number -->
-                  <text-input-component
-                    v-model="form.number"
-                    :rules="{required: isRequredNumber}"
-                    label="Number"
-                  ></text-input-component>
-                </div>
-              </div>
-              <div v-show="!isDeposit">
-                <!-- Cause -->
-                <cause-select-component
-                  v-if="isCause"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                  @add-new="onAddNewCause"
-                ></cause-select-component>
-                <!-- Loan -->
-                <loan-select-component
-                  v-if="isLoan"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                  @add-new="onAddNewLoan"
-                ></loan-select-component>
-                <!-- Pikadon -->
-                <pikadon-select-component
-                  v-if="isPikadon"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                  @add-new="onAddNewPikadon"
-                ></pikadon-select-component>
-                <!-- Pledge -->
-                <pledge-select-component
-                  v-if="isPledge"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                  @add-new="onAddNewPledge"
-                ></pledge-select-component>
-                <!-- General Donation -->
-                <general-donation-select-component
-                  v-if="isGeneralDonation"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                  @add-new="onAddNewGeneralDonation"
-                ></general-donation-select-component>
-                <!-- Starting Balance -->
-                <starting-balance-category-select-component
-                  v-if="isStartingBalance"
-                  v-model="form.category_id"
-                  label="Category"
-                  rules="required"
-                ></starting-balance-category-select-component>
-                <!-- Adjustment -->
+
+              <!-- Transfer -->
+              <template v-if="isTransfer">
+                <!-- Category from -->
                 <category-select-component
-                  v-if="isAdjustment"
                   v-model="form.category_id"
-                  label="Category"
+                  label="From (Category)"
                   rules="required"
+                  :transfer-amount="-form.amount"
                 ></category-select-component>
-                <!-- Debit/Credit -->
-                <debit-credit-component
-                  v-if="isStartingBalance"
-                  label="Starting Balance (+/-)"
-                  v-model="form.debit_credit"
-                ></debit-credit-component>
-                <!-- Debit/Credit -->
-                <debit-credit-component
-                  v-if="isAdjustment"
-                  label="Adjustment (+/-)"
-                  v-model="form.debit_credit"
-                ></debit-credit-component>
-                <!-- Payee -->
-                <contact-select-component
-                  v-if="!isPledge && !isStartingBalance && !isAdjustment"
-                  v-model="form.contact_id"
-                  label="Payee"
-                  :rules="{required: isDistribution}"
-                  @add-new="onAddNewContact"
-                ></contact-select-component>
-              </div>
-              <!-- Amount -->
-              <currency-input-component
-                v-model="form.amount"
-                label="Amount"
-                rules="required|is_not:0.00"
-                :is-debit="isDebit"
-              ></currency-input-component>
-              <!-- Exclude from full export -->
-              <checkbox-component v-show="!isDebit && !isDeposit"
-                v-model="form.is_deposit"
-                label="Is a deposit"
-              ></checkbox-component> 
-              <!-- Note -->
-              <textarea-component
-                v-model="form.note"
-                label="Note"
-              ></textarea-component>         
+                <!-- Category To -->
+                <category-select-component
+                  v-model="form.transfer_category_id"
+                  label="To (Category)"
+                  :rules="{required: true, is_not: form.category_id}"
+                  :transfer-amount="form.amount"
+                ></category-select-component>                        
+                <!-- Amount -->
+                <currency-input-component
+                  v-model="form.amount"
+                  label="Amount"
+                  rules="required|is_not:0.00"
+                  :disable-currency-class="true"
+                ></currency-input-component>
+              </template>
+              <!-- End Transfer -->
+
+              <!-- Other types of transaction -->
+              <template v-else>
+                <div class="row gutter-8" v-if="(isPledgePayment || !isPledge) && !isStartingBalance && !isDeposit && !isAdjustment">
+                  <div class="col-12 col-sm-6">
+                    <!-- Transaction method -->
+                    <trx-method-select-component
+                      v-model="form.transaction_method_id"
+                    ></trx-method-select-component>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <!-- number -->
+                    <text-input-component
+                      v-model="form.number"
+                      :rules="{required: isRequredNumber}"
+                      label="Number"
+                    ></text-input-component>
+                  </div>
+                </div>
+                <div v-show="!isDeposit">
+                  <!-- Cause -->
+                  <cause-select-component
+                    v-if="isCause"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                    @add-new="onAddNewCause"
+                  ></cause-select-component>
+                  <!-- Loan -->
+                  <loan-select-component
+                    v-if="isLoan"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                    @add-new="onAddNewLoan"
+                  ></loan-select-component>
+                  <!-- Pikadon -->
+                  <pikadon-select-component
+                    v-if="isPikadon"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                    @add-new="onAddNewPikadon"
+                  ></pikadon-select-component>
+                  <!-- Pledge -->
+                  <pledge-select-component
+                    v-if="isPledge"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                    @add-new="onAddNewPledge"
+                  ></pledge-select-component>
+                  <!-- General Donation -->
+                  <general-donation-select-component
+                    v-if="isGeneralDonation"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                    @add-new="onAddNewGeneralDonation"
+                  ></general-donation-select-component>
+                  <!-- Starting Balance -->
+                  <starting-balance-category-select-component
+                    v-if="isStartingBalance"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                  ></starting-balance-category-select-component>
+                  <!-- Adjustment -->
+                  <category-select-component
+                    v-if="isAdjustment"
+                    v-model="form.category_id"
+                    label="Category"
+                    rules="required"
+                  ></category-select-component>
+                  <!-- Debit/Credit -->
+                  <debit-credit-component
+                    v-if="isStartingBalance"
+                    label="Starting Balance (+/-)"
+                    v-model="form.debit_credit"
+                  ></debit-credit-component>
+                  <!-- Debit/Credit -->
+                  <debit-credit-component
+                    v-if="isAdjustment"
+                    label="Adjustment (+/-)"
+                    v-model="form.debit_credit"
+                  ></debit-credit-component>
+                  <!-- Payee -->
+                  <contact-select-component
+                    v-if="!isPledge && !isStartingBalance && !isAdjustment"
+                    v-model="form.contact_id"
+                    label="Payee"
+                    :rules="{required: isDistribution}"
+                    @add-new="onAddNewContact"
+                  ></contact-select-component>
+                </div>
+                <!-- Amount -->
+                <currency-input-component
+                  v-model="form.amount"
+                  label="Amount"
+                  rules="required|is_not:0.00"
+                  :is-debit="isDebit"
+                ></currency-input-component>
+                <!-- Exclude from full export -->
+                <checkbox-component v-show="!isDebit && !isAdjustment && !isDeposit"
+                  v-model="form.is_deposit"
+                  label="Is a deposit"
+                ></checkbox-component> 
+                <!-- Note -->
+                <textarea-component
+                  v-model="form.note"
+                  label="Note"
+                ></textarea-component>
+              </template>         
             </ValidationObserver>
         </div>
 
         <item-delete-dialog-component v-if="isDeleteMode"
           :item="currentItem"
           item-name="Transaction"
-          store-action-name="Transactions/deleteItem"
+          :store-action-name="deleteActionName"
           check-action-name=""
           :has-association="false"
           @close-dialog="isDeleteMode = false"
@@ -262,6 +292,10 @@ export default {
       return this.$store.getters['Transactions/isDeposit'](this.form.transaction_type_id);
     },
 
+    isTransfer() {
+      return this.$store.getters['Transactions/isTransfer'](this.form.transaction_type_id);
+    },
+
     isDistribution() {
       return this.form.transaction_type_id === 2;
     },
@@ -282,6 +316,32 @@ export default {
         return method.number_required === 1;
       }
       return false;
+    },
+
+    categoryFrom() {
+      if (!this.currentItem) {
+        return '';
+      }
+      if (this.currentItem.related_transaction_id) {
+        const category = this.$store.getters['Categories/category'](this.currentItem.related_transaction_category_id);
+        return category ? category.category_name : '';
+      }
+      return this.currentItem.category_name;
+    },
+
+    categoryTo() {
+      if (!this.currentItem) {
+        return '';
+      }
+      if (this.currentItem.transfer_transaction_id) {
+        const category = this.$store.getters['Categories/category'](this.currentItem.transfer_transaction_category_id);
+        return category ? category.category_name : '';
+      }
+      return this.currentItem.category_name;
+    },
+
+    deleteActionName() {
+      return this.isTransfer ? 'Transactions/deleteTransfer' : 'Transactions/deleteItem';
     },
   },
 
@@ -318,6 +378,18 @@ export default {
             ? 'debit' : 'credit';
         }
 
+        if (this.isTransfer) {
+          if (this.currentItem.related_transaction_id) {
+            // If we have Transaction To
+            this.form.transfer_category_id = this.form.category_id;
+            this.form.category_id = this.currentItem.related_transaction_category_id;
+          } else {
+            // If we have transaction From
+            this.form.amount = -this.form.amount;
+            this.form.transfer_category_id = this.currentItem.transfer_transaction_category_id;
+          }
+        }
+
         if (this.isDebit) {
           this.form.amount = Math.abs(this.form.amount);
         }
@@ -330,12 +402,20 @@ export default {
     },
 
     async saveItem() {
-      const result = await this.$store.dispatch('Transactions/addData', this.form);
+      if (!this.isTransfer) {
+        const result = await this.$store.dispatch('Transactions/addData', this.form);
+        return result;
+      }
+      const result = await this.$store.dispatch('Transactions/addTransfer', this.form);
       return result;
     },
 
     async updateItem() {
-      const result = await this.$store.dispatch('Transactions/updateData', this.form);
+      if (!this.isTransfer) {
+        const result = await this.$store.dispatch('Transactions/updateData', this.form);
+        return result;
+      }
+      const result = await this.$store.dispatch('Transactions/updateTransfer', this.form);
       return result;
     },
 
