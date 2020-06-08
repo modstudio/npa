@@ -32,13 +32,11 @@ function buildWhere(filter) {
   if (filter.notes === 2) {
     where.push("transactions.note <> ''");
   }
-  let categoryCondition = '(categories.id IS NULL OR ';
   if (filter.inactive === 0) {
-    categoryCondition += 'categories.is_inactive = 0)';
+    where.push('(categories.id IS NULL OR categories.is_inactive = 0)');
   } else if (filter.inactive === 2) {
-    categoryCondition += 'categories.is_inactive = 1)';
+    where.push('(categories.id IS NULL OR categories.is_inactive = 1)');
   }
-  where.push(categoryCondition);
 
   if (filter.search) {
     const whereSearch = [];
