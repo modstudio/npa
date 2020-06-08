@@ -28,6 +28,7 @@ function createWindow() {
     backgroundColor: '#f7f8fc',
   });
 
+  mainWindow.maximize();
   mainWindow.setMenuBarVisibility(false);
 
   mainWindow.loadURL(winURL);
