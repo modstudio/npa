@@ -209,28 +209,55 @@ export default {
           ? data.transfer_transaction_id : data.id;
         await Vue.db.run(`UPDATE transactions SET
           date = $date,
+          transaction_type_id = $transaction_type_id,
+          transaction_method_id = NULL,
+          number = NULL,
           category_id = $category_id,
+          contact_id = NULL,
+          is_deposit = 0,
           amount = $amount,
+          note = $note,
           updated_at = DATETIME('now')
           WHERE id = $id
         `, {
           $id: fromTransactionId,
           $date: moment(data.date).format('YYYY-MM-DD'),
+          $transaction_type_id: data.transaction_type_id,
           $category_id: data.category_id,
           $amount: -amount,
+          $note: data.note,
         });
-        await Vue.db.run(`UPDATE transactions SET
-          date = $date,
-          category_id = $category_id,
-          amount = $amount,
-          updated_at = DATETIME('now')
-          WHERE id = $id
-        `, {
-          $id: toTransactionId,
-          $date: moment(data.date).format('YYYY-MM-DD'),
-          $category_id: data.transfer_category_id,
-          $amount: amount,
-        });
+        // if not set related_transaction_id and transfer_transaction_id therefore
+        // we update other transaction_type to transfer and we should insert
+        // related transaction
+        if (fromTransactionId === toTransactionId) {
+          await Vue.db.run(`INSERT INTO transactions (
+            date, transaction_type_id, category_id, related_transaction_id,
+            amount, created_at, updated_at
+          ) VALUES ($date, $transaction_type_id, $category_id, $related_transaction_id,
+            $amount, DATETIME('now'), DATETIME('now')
+          )
+          `, {
+            $date: moment(data.date).format('YYYY-MM-DD'),
+            $transaction_type_id: data.transaction_type_id,
+            $category_id: data.transfer_category_id,
+            $related_transaction_id: fromTransactionId,
+            $amount: amount,
+          });
+        } else {
+          await Vue.db.run(`UPDATE transactions SET
+            date = $date,
+            category_id = $category_id,
+            amount = $amount,
+            updated_at = DATETIME('now')
+            WHERE id = $id
+          `, {
+            $id: toTransactionId,
+            $date: moment(data.date).format('YYYY-MM-DD'),
+            $category_id: data.transfer_category_id,
+            $amount: amount,
+          });
+        }
         await Vue.db.run('COMMIT');
       });
       result = true;

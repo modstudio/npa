@@ -13,16 +13,11 @@ export default {
   computed: {
     data() {
       return this.$store.state.TransactionTypes.data
-        .filter(item => item.id !== this.transferTypeId)
         .map(item => ({
           value: item.id,
           label: item.name,
           ...item,
         }));
-    },
-
-    transferTypeId() {
-      return this.$store.getters['TransactionTypes/transferTypeId'];
     },
   },
 

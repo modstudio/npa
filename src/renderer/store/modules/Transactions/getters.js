@@ -10,6 +10,7 @@ import {
   depositTransactionTypeId,
   generalDonationTransactionTypeId,
   adjustmentTransactionTypeId,
+  transferId,
 } from './constants';
 
 export default {
@@ -31,6 +32,8 @@ export default {
     transactionTypeId === adjustmentTransactionTypeId,
   isDeposit: () => transactionTypeId =>
     transactionTypeId === depositTransactionTypeId,
+  isTransfer: () => transactionTypeId =>
+    transactionTypeId === transferId,
   transaction: state => transactionId => _.find(state.data, { id: transactionId }),
   reportForCategoryType: state => categoryTypeId => state.data
     .filter(item => item.category_type_id === categoryTypeId),

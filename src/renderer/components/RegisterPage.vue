@@ -78,9 +78,6 @@
          <img class="mr-2" src="static/images/copy.svg">
           Duplicate
         </button>        
-        <button type="button" class="btn btn-secondary btn-sm" @click="addNewTransfer">
-          Add Transfer
-        </button>
         <button type="button" class="btn btn-secondary btn-sm ml-3" @click="addItem">
           Add Transaction
         </button>        
@@ -131,15 +128,6 @@
 
       <no-result-found-component v-show="isFiltered && !totalRows"></no-result-found-component>
 
-      <register-transfer-side-bar-component
-        :current-item="currentItem"
-        :is-shown="isViewTransferPanel"
-        :mode="viewPanelMode"
-        @hidepanel="hidePanel"
-        @update="onUpdate"
-        @add-new="addNewTransfer"
-        @duplicate="duplicateCurrentItem"
-      ></register-transfer-side-bar-component> 
       <register-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"
@@ -207,7 +195,6 @@
 import Bus from '../shared/EventBus';
 import RegisterLeftSideComponent from './RegisterPage/RegisterLeftSideComponent';
 import RegisterSideBarComponent from './RegisterPage/RegisterSideBarComponent';
-import RegisterTransferSideBarComponent from './RegisterPage/RegisterTransferSideBarComponent';
 import ContactNameFieldComponent from './common/ContactNameFieldComponent';
 import RegisterRowComponent from './RegisterPage/RegisterRowComponent';
 import RegisterReportComponent from './RegisterPage/RegisterReportComponent';
@@ -230,7 +217,6 @@ export default {
   components: {
     RegisterLeftSideComponent,
     RegisterSideBarComponent,
-    RegisterTransferSideBarComponent,
     ContactNameFieldComponent,
     RegisterRowComponent,
     RegisterReportComponent,
@@ -267,7 +253,6 @@ export default {
     return {
       isActivePage: false,
       isViewPanel: false,
-      isViewTransferPanel: false,
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
@@ -363,18 +348,10 @@ export default {
       this.runReport();
     },
 
-    addNewTransfer() {
-      this.currentItem = null;
-      this.viewPanelMode = 'new';
-      this.isViewTransferPanel = true;
-      this.isViewPanel = false;
-    },
-
     addItem() {
       this.currentItem = null;
       this.viewPanelMode = 'new';
       this.isViewPanel = true;
-      this.isViewTransferPanel = false;
     },
 
     duplicateCurrentItem() {
@@ -390,18 +367,11 @@ export default {
 
     hidePanel() {
       this.isViewPanel = false;
-      this.isViewTransferPanel = false;
       this.currentItem = null;
     },
 
     viewPanel() {
-      if (this.currentItem.transaction_type_id === this.transferTypeId) {
-        this.isViewTransferPanel = true;
-        this.isViewPanel = false;
-      } else {
-        this.isViewPanel = true;
-        this.isViewTransferPanel = false;
-      }
+      this.isViewPanel = true;
       this.hideAllForms();
     },
 
