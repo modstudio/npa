@@ -83,3 +83,14 @@ extend('uniqueTrxMethod', {
     return countItems.count === 0;
   },
 });
+
+extend('uniqueBank', {
+  message: () => 'Bank name must be unique',
+  async validate(value, args) {
+    const countItems = await Vue.db.get(
+      'SELECT count(*) as count FROM banks where name = ? and id <> IFNULL(?, 0)',
+      [value, args[0]],
+    );
+    return countItems.count === 0;
+  },
+});

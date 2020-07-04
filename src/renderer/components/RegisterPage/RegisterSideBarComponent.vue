@@ -33,6 +33,13 @@
                 @change="onTypeChange"
               ></transaction-type-select-component>
 
+              <!-- Bank -->
+              <bank-select-component
+                v-if="isShowBank"
+                v-model="form.bank_id"
+                @add-new="onAddNewBank"
+              ></bank-select-component>
+
               <!-- Transfer -->
               <template v-if="isTransfer">
                 <!-- Category from -->
@@ -213,6 +220,7 @@ import ContactSelectComponent from '../common/form-select-components/ContactSele
 import GeneralDonationSelectComponent from '../common/form-select-components/GeneralDonationSelectComponent';
 import StartingBalanceCategorySelectComponent from '../common/form-select-components/StartingBalanceCategorySelectComponent';
 import CategorySelectComponent from '../common/form-select-components/CategorySelectComponent';
+import BankSelectComponent from '../common/form-select-components/BankSelectComponent';
 import DebitCreditComponent from '../common/form-elements/DebitCreditComponent';
 import sideBarPanelMixin from '../mixins/side-bar-panel';
 
@@ -229,6 +237,7 @@ export default {
     ContactSelectComponent,
     StartingBalanceCategorySelectComponent,
     CategorySelectComponent,
+    BankSelectComponent,
     DebitCreditComponent,
   },
 
@@ -343,6 +352,10 @@ export default {
     deleteActionName() {
       return this.isTransfer ? 'Transactions/deleteTransfer' : 'Transactions/deleteItem';
     },
+
+    isShowBank() {
+      return !this.isTransfer && !this.isAdjustment && !this.isStartingBalance;
+    },
   },
 
   methods: {
@@ -351,6 +364,7 @@ export default {
         id: null,
         date: moment().toDate(),
         transaction_type_id: 1,
+        bank_id: null,
         transaction_method_id: null,
         number: '',
         category_id: null,
@@ -472,6 +486,12 @@ export default {
     onAddNewGeneralDonation() {
       this.$emit('add-new-general-donation', (id) => {
         this.form.category_id = id;
+      });
+    },
+
+    onAddNewBank() {
+      this.$emit('add-new-bank', (id) => {
+        this.form.bank_id = id;
       });
     },
   },

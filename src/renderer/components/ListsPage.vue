@@ -27,6 +27,9 @@
           <router-link to='trx-method' tag="button" class="tabs-inner__link">
             Trx.Method
           </router-link>
+          <router-link to='banks' tag="button" class="tabs-inner__link">
+            Banks
+          </router-link>
         </div>
       </div>
       <router-view></router-view>

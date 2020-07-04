@@ -85,14 +85,15 @@ export default {
     let result;
     try {
       const stm = await Vue.db.run(`INSERT INTO transactions (
-        date, transaction_type_id, transaction_method_id, number, category_id,
+        date, transaction_type_id, bank_id, transaction_method_id, number, category_id,
         contact_id, is_deposit, amount, note, created_at, updated_at
-      ) VALUES ($date, $transaction_type_id, $transaction_method_id, $number, $category_id,
+      ) VALUES ($date, $transaction_type_id, $bank_id, $transaction_method_id, $number, $category_id,
         $contact_id, $is_deposit, $amount, $note, DATETIME('now'), DATETIME('now')
       )
       `, {
         $date: moment(data.date).format('YYYY-MM-DD'),
         $transaction_type_id: data.transaction_type_id,
+        $bank_id: data.bank_id,
         $transaction_method_id: data.transaction_method_id,
         $number: data.number,
         $category_id: data.category_id,
@@ -169,6 +170,7 @@ export default {
         date = $date,
         transaction_type_id = $transaction_type_id,
         transaction_method_id = $transaction_method_id,
+        bank_id = $bank_id,
         number = $number,
         category_id = $category_id,
         contact_id = $contact_id,
@@ -181,6 +183,7 @@ export default {
         $id: data.id,
         $date: moment(data.date).format('YYYY-MM-DD'),
         $transaction_type_id: data.transaction_type_id,
+        $bank_id: data.bank_id,
         $transaction_method_id: data.transaction_method_id,
         $number: data.number,
         $category_id: data.category_id,
