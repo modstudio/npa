@@ -32,13 +32,18 @@
             <i class="icon icon-triangle-down"></i>
           </div>
           <div class="flex-table__header-item col-3 sortable" ref="sortPhone_number"
-          @click="setSortField('phone_number')">
+            @click="setSortField('phone_number')">
             Phone Number
             <i class="icon icon-triangle-down"></i>
           </div>
-          <div class="flex-table__header-item col-5 sortable" ref="sortAddress"
-          @click="setSortField('address')">
+          <div class="flex-table__header-item col-3 sortable" ref="sortAddress"
+            @click="setSortField('address')">
             Address
+            <i class="icon icon-triangle-down"></i>
+          </div>
+          <div class="flex-table__header-item col-3 sortable" ref="sortCity"
+            @click="setSortField('city')">
+            City
             <i class="icon icon-triangle-down"></i>
           </div>
         </div>
@@ -66,9 +71,18 @@
                 tabindex="0">
               {{ item.phone_number }}
             </div>
-            <div class="flex-table__row-item col-6"
+            <div class="flex-table__row-item col-3"
                 tabindex="0">
               {{ item.address }}
+            </div>
+            <div class="flex-table__row-item col-3 flex-column align-items-start justify-content-center"
+                tabindex="0">
+              <div class="font-weight-bold">{{ item.city }}</div>
+              <div>
+                <span v-if="item.state">{{ item.state}},</span>
+                <span v-if="item.zip">{{item.zip}},</span>
+                <span>{{item.country}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -118,7 +132,7 @@ export default {
       viewPanelMode: 'edit',
       currentItem: null,
       searchText: '',
-      refNameSortCol: ['sortName', 'sortPhone_number', 'sortAddress'],
+      refNameSortCol: ['sortName', 'sortPhone_number', 'sortAddress', 'sortCity'],
       sortField: 'name',
       sortOrder: 'asc',
       inactiveFilter: 0,
@@ -143,7 +157,10 @@ export default {
             || contact.first_name.toLowerCase().indexOf(searchString) !== -1
             || contact.last_name.toLowerCase().indexOf(searchString) !== -1
             || contact.phone_number.toLowerCase().indexOf(searchString) !== -1
-            || contact.address.toLowerCase().indexOf(searchString) !== -1);
+            || contact.address.toLowerCase().indexOf(searchString) !== -1
+            || (contact.city && contact.city.toLowerCase().indexOf(searchString) !== -1)
+            || (contact.state && contact.state.toLowerCase().indexOf(searchString) !== -1)
+            || (contact.zip && contact.zip.toLowerCase().indexOf(searchString) !== -1));
       }
       let sortFields = [this.sortField];
       let sortOrders = [this.sortOrder];
