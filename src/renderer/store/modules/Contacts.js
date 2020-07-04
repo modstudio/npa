@@ -21,7 +21,9 @@ export default {
   actions: {
     async getData(context) {
       try {
-        const data = await Vue.db.all(`SELECT * FROM contacts
+        const data = await Vue.db.all(`SELECT contacts.*, city, state, zip, country 
+        FROM contacts
+         LEFT JOIN cities ON contacts.city_id = cities.id
         ORDER BY case 
         when company_name <> '' then company_name
         else first_name || last_name
