@@ -332,10 +332,12 @@ export default {
     },
 
     destroyScrollBar() {
-      if (this.$refs.filterDropdownMenu
-        && this.isBindedScrollBar(this.$refs.filterDropdownMenu)) {
-        $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
-      }
+      this.$nextTick(() => {
+        if (this.$refs.filterDropdownMenu
+          && this.isBindedScrollBar(this.$refs.filterDropdownMenu)) {
+          $(this.$refs.filterDropdownMenu).mCustomScrollbar('destroy');
+        }
+      });
     },
   },
 };

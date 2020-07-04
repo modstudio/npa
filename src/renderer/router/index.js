@@ -47,6 +47,10 @@ export default new Router({
           path: 'trx-method',
           component: require('@/components/ListsPage/TrxMethodPage').default,
         },
+        {
+          path: 'banks',
+          component: require('@/components/ListsPage/BanksPage').default,
+        },
         { path: '', redirect: 'cause' },
       ],
     },

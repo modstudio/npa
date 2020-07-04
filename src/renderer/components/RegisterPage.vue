@@ -142,6 +142,7 @@
         @add-new-loan="showLoanForm"
         @add-new-pikadon="showPikadonForm"
         @add-new-general-donation="showGeneralDonationForm"
+        @add-new-bank="showBankForm"
       ></register-side-bar-component>
 
       <pledge-side-bar-component
@@ -186,6 +187,12 @@
         @hidepanel="hideContactForm"
         @update="onUpdateContact"
       ></contact-side-bar-component>
+      <bank-side-bar-component
+        :is-shown="isViewBankForm"
+        mode="dialog-add-new"
+        @hidepanel="hideBankForm"
+        @update="onUpdateBank"
+      ></bank-side-bar-component>
   
     </layouts-container-lg-component>
   </div>
@@ -205,12 +212,14 @@ import PledgeSideBarComponent from './ListsPage/PledgePage/PledgeSideBarComponen
 import LoanSideBarComponent from './ListsPage/LoanPage/LoanSideBarComponent';
 import PikadonSideBarComponent from './ListsPage/PikadonPage/PikadonSideBarComponent';
 import GeneralDonationSideBarComponent from './ListsPage/GeneralDonationPage/GeneralDonationSideBarComponent';
+import BankSideBarComponent from './ListsPage/BanksPage/BankSideBarComponent';
 import addNewContactMixin from './mixins/add-new-contact';
 import addNewCauseMixin from './mixins/add-new-cause';
 import addNewPledgeMixin from './mixins/add-new-pledge';
 import addNewLoanMixin from './mixins/add-new-loan';
 import addNewPikadonMixin from './mixins/add-new-pikadon';
 import addNewGeneralDonationMixin from './mixins/add-new-general-donation';
+import addNewBankMixin from './mixins/add-new-bank';
 
 const tableSortColumnMixin = require('./mixins/table-sort-column');
 export default {
@@ -227,6 +236,7 @@ export default {
     LoanSideBarComponent,
     PikadonSideBarComponent,
     GeneralDonationSideBarComponent,
+    BankSideBarComponent,
   },
 
   mixins: [
@@ -237,6 +247,7 @@ export default {
     addNewLoanMixin,
     addNewPikadonMixin,
     addNewGeneralDonationMixin,
+    addNewBankMixin,
   ],
 
   activated() {
@@ -387,6 +398,7 @@ export default {
       this.hideCauseForm();
       this.hideLoanForm();
       this.hidePikadonForm();
+      this.hideBankForm();
     },
 
     resetInfiniter() {
