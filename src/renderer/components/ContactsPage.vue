@@ -77,11 +77,11 @@
             </div>
             <div class="flex-table__row-item col-3 flex-column align-items-start justify-content-center"
                 tabindex="0">
-              <div class="font-weight-bold">{{ item.city }}</div>
+              <div>{{ item.city }}</div>
               <div>
-                <span v-if="item.state">{{ item.state}},</span>
-                <span v-if="item.zip">{{item.zip}},</span>
-                <span>{{item.country}}</span>
+                <span v-if="item.state" class="subtext">{{ item.state}},</span>
+                <span v-if="item.zip" class="subtext">{{item.zip}},</span>
+                <span class="subtext">{{item.country}}</span>
               </div>
             </div>
           </div>
