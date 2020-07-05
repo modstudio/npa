@@ -8,6 +8,9 @@ function buildWhere(filter) {
   if (filter.type.length) {
     where.push(`transactions.transaction_type_id in (${filter.type.join()})`);
   }
+  if (filter.bank.length) {
+    where.push(`transactions.bank_id in (${filter.bank.join()})`);
+  }
   if (filter.category.length) {
     where.push(`categories.category_type_id in (${filter.category.join()})`);
   }

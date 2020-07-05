@@ -4,7 +4,7 @@
     v-on="$listeners"
     :value="value"
     :label="label"
-    placeholder="Choose Banks"    
+    placeholder="Choose Bank"    
     :source-data="data"
     @change="onChange"
   >
@@ -28,7 +28,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'Banks',
+      default: 'Bank',
     },
   },
 

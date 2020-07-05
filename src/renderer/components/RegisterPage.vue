@@ -19,6 +19,11 @@
           v-model="typeFilter"
           @filter="filterData"
         ></type-filter-component>
+        <bank-filter-component
+          v-if="isActivePage"
+          v-model="bankFilter"
+          @filter="filterData"
+        ></bank-filter-component>
         <category-type-filter-component
           v-if="isActivePage"
           v-model="categoryFilter"
@@ -272,6 +277,7 @@ export default {
       sortOrder: 'desc',
       dateFilter: null,
       typeFilter: [],
+      bankFilter: [],
       categoryFilter: [],
       methodFilter: [],
       contactFilter: [],
@@ -289,7 +295,7 @@ export default {
     isFiltered() {
       return !!(this.searchText || this.typeFilter.length || this.categoryFilter.length
         || this.methodFilter.length || this.contactFilter.length || this.amountFilter
-        || this.dateFilter || this.notesFilter || this.inactiveFilter);
+        || this.dateFilter || this.notesFilter || this.inactiveFilter || this.bankFilter.length);
     },
 
     page() {
@@ -426,6 +432,7 @@ export default {
       this.$store.commit('Transactions/setFilters', {
         search: this.searchText,
         type: this.typeFilter,
+        bank: this.bankFilter,
         category: this.categoryFilter,
         method: this.methodFilter,
         contact: this.contactFilter,
@@ -439,6 +446,7 @@ export default {
     resetFilter() {
       this.searchText = '';
       this.typeFilter = [];
+      this.bankFilter = [];
       this.categoryFilter = [];
       this.methodFilter = [];
       this.contactFilter = [];
