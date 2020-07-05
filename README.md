@@ -28,7 +28,8 @@ This is a basic CRUD application, it’s function is to manage causes, pledges a
 - This app is intended for use by a single user, user accounts, authentication, and user settings are not needed.
 
 ### Design
-- Link to design file can be [found here](https://sketch.cloud/s/r0w8x) (The styleguide is not fully comprehensive as it was based on an existing project which has a comprehensive styleguide.)
+
+- Link to design file can be [found here](https://www.figma.com/file/5Xs4h1S51f7pKcZBwRcKvP/Accounting-App?node-id=0%3A1)
 - Design by Shmuel Barkin of [modstud.io](modstud.io)
 - Typography: [Rubik Typeface](https://fonts.google.com/specimen/Rubik) was chosen as it is open source and it has a full Hebrew character set (Hebrew character set by [Meir Sadan](https://meirsadan.com/))
 
