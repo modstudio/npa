@@ -224,9 +224,18 @@
             }
             &.active{
               background: $color-black;
-                &:after{
-                    color:  $color-primary-500;
+              color: $color-neutral-50;
+              &:after{
+                  color:  $color-primary-500;
+              }
+              &:hover, &:active{
+                .dropdown-multiselect, .dropdown-text, .dropdown-placeholder{
+                    color: $color-neutral-50;
                 }
+                .dropdown-icon{
+                    color: $color-neutral-50;
+                }
+              }
             }
             &:hover, &:active{
                 z-index: 2;
@@ -289,12 +298,7 @@
             transition: 200ms;
         }
         .dropdown-multiselect{
-            color: $color-neutral-600;
-            transition: 200ms;
             @include truncateText();
-            &.active{
-                color: $color-neutral-800p;
-            }
         }
         .dropdown-menu {
             border-radius: $border-radius-default;
@@ -460,9 +464,6 @@
                     &:hover {
                         color: $color-neutral-800p;
                     }
-                }
-                .dropdown-placeholder, .dropdown-multiselect{
-                    color: $color-neutral-800p;
                 }
                 .dropdown-icon{
                     color: $color-neutral-800p;

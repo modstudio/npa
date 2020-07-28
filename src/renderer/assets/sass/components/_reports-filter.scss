@@ -1,0 +1,47 @@
+.reports-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $color-black;
+  @include fsz(12px);
+  padding-left: 8px;
+  padding-right: 28px;
+  font-weight: normal;
+  color: $color-neutral-500;
+  border: none;
+  border-radius: $border-radius-default;
+  height: 32px;
+  cursor: pointer;
+  i{
+    @include fsz(7px);
+    position: absolute;
+    right: 12px;
+  }
+  &.sorted-up{
+    background: $color-black;
+    color: $color-neutral-50;
+    i{
+      transform: scaleY(-1);
+    }
+  }
+  &.negative{
+    border-left: 3px solid rgba($color-secondary-500, 0.7);
+  }
+  &.positive{
+    border-left: 3px solid rgba($color-primary-500, 0.7);
+  }
+  &:focus {
+      outline: none !important;
+      box-shadow: none;
+  }
+  &--inside{
+    padding-right: 8px;
+    color: $color-neutral-50;
+    cursor: default;
+  }
+	&__name {
+    @include truncateText();
+    padding-right: 16px;
+	}
+
+}
