@@ -53,7 +53,8 @@ module.exports = {
             break;
           }
         }
-      } else if ((el.clientWidth < el.scrollWidth) || (el.offsetHeight < el.scrollHeight)) {
+      }
+      if ((el.clientWidth < el.scrollWidth) || (el.offsetHeight < el.scrollHeight)) {
         isEclipsis = true;
       }
 
