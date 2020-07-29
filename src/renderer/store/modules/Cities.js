@@ -60,13 +60,6 @@ export default {
     async updateData(context, data) {
       let result;
       try {
-        console.log('==', {
-          $id: data.id,
-          $city: data.city,
-          $state: data.state,
-          $zip: data.zip,
-          country: data.country,
-        });
         await Vue.db.run(`UPDATE cities SET
         city = $city,
         state = $state,
