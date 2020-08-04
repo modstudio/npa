@@ -13,7 +13,7 @@
           v-model="dateFilter"
           collapse-event="clear-register-filter"
           @input="filterData"
-        ></range-filter-component>    
+        ></range-filter-component>
         <type-filter-component
           v-if="isActivePage"
           v-model="typeFilter"
@@ -54,38 +54,38 @@
           v-if="isActivePage"
           v-model="inactiveFilter"
           @filter="filterData"
-        ></inactive-filter-component>        
+        ></inactive-filter-component>
       </template>
       <template #register>
-        <register-report-component 
+        <register-report-component
           :data="reportData"
           :search-report="searchText"
         ></register-report-component>
-      </template> 
+      </template>
     </register-left-side-component>
     <layouts-container-lg-component>
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <div class="flex-grow-1 d-flex">
           {{totalRows}}
           <template v-if="isFiltered">results</template>
-          <template v-else>total</template> 
+          <template v-else>total</template>
           <div v-if="isFiltered" class="ml-3">
             Subtotal
             <amount-info-component
               :amount="subtotal"
             ></amount-info-component>
-          </div>       
+          </div>
         </div>
-        <button type="button" class="btn btn-sm"
+        <button type="button" class="btn btn-icon btn-sm btn-icon--w-text"
           :disabled="!isChecked || isProcessing"
           @click="duplicate"
         >
-         <img class="mr-2" src="static/images/copy.svg">
-          Duplicate
-        </button>        
+         <i class="icon icon-ungroup mr-2"></i>
+          <span>Duplicate</span>
+        </button>
         <button type="button" class="btn btn-secondary btn-sm ml-3" @click="addItem">
           Add Transaction
-        </button>        
+        </button>
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
@@ -103,12 +103,12 @@
           <div class="flex-table__header-item col-2">
             Payee
           </div>
-          <div class="flex-table__header-item col-2">
+          <div class="flex-table__header-item col-2 justify-content-end pr-4">
             Amount
           </div>
           <div class="flex-table__header-item col-2">
             Note
-          </div>                                    
+          </div>
         </div>
         <div class="position-relative" v-for="item in data"
           :key="item.id">
@@ -185,7 +185,7 @@
         @hidepanel="hideGeneralDonationForm"
         @update="onUpdateGeneralDonation"
         @add-new-contact="showContactForm"
-      ></general-donation-side-bar-component>         
+      ></general-donation-side-bar-component>
       <contact-side-bar-component
         :is-shown="isViewContactForm"
         mode="dialog-add-new"
@@ -198,7 +198,7 @@
         @hidepanel="hideBankForm"
         @update="onUpdateBank"
       ></bank-side-bar-component>
-  
+
     </layouts-container-lg-component>
   </div>
 </template>
@@ -537,7 +537,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-</style>

@@ -27,25 +27,31 @@
       </button>
     </div>
     <div class="flex-table mt-3">
-      <div class="flex-table__header">
-          <div class="flex-table__header-item col-2">
+      <div class="flex-table__header align-items-center">
+          <div class="flex-table__header-item flex-table__header-item--name">
               Recipient/Name
           </div>
-          <div class="flex-table__header-item col-2">
-              Description
-          </div>
-          <div class="flex-table__header-item col-6">
-              Metrics
-          </div>
-          <div class="flex-table__header-item col-2">
-            <div class="flex-grow-1">Balance</div>
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
-                <i class="icon icon-Collapse-all" v-if="this.isAllExpanded">
-                </i>
-                <i class="icon icon-Epand-all" v-else>
-                </i>
-              </button>
+          <div class="flex-grow-1">
+            <div class="row align-items-center">
+              <div class="flex-table__header-item col-3">
+                  Description
+              </div>
+              <div class="flex-table__header-item col-4">
+                  Metrics
+              </div>
+              <div class="flex-table__header-item col-3">
+                <div class="w-100 text-right">
+                  Balance
+                </div>
+              </div>
+              <div class="flex-table__header-item col-2 d-flex justify-content-end">
+                <button class="btn btn-icon btn-icon--dark" @click="toggleAll">
+                  <i class="icon icon-Collapse-all m-0" v-if="this.isAllExpanded">
+                  </i>
+                  <i class="icon icon-Epand-all m-0" v-else>
+                  </i>
+                </button>
+              </div>
             </div>
           </div>
       </div>
@@ -62,7 +68,8 @@
               @view-item="viewCauseGroup"
               @toggle-collapse="toggleCollapseStatus"
             ></cause-group-row-component>
-            <b-collapse :id="`cause-group-${item.id}`" v-model="item.isExpanded">
+            <b-collapse :id="`cause-group-${item.id}`" v-model="item.isExpanded"
+            class="cause-group">
               <causes-list-component
                 :cause-group="item"
                 :current-item="currentCauseItem"
@@ -99,7 +106,7 @@
       mode="dialog-add-new"
       @hidepanel="hideContactForm"
       @update="onUpdateContact"
-    ></contact-side-bar-component>    
+    ></contact-side-bar-component>
   </div>
 </template>
 

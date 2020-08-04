@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="color-neutral-500 flex-grow-1">
-      <div class="px-4 pt-4">
+      <div class="sidebar-switcher px-4">
         <div class="nav tabs-inner tabs-inner--sm tabs-inner--dark align-self-center d-none d-sm-flex">
           <button type="button" class="tabs-inner__link px-0"
             @click="setMode('search')"

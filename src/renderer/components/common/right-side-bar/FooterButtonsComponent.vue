@@ -1,16 +1,17 @@
 <template>
   <div class="d-flex justify-content-end align-items-center">
     <button type="button" v-if="isNewMode"
-      class="btn btn-link mr-auto"
+      class="btn btn-icon btn-icon--w-text mr-auto"
       @click="$emit('cancel')">
-        Cancel
+        <i class="icon icon-e-remove"></i><span>Cancel</span>
     </button>
     <button type="button" v-else
       @click="$emit('delete')"
       class="btn btn-icon btn-icon--w-text mr-auto">
       <template v-if="isInactive">
+        <i class="icon icon-check icon-sm"></i>
         <span>Make active</span>
-      </template>      
+      </template>
       <template v-else-if="hasAssociation">
         <i class="icon icon-trash-can"></i><span>Archive</span>
       </template>

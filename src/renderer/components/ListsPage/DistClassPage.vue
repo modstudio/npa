@@ -25,11 +25,11 @@
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
-          <div class="flex-table__header-item col-6">
+          <div class="flex-table__header-item col-3">
             NAME
           </div>
-          <div class="flex-table__header-item col-6">
-            Distribution to date
+          <div class="flex-table__header-item col-4 justify-content-end">
+            Distributions to date
           </div>
         </div>
         <div is="draggable" v-model="data" tag="div"
@@ -43,23 +43,23 @@
             <div class="flex-table__row w-shadow"
               @click="viewItem(item)"
               :class="{'active': currentItem && currentItem.id === item.id}">
-              <div class="flex-table__row-item col-6 font-weight-bold"
+              <div class="flex-table__row-item col-3 font-weight-bold"
                   tabindex="0">
                   {{ item.name }}
-                  <inactive-badge-component class="ml-2" v-if="item.is_inactive"></inactive-badge-component>
+                  <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
               </div>
-              <div class="flex-table__row-item col-6"
+              <div class="flex-table__row-item col-4 justify-content-end"
                   tabindex="0">
-                <amount-info-component class="col-6 text-right"
+                <amount-info-component
                   :amount="Math.abs(item.sum)"></amount-info-component>
               </div>
             </div>
           </div>
         </div>
-      </div>      
+      </div>
 
       <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
-      
+
       <dist-class-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"

@@ -11,43 +11,45 @@
         :class="{'active': currentItem && currentItem.id === item.id}"
         :aria-expanded="item.isExpanded"
         :aria-controls="`cause-group-${item.id}`">
-        <div class="flex-table__row-item col-10" tabindex="0">
-          <div class="d-flex mr-2">
-            <div class="font-weight-bold">{{ item.name }}</div>
-            <span class="color-neutral-500 ml-3"
-              :class="{'pr-3': !item.causes.length}">
-              {{item.causes.length}} Cause<span
-                v-if="item.causes.length > 1">s</span>
-            </span>
+        <div class="row flex-grow-1">
+          <div class="flex-table__row-item col-10" tabindex="0">
+            <div class="d-flex mr-2">
+              <div class="font-weight-bold">{{ item.name }}</div>
+              <span class="color-neutral-500 ml-3"
+                :class="{'pr-3': !item.causes.length}">
+                {{item.causes.length}} Cause<span
+                  v-if="item.causes.length > 1">s</span>
+              </span>
+            </div>
+            <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
           </div>
-          <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>          
-        </div>
-        <div class="flex-table__row-item col-2 d-flex
-        justify-content-end"
-            tabindex="0">
-            <button class="btn btn-icon"
-              @mouseover="isViewHover = true"
-              @mouseout="isViewHover = false"
-              @click.stop="$emit('view-item', item)"
-            >
-              <i class="icon icon-edit"></i>
-            </button>
-            <button v-show="item.causes.length"
-              @click.stop="toggleCollapse"
-              :class="{'collapsed': item.isExpanded, 'active': isHover && !isViewHover}"
-              :aria-expanded="item.isExpanded"
-              :aria-controls="`cause-group-${item.id}`"
-              class="btn btn-icon"
-            >
-              <i class="icon icon-s-delete" v-if="item.isExpanded" :key="`plus-${item.id}`">
-              </i>
-              <i class="icon icon-s-add" v-else :key="`minus-${item.id}`">
-              </i>
-            </button>
-        </div>
+          <div class="flex-table__row-item col-2 d-flex
+          justify-content-end"
+              tabindex="0">
+              <button class="btn btn-icon"
+                @mouseover="isViewHover = true"
+                @mouseout="isViewHover = false"
+                @click.stop="$emit('view-item', item)"
+              >
+                <i class="icon icon-edit"></i>
+              </button>
+              <button v-show="item.causes.length"
+                @click.stop="toggleCollapse"
+                :class="{'collapsed': item.isExpanded, 'active': isHover && !isViewHover}"
+                :aria-expanded="item.isExpanded"
+                :aria-controls="`cause-group-${item.id}`"
+                class="btn btn-icon"
+              >
+                <i class="icon icon-s-delete" v-if="item.isExpanded" :key="`plus-${item.id}`">
+                </i>
+                <i class="icon icon-s-add" v-else :key="`minus-${item.id}`">
+                </i>
+              </button>
+          </div>
+        </div>    
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>

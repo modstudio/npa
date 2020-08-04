@@ -12,12 +12,12 @@
         <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
             <div class="info-sidebar__block-header">
               <h4>Transaction</h4>
-              <button type="button" class="btn btn-sm" v-if="!isNewMode"
+              <button type="button" class="btn btn-icon btn-icon--w-text" v-if="!isNewMode"
                 @click="duplicate"
               >
-                <img class="mr-2" src="static/images/copy.svg">
-                Duplicate
-              </button> 
+                <i class="icon icon-ungroup"></i>
+                <span>Duplicate</span>
+              </button>
             </div>
             <ValidationObserver ref="observer">
               <!-- Date -->
@@ -55,7 +55,7 @@
                   label="To (Category)"
                   :rules="{required: true, is_not: form.category_id}"
                   :transfer-amount="form.amount"
-                ></category-select-component>                        
+                ></category-select-component>
                 <!-- Amount -->
                 <currency-input-component
                   v-model="form.amount"
@@ -171,13 +171,13 @@
                 <checkbox-component v-show="!isDebit && !isAdjustment && !isDeposit"
                   v-model="form.is_deposit"
                   label="Is a deposit"
-                ></checkbox-component> 
+                ></checkbox-component>
                 <!-- Note -->
                 <textarea-component
                   v-model="form.note"
                   label="Note"
                 ></textarea-component>
-              </template>         
+              </template>
             </ValidationObserver>
         </div>
 
@@ -205,7 +205,7 @@
         ></footer-buttons-component>
       </div>
     </right-side-bar-component>
-  </div>  
+  </div>
 </template>
 
 <script>

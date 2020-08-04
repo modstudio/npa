@@ -11,7 +11,7 @@
           v-model="inactiveFilter"
         ></inactive-filter-component>
       </div>
-        
+
       </left-side-bar-component>
       <div class="d-flex">
         <div class="flex-grow-1">
@@ -43,7 +43,7 @@
               <div class="flex-table__row-item col-12 font-weight-bold"
                   tabindex="0">
                 {{ item.name }}
-                <inactive-badge-component class="ml-2" v-if="item.is_inactive"></inactive-badge-component>
+                <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
               </div>
             </div>
           </div>

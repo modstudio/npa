@@ -134,6 +134,28 @@
                 color: $color-neutral-900;
             }
         }
+        &--name{
+          width: 220px;
+        }
+    }
+    .cause-group{
+      .position-relative{
+        &:first-child{
+          .flex-table__row{
+            border-top-color: transparent;
+          }
+        }
+        &:last-child{
+          .flex-table__row{
+            border-bottom-color: transparent;
+          }
+        }
+      }
+      .flex-table__row-item{
+        &:first-of-type{
+          padding-left: 16px;
+        }
+      }
     }
     &__row {
         display: flex;
@@ -148,18 +170,12 @@
         margin-top: -1px;
         cursor: pointer;
         &:hover{
-          border: 1px solid $color-neutral-500;
+          border: 1px solid $color-neutral-500 !important;
           z-index: 2;
           border-radius: $border-radius-default;
         }
-        &.expandable{
-          &:hover{
-            border: 1px solid transparent;
-            box-shadow: $shadow-500;
-          }
-        }
         &.active{
-            border: 1px solid $color-primary-500;
+            border: 1px solid $color-primary-500 !important;
             border-radius: $border-radius-default;
             z-index: 3;
             &:hover{
@@ -179,9 +195,19 @@
           .flex-table__row-item{
             align-items: flex-start;
             line-height: 2.12;
+            span.subtext{
+              line-height: 2.4;
+            }
           }
           &--checked {
             background: linear-gradient(to bottom, rgba($color-primary-200, .25) 50%, $color-primary-200 51%);
+          }
+        }
+        &.expandable{
+          .flex-table__row-item{
+            &:first-of-type{
+                padding-left: 40px;
+            }
           }
         }
     }
@@ -197,6 +223,7 @@
             display: block;
             @include truncateText();
         }
+
         &[class^="col"],
         &[class*=" col"] {
           padding: 0 8px;
@@ -214,6 +241,9 @@
         }
         &.inactive {
             color: $color-neutral-500;
+        }
+        &--name{
+          width: 192px;
         }
     }
     &__controls{
