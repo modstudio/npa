@@ -1,5 +1,5 @@
 <template>
-  <div class="badge badge-light rounded w-auto">
+  <div class="badge badge--inactive">
     Inactive
   </div>
 </template>

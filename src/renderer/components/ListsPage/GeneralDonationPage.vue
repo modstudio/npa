@@ -25,7 +25,7 @@
     </div>
     <div class="flex-table">
       <div class="flex-table__header">
-        <div class="flex-table__header-item col-6 col-xl-4" ref="sortName"
+        <div class="flex-table__header-item col-3" ref="sortName"
           @click="setSortField('name')">
           Contact
           <i class="icon icon-triangle-down"></i>
@@ -33,7 +33,7 @@
         <div class="flex-table__header-item col-4">
           Metrics
         </div>
-        <div class="flex-table__header-item col-2 col-xl-4" ref="sortMetric_balance"
+        <div class="flex-table__header-item col-3 justify-content-end" ref="sortMetric_balance"
           @click="setSortField('metric_balance')">
           Balance
           <i class="icon icon-triangle-down"></i>
@@ -44,16 +44,16 @@
         <div class="flex-table__row w-shadow"
           @click="viewItem(item)"
           :class="{'active': currentItem && currentItem.id === item.id}">
-          <div class="flex-table__row-item col-6 col-xl-4 font-weight-bold"
+          <div class="flex-table__row-item col-3 font-weight-bold"
               tabindex="0">
-              <div class="flex-grow-1">
+              <div class="flex-grow-1 d-flex align-items-center">
                 <contact-name-field-component
                   :company-name="item.contact_company_name"
                   :first-name="item.contact_first_name"
                   :last-name="item.contact_last_name"
                 ></contact-name-field-component>
+                <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
               </div>
-              <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
           </div>
           <div class="flex-table__row-item col-2"
               tabindex="0">
@@ -69,9 +69,9 @@
               :amount="item.metric_debit"
             ></metric-info-component>
           </div>
-          <div class="flex-table__row-item col-2 col-xl-4"
+          <div class="flex-table__row-item col-3 justify-content-end"
               tabindex="0">
-            <amount-info-component class="col-12 col-xl-6 px-0 text-right"
+            <amount-info-component
               :amount="item.metric_balance"></amount-info-component>
           </div>
         </div>
@@ -95,7 +95,7 @@
       mode="dialog-add-new"
       @hidepanel="hideContactForm"
       @update="onUpdateContact"
-    ></contact-side-bar-component>     
+    ></contact-side-bar-component>
   </div>
 </template>
 

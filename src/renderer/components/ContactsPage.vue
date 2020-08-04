@@ -54,7 +54,7 @@
             :class="{'active': currentItem && currentItem.id === item.id}">
             <div class="flex-table__row-item col-3"
                 tabindex="0">
-                <div class="flex-grow-1">
+                <div class="flex-grow-1 d-flex align-items-center">
                   <div v-if="item.company_name">
                     <div>
                       {{ item.company_name }}
@@ -64,8 +64,8 @@
                   <template v-else>
                     {{ item.first_name }} {{ item.last_name }}
                   </template>
+                  <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
                 </div>
-                <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
             </div>
             <div class="flex-table__row-item col-3"
                 tabindex="0">
@@ -89,7 +89,7 @@
       </div>
 
       <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
-      
+
       <contact-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"

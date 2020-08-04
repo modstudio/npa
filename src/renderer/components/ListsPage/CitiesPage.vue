@@ -52,7 +52,7 @@
               <div class="flex-table__row-item col-3 font-weight-bold"
                   tabindex="0">
                   {{ item.city }}
-                  <inactive-badge-component class="ml-2" v-if="item.is_inactive"></inactive-badge-component>
+                  <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
               </div>
               <div class="flex-table__row-item col-3"
                   tabindex="0">
@@ -69,10 +69,10 @@
             </div>
           </div>
         </div>
-      </div>      
+      </div>
 
       <no-result-found-component v-show="isFiltered && !data.length"></no-result-found-component>
-      
+
       <cities-side-bar-component
         :current-item="currentItem"
         :is-shown="isViewPanel"

@@ -15,7 +15,7 @@
       </button>
       <b-collapse v-model="isExpanded" @shown="onShown">
         <div class="search-nav-block__item-range" v-if="type === 'date'">
-          <div class="flex-grow-1 mr-1">
+          <div class="flex-grow-1 mr-1 mb-n-3">
             <label>From</label>
             <datepicker-component ref="from"
               :value="fromValue"

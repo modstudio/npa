@@ -2,6 +2,7 @@
     display: flex;
     position: relative;
     flex-wrap: wrap;
+    margin-top: 32px;
     &.bordered{
         border-radius: $border-radius-default;
         border: 1px solid $color-neutral-200;
@@ -239,9 +240,6 @@
             }
             &:hover, &:active{
                 z-index: 2;
-                .dropdown-multiselect, .dropdown-text, .dropdown-placeholder{
-                    color: $color-neutral-800p;
-                }
                 .dropdown-icon{
                     color: $color-neutral-800p;
                 }
@@ -523,6 +521,9 @@
         margin-bottom: 2px;
         color: $color-neutral-50;
       }
+      .form-group{
+        margin-bottom: 0;
+      }
       .form-control{
         height: 32px;
         background: $color-neutral-800;
@@ -536,4 +537,13 @@
         }
       }
     }
+}
+
+.sidebar-switcher{
+  + .sidebar-nav{
+    .search-nav-block{
+      margin-top: 28px;
+    }
+  }
+
 }

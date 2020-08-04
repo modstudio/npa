@@ -11,10 +11,10 @@
                   :style="'background-image: url(' + headerImageUrl +');' + headerImageStyle">
                 </span>
             </span>
-            <div class="flex-grow-1">
+            <div class="flex-grow-1 pr-4">
               <slot name="header"></slot>
             </div>
-            <div class="badge badge-info rounded w-auto">
+            <div class="badge badge--id">
               <slot name="headerBadge"></slot>
             </div>
         </div>

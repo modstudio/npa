@@ -2,39 +2,23 @@
     display: flex;
     align-items: stretch;
     min-height: 100vh;
+    min-width: 1100px;
 }
 
 .dashboard {
     width: $dashboard-width-lg;
     margin-left: auto;
     @include fsz(13px);
-    @include respond-to(md) {
-        width: $dashboard-width-sm;
-    }
-    @include respond-to(xs) {
-        width: $dashboard-width-xs;
-        padding-bottom: 50px;
-    }
 }
 
 .dashboard-body {
     padding: 48px 48px 80px;
     position: relative;
-    @include respond-to(md){
-        padding-left: 32px;
-        padding-right: 32px;
-    }
-    @include respond-to(xs){
-        padding: 40px 16px 60px;
-    }
     h3, .h3 {
         @include fsz(24px);
         font-family: $font-medium;
         text-align: center;
         margin-bottom: 32px;
-        @include respond-to(xs) {
-            @include fsz(18px);
-        }
         &.heading-light{
             font-family: $font-regular;
             text-align: left;
@@ -47,9 +31,6 @@
     font-family: $font-medium;
     text-align: center;
     margin-bottom: 40px;
-    @include respond-to(xs) {
-        @include fsz(26px);
-    }
     &--light{
         font-family: $font-medium;
     }

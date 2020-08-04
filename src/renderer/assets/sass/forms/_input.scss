@@ -65,7 +65,7 @@ fieldset[disabled] {
     caret-color: $color-primary-500;
     transition: 200ms;
     background: $color-white;
-    font-family: $font-light;
+    font-family: $font-regular;
     @include fsz(13px);
     -webkit-appearance: none;
     border-radius: $border-radius-default;

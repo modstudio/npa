@@ -87,8 +87,11 @@ button, .btn, .cursor-pointer {
         }
     }
     &.btn-sm{
-        height: 24px;
+        height: 24px !important;
         width: 120px;
+        &.btn-icon--w-text{
+          padding: 0 6px 0 4px;
+        }
     }
     &.btn-icon{
       height: auto;
@@ -101,6 +104,9 @@ button, .btn, .cursor-pointer {
         color: $color-neutral-400;
         @include fsz(16px);
         transition: inherit;
+      }
+      &:disabled{
+        pointer-events: none;
       }
       &:hover, &.active{
         color: $color-primary-500;

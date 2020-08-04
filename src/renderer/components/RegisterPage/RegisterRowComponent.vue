@@ -25,7 +25,7 @@
           {{item.category_name}}
         </div>
         <span class="subtext" v-if="isPledge">{{item.related_category_name}}</span>
-        <span class="subtext">{{item.category_description}}</span>     
+        <span class="subtext">{{item.category_description}}</span>
     </div>
     <div class="flex-table__row-item flex-column col-2"
         tabindex="0">
@@ -35,7 +35,7 @@
         :last-name="item.contact_last_name"
       ></contact-name-field-component>
     </div>
-    <div class="flex-table__row-item col-2"
+    <div class="flex-table__row-item col-2 justify-content-end pr-4"
         tabindex="0">
       <amount-info-component
         :amount="item.amount"
@@ -47,8 +47,10 @@
       ischecktooltip="true"
       tabindex="0">
       {{ item.note }}
-      <img class="ml-auto mt-2" src="static/images/bank.svg" v-if="isDeposit">
-    </div>                                               
+      <div class="color-neutral-400 ml-auto pt-1"  v-if="isDeposit">
+          <i class="icon icon-lg icon-temple"></i>
+      </div>
+    </div>
   </div>
 </template>
 
