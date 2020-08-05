@@ -26,12 +26,12 @@
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
-          <div class="flex-table__header-item col-3 sortable" ref="sortName"
+          <div class="flex-table__header-item col-4 sortable" ref="sortName"
             @click="setSortField('name')">
             NAME
             <i class="icon icon-triangle-down"></i>
           </div>
-          <div class="flex-table__header-item col-3 sortable" ref="sortPhone_number"
+          <div class="flex-table__header-item col-2 sortable" ref="sortPhone_number"
             @click="setSortField('phone_number')">
             Phone Number
             <i class="icon icon-triangle-down"></i>
@@ -52,9 +52,10 @@
           <div class="flex-table__row"
             @click="viewItem(item)"
             :class="{'active': currentItem && currentItem.id === item.id}">
-            <div class="flex-table__row-item col-3"
+            <div class="flex-table__row-item col-4"
                 tabindex="0">
                 <div class="flex-grow-1 d-flex align-items-center">
+                  <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
                   <div v-if="item.company_name">
                     <div>
                       {{ item.company_name }}
@@ -64,10 +65,9 @@
                   <template v-else>
                     {{ item.first_name }} {{ item.last_name }}
                   </template>
-                  <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
                 </div>
             </div>
-            <div class="flex-table__row-item col-3"
+            <div class="flex-table__row-item col-2"
                 tabindex="0">
               {{ item.phone_number }}
             </div>

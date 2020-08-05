@@ -25,18 +25,22 @@
     </div>
     <div class="flex-table">
       <div class="flex-table__header">
-        <div class="flex-table__header-item col-3" ref="sortName"
+        <div class="flex-table__header-item col-4" ref="sortName"
           @click="setSortField('name')">
           Name
           <i class="icon icon-triangle-down"></i>
         </div>
-        <div class="flex-table__header-item col-4">
-          Metrics
-        </div>
-        <div class="flex-table__header-item col-3 justify-content-end" ref="sortMetric_balance"
+        <div class="flex-table__header-item col-2 justify-content-end" ref="sortMetric_balance"
           @click="setSortField('metric_balance')">
-          Balance
-          <i class="icon icon-triangle-down"></i>
+          <div class="pr-3">
+            Balance
+            <i class="icon icon-triangle-down"></i>
+          </div>
+        </div>
+        <div class="flex-table__header-item col-3">
+          <div class="pl-3">
+            Metrics
+          </div>
         </div>
       </div>
       <div class="position-relative" v-for="item in data"
@@ -44,31 +48,36 @@
         <div class="flex-table__row w-shadow"
           @click="viewItem(item)"
           :class="{'active': currentItem && currentItem.id === item.id}">
-          <div class="flex-table__row-item col-3 font-weight-bold"
+          <div class="flex-table__row-item col-4 font-weight-bold"
               tabindex="0">
               <div class="flex-grow-1 d-flex align-items-center">
-                {{item.name}}
                 <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
+                {{item.name}}
               </div>
           </div>
-          <div class="flex-table__row-item col-2"
+          <div class="flex-table__row-item col-2 justify-content-end"
               tabindex="0">
-            <metric-info-component
-              metric-name="Additions"
-              :amount="item.metric_kredit"
-            ></metric-info-component>
+              <div class="pr-3">
+                <amount-info-component
+                  :amount="item.metric_balance"></amount-info-component>
+              </div>
           </div>
-          <div class="flex-table__row-item col-2"
+          <div class="flex-table__row-item col-3"
               tabindex="0">
-            <metric-info-component
-              metric-name="Subtractions"
-              :amount="item.metric_debit"
-            ></metric-info-component>
-          </div>
-          <div class="flex-table__row-item col-3 justify-content-end"
-              tabindex="0">
-            <amount-info-component
-              :amount="item.metric_balance"></amount-info-component>
+            <div class="row flex-grow-1 pl-3">
+              <div class="col-6">
+                <metric-info-component
+                  metric-name="Additions"
+                  :amount="item.metric_kredit"
+                ></metric-info-component>
+              </div>
+              <div class="col-6">
+                <metric-info-component
+                  metric-name="Subtractions"
+                  :amount="item.metric_debit"
+                ></metric-info-component>
+              </div>
+            </div>
           </div>
         </div>
       </div>

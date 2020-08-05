@@ -1,6 +1,6 @@
 <template>
   <div is="draggable" v-model="data" tag="div"
-    class="ml-4 pl-2 py-3"
+    class="ml-4 pl-2"
     handle=".list-components__item-move"
 
     @change="onSortChange">
@@ -15,21 +15,27 @@
         <div class="flex-table__row-item flex-table__row-item--name"
             tabindex="0">
           <div class="flex-grow-1 d-flex align-items-center">
+            <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
             <contact-name-field-component
               :company-name="item.contact_company_name"
               :first-name="item.contact_first_name"
               :last-name="item.contact_last_name"
             ></contact-name-field-component>
-            <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
           </div>
         </div>
         <div class="flex-grow-1 align-items-center d-flex">
           <div class="row flex-grow-1">
-            <div class="flex-table__row-item col-3" tabindex="0">
+            <div class="flex-table__row-item col-4" tabindex="0">
                 {{item.description}}
             </div>
+            <div class="flex-table__row-item col-2"  tabindex="0">
+              <div class="w-100 text-right pr-3">
+                <amount-info-component :amount="item.metric_balance">
+                </amount-info-component>
+              </div>
+            </div>
             <div class="flex-table__row-item col-4" tabindex="0">
-              <div class="row flex-grow-1">
+              <div class="row flex-grow-1 pl-3">
                 <div class="col-4">
                   <metric-info-component
                     metric-name="Raised"
@@ -50,12 +56,6 @@
                 </div>
               </div>
 
-            </div>
-            <div class="flex-table__row-item col-3"  tabindex="0">
-              <div class="w-100 text-right">
-                <amount-info-component :amount="item.metric_balance">
-                </amount-info-component>
-              </div>
             </div>
             <div class="flex-table__row-item col-2"></div>
           </div>

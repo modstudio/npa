@@ -135,7 +135,7 @@
             }
         }
         &--name{
-          width: 220px;
+          width: 266px;
         }
     }
     .cause-group{
@@ -171,13 +171,13 @@
         cursor: pointer;
         &:hover{
           border: 1px solid $color-neutral-500 !important;
-          z-index: 2;
+          z-index: 3;
           border-radius: $border-radius-default;
         }
         &.active{
             border: 1px solid $color-primary-500 !important;
             border-radius: $border-radius-default;
-            z-index: 3;
+            z-index: 4;
             &:hover{
                 border: 1px solid $color-primary-500;
                 label.form-checkbox{
@@ -209,6 +209,9 @@
                 padding-left: 40px;
             }
           }
+        }
+        &[aria-expanded="true"]{
+          z-index: 2;
         }
     }
     &__row-item {
@@ -243,7 +246,7 @@
             color: $color-neutral-500;
         }
         &--name{
-          width: 192px;
+          width: 240px;
         }
     }
     &__controls{
