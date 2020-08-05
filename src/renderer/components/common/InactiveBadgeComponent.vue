@@ -1,6 +1,6 @@
 <template>
-  <div class="badge badge--inactive">
-    Inactive
+  <div class="text-medium color-neutral-400 mr-2">
+    <i class="icon icon-ban d-block"></i>
   </div>
 </template>
 

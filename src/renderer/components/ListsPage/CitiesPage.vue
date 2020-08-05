@@ -25,13 +25,13 @@
       </div>
       <div class="flex-table">
         <div class="flex-table__header">
-          <div class="flex-table__header-item col-3">
+          <div class="flex-table__header-item col-4">
             City
           </div>
           <div class="flex-table__header-item col-3">
             State/Province
           </div>
-          <div class="flex-table__header-item col-3">
+          <div class="flex-table__header-item col-2">
             Zip/Postal code
           </div>
         <div class="flex-table__header-item col-3">
@@ -49,16 +49,16 @@
             <div class="flex-table__row w-shadow"
               @click="viewItem(item)"
               :class="{'active': currentItem && currentItem.id === item.id}">
-              <div class="flex-table__row-item col-3 font-weight-bold"
+              <div class="flex-table__row-item col-4 font-weight-bold"
                   tabindex="0">
-                  {{ item.city }}
                   <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
+                  {{ item.city }}
               </div>
               <div class="flex-table__row-item col-3"
                   tabindex="0">
                 {{ item.state }}
               </div>
-              <div class="flex-table__row-item col-3"
+              <div class="flex-table__row-item col-2"
                   tabindex="0">
                 {{ item.zip }}
               </div>

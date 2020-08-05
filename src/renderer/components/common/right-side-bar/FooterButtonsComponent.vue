@@ -13,7 +13,7 @@
         <span>Make active</span>
       </template>
       <template v-else-if="hasAssociation">
-        <i class="icon icon-trash-can"></i><span>Archive</span>
+        <i class="icon icon-ban"></i><span>Archive</span>
       </template>
       <template v-else-if="hasAssociation !== null">
         <i class="icon icon-bin"></i><span>Delete</span>

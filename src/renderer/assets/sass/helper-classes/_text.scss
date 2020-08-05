@@ -8,6 +8,9 @@
 .text-small{
   @include fsz(12px);
 }
+.text-medium{
+  @include fsz(16px);
+}
 
 /* --- Text Weight ---*/
 b, .font-weight-bold{

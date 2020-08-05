@@ -45,8 +45,8 @@
               :class="{'active': currentItem && currentItem.id === item.id}">
               <div class="flex-table__row-item col-3 font-weight-bold"
                   tabindex="0">
-                  {{ item.name }}
                   <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
+                  {{ item.name }}
               </div>
               <div class="flex-table__row-item col-4 justify-content-end"
                   tabindex="0">

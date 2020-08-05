@@ -12,16 +12,6 @@
     background: $color-primary-500;
     color: $color-white;
   }
-  &--inactive{
-    background: $color-neutral-200;
-    border-radius: $border-radius-default;
-    width: 65px;
-    height: 20px;
-    color: $color-neutral-500;
-    @include fsz(13px);
-    font-family: $font-regular;
-    margin-left: 6px;
-  }
   &--id{
     height: 24px;
     min-width: 48px;
