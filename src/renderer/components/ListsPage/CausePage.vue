@@ -33,17 +33,15 @@
           </div>
           <div class="flex-grow-1">
             <div class="row align-items-center">
-              <div class="flex-table__header-item col-4">
+              <div class="flex-table__header-item col-3">
                   Description
               </div>
-              <div class="flex-table__header-item col-2">
-                <div class="w-100 text-right pr-3">
-                  Balance
-                </div>
-              </div>
-              <div class="flex-table__header-item col-4">
-                <div class="pl-3">
+              <div class="flex-table__header-item col-5">
                   Metrics
+              </div>
+              <div class="flex-table__header-item col-2">
+                <div class="w-100 text-right">
+                  Balance
                 </div>
               </div>
               <div class="flex-table__header-item col-2 d-flex justify-content-end">
