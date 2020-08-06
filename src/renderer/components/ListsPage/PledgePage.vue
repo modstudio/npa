@@ -34,17 +34,13 @@
           Cause
           <i class="icon icon-triangle-down"></i>
         </div>
+        <div class="flex-table__header-item col-3">
+            Metrics
+        </div>
         <div class="flex-table__header-item col-2 justify-content-end" ref="sortMetric_balance"
           @click="setSortField('metric_balance')">
-          <div class="pr-3">
             Balance
             <i class="icon icon-triangle-down"></i>
-          </div>
-        </div>
-        <div class="flex-table__header-item col-3">
-          <div class="pl-3">
-            Metrics
-          </div>
         </div>
       </div>
       <div class="position-relative" v-for="item in data"
@@ -67,16 +63,9 @@
               tabindex="0">
             {{item.related_category_name}}
           </div>
-          <div class="flex-table__row-item col-2 justify-content-end"
-              tabindex="0">
-              <div class="pr-3">
-                <amount-info-component
-                  :amount="item.metric_balance"></amount-info-component>
-              </div>
-          </div>
           <div class="flex-table__row-item col-3"
               tabindex="0">
-            <div class="row flex-grow-1 pl-3">
+            <div class="row flex-grow-1">
               <div class="col-6">
                 <metric-info-component
                   metric-name="Pledged"
@@ -90,6 +79,11 @@
                 ></metric-info-component>
               </div>
             </div>
+          </div>
+          <div class="flex-table__row-item col-2 justify-content-end"
+              tabindex="0">
+                <amount-info-component
+                  :amount="item.metric_balance"></amount-info-component>
           </div>
         </div>
       </div>

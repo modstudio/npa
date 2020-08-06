@@ -25,17 +25,11 @@
         </div>
         <div class="flex-grow-1 align-items-center d-flex">
           <div class="row flex-grow-1">
-            <div class="flex-table__row-item col-4" tabindex="0">
+            <div class="flex-table__row-item col-3" tabindex="0">
                 {{item.description}}
             </div>
-            <div class="flex-table__row-item col-2"  tabindex="0">
-              <div class="w-100 text-right pr-3">
-                <amount-info-component :amount="item.metric_balance">
-                </amount-info-component>
-              </div>
-            </div>
-            <div class="flex-table__row-item col-4" tabindex="0">
-              <div class="row flex-grow-1 pl-3">
+            <div class="flex-table__row-item col-5" tabindex="0">
+              <div class="row flex-grow-1">
                 <div class="col-4">
                   <metric-info-component
                     metric-name="Raised"
@@ -55,8 +49,14 @@
                   ></metric-info-component>
                 </div>
               </div>
-
             </div>
+            <div class="flex-table__row-item col-2"  tabindex="0">
+              <div class="w-100 text-right">
+                <amount-info-component :amount="item.metric_balance">
+                </amount-info-component>
+              </div>
+            </div>
+
             <div class="flex-table__row-item col-2"></div>
           </div>
         </div>
