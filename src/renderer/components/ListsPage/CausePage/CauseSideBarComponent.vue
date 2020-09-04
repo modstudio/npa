@@ -32,6 +32,7 @@
                       label="Specific"
                       type="Number"
                       form-group-class="mb-3 mb-sm-0"
+                      @input="onChangeRecipientType"
                     >
                     </radio-input-component>
                   </div>
@@ -41,7 +42,8 @@
                       :radio-value="1"
                       v-model="form.is_multiple_recipient"
                       type="Number"
-                      label="Multiple"     
+                      label="Multiple"
+                      @input="onChangeRecipientType" 
                     >
                     </radio-input-component>
                   </div>
@@ -56,6 +58,13 @@
                 :rules="{required: !form.is_multiple_recipient}"
                 @add-new="onAddNewContact"
               ></contact-select-component>
+              <!-- name -->
+              <text-input-component
+                v-show="form.is_multiple_recipient"
+                v-model="form.name"
+                :rules="{required: form.is_multiple_recipient}"
+                label="Name"
+              ></text-input-component>
               <!-- Description -->
               <text-input-component
                 v-model="form.description"
@@ -179,6 +188,7 @@ export default {
         is_excluded_from_full_export: 0,
         note: '',
         is_multiple_recipient: 0,
+        name: null,
       };
     },
 
@@ -196,6 +206,14 @@ export default {
       this.$emit('add-new-contact', (id) => {
         this.form.contact_id = id;
       });
+    },
+
+    onChangeRecipientType(value) {
+      if (value === 1) {
+        this.form.contact_id = null;
+      } else {
+        this.form.name = null;
+      }
     },
   },
 };

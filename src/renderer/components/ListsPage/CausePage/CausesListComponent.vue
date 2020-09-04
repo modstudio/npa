@@ -22,7 +22,7 @@
               :first-name="item.contact_first_name"
               :last-name="item.contact_last_name"
             ></contact-name-field-component>
-            <template v-else>Multiple</template>
+            <template v-else>{{item.name}}</template>
           </div>
         </div>
         <div class="flex-grow-1 align-items-center d-flex">
