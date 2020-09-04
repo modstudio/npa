@@ -109,7 +109,7 @@ export default {
           category_type_id,  category_group_id, contact_id, related_category_id, 
           distribution_class_id,
           description, is_excluded_from_full_export, note,
-          sort_order, is_multiple_recipient
+          sort_order, is_multiple_recipient, name
         ) VALUES ($category_type_id, $category_group_id, $contact_id, $related_category_id, 
           $distribution_class_id,
           $description, $is_excluded_from_full_export, $note,
@@ -118,7 +118,7 @@ export default {
               (select ifnull(max(sort_order), 0) + 1 from categories 
                 WHERE category_type_id = $category_type_id)
             else 0
-          end, $is_multiple_recipient)
+          end, $is_multiple_recipient, $name)
         `, {
           $category_type_id: data.category_type_id,
           $contact_id: data.contact_id,
@@ -130,6 +130,7 @@ export default {
           $note: data.note,
           $is_multiple_recipient: data.category_type_id === 1
             ? data.is_multiple_recipient : 0, // only for cause
+          $name: data.name,
         });
         result = stm.lastID;
       } catch (err) {
@@ -150,7 +151,8 @@ export default {
           description = $description,
           is_excluded_from_full_export = $is_excluded_from_full_export,
           note = $note,
-          is_multiple_recipient = $is_multiple_recipient
+          is_multiple_recipient = $is_multiple_recipient,
+          name = $name
           WHERE id = $id
         `, {
           $id: data.id,
@@ -163,6 +165,7 @@ export default {
           $note: data.note,
           $is_multiple_recipient: data.category_type_id === 1
             ? data.is_multiple_recipient : 0, // only for cause
+          $name: data.name,
         });
         result = true;
       } catch (err) {
