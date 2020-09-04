@@ -58,7 +58,7 @@
  */
 import OptionItemComponent from './OptionItemComponent';
 
-const minNumberItemsForSearch = 10;
+const minNumberItemsForSearch = 0;
 
 export default {
   props: {
