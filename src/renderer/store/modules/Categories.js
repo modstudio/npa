@@ -79,7 +79,7 @@ export default {
         metrics.debit + metrics.kredit + metrics.distributed as metric_balance
         FROM categories
         JOIN category_types ON categories.category_type_id = category_types.id
-        JOIN contacts category_contact ON categories.contact_id = category_contact.id
+        LEFT JOIN contacts category_contact ON categories.contact_id = category_contact.id
         LEFT JOIN category_groups ON categories.category_group_id = category_groups.id
         LEFT JOIN categories related_category 
         ON categories.related_category_id = related_category.id
@@ -109,7 +109,7 @@ export default {
           category_type_id,  category_group_id, contact_id, related_category_id, 
           distribution_class_id,
           description, is_excluded_from_full_export, note,
-          sort_order
+          sort_order, is_multiple_recipient
         ) VALUES ($category_type_id, $category_group_id, $contact_id, $related_category_id, 
           $distribution_class_id,
           $description, $is_excluded_from_full_export, $note,
@@ -118,7 +118,7 @@ export default {
               (select ifnull(max(sort_order), 0) + 1 from categories 
                 WHERE category_type_id = $category_type_id)
             else 0
-          end)
+          end, $is_multiple_recipient)
         `, {
           $category_type_id: data.category_type_id,
           $contact_id: data.contact_id,
@@ -128,6 +128,8 @@ export default {
           $description: data.description,
           $is_excluded_from_full_export: data.is_excluded_from_full_export,
           $note: data.note,
+          $is_multiple_recipient: data.category_type_id === 1
+            ? data.is_multiple_recipient : 0, // only for cause
         });
         result = stm.lastID;
       } catch (err) {
@@ -147,7 +149,8 @@ export default {
           distribution_class_id = $distribution_class_id,
           description = $description,
           is_excluded_from_full_export = $is_excluded_from_full_export,
-          note = $note
+          note = $note,
+          is_multiple_recipient = $is_multiple_recipient
           WHERE id = $id
         `, {
           $id: data.id,
@@ -158,6 +161,8 @@ export default {
           $description: data.description,
           $is_excluded_from_full_export: data.is_excluded_from_full_export,
           $note: data.note,
+          $is_multiple_recipient: data.category_type_id === 1
+            ? data.is_multiple_recipient : 0, // only for cause
         });
         result = true;
       } catch (err) {

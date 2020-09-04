@@ -2,6 +2,7 @@
   <ValidationProvider :name="label" :rules="{phone_number: countryCode}" v-slot="{ errors }">
     <div class="form-group form-group--enter">
         <vue-tel-input
+            ref="telInput"
             :value="value"
             @input="onInput"
             @validate="onValidate"
@@ -92,6 +93,16 @@ export default {
     };
   },
 
+  mounted() {
+    this.$refs.telInput.$el.querySelector('.vti__dropdown-list')
+      .addEventListener('wheel', this.stopEventPropagation);
+  },
+
+  beforeDestroy() {
+    this.$refs.telInput.$el.querySelector('.vti__dropdown-list')
+      .removeEventListener('wheel', this.stopEventPropagation);
+  },
+
   methods: {
     onInput(value, telObject) {
       this.countryCode = telObject.regionCode;
@@ -104,6 +115,10 @@ export default {
 
     onCountryChange(country) {
       this.$emit('country-change', country.iso2);
+    },
+
+    stopEventPropagation(e) {
+      e.stopPropagation();
     },
   },
 };

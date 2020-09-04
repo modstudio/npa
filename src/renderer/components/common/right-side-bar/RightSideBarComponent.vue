@@ -55,7 +55,13 @@ export default {
      */
   data() {
     return {
-      scrollBarOptions: { autoHideScrollbar: true, alwaysShowScrollbar: 0 },
+      scrollBarOptions: {
+        autoHideScrollbar: true,
+        alwaysShowScrollbar: 0,
+        advanced: {
+          updateOnContentResize: true,
+        },
+      },
     };
   },
 

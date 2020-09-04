@@ -20,12 +20,40 @@
                 v-model="form.category_group_id"
                 rules="required"
               ></cause-group-select-component>
+              <!-- Recipient Type -->
+              <div class="form-group">
+                <label>Recipient Type</label>
+                <div class="row gutter-16">
+                  <div class="col-12 col-sm-6">
+                    <radio-input-component
+                      name="is_multiple_recipient"
+                      :radio-value="0"
+                      v-model="form.is_multiple_recipient"
+                      label="Specific"
+                      type="Number"
+                      form-group-class="mb-3 mb-sm-0"
+                    >
+                    </radio-input-component>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <radio-input-component
+                      name="is_auto_renew"
+                      :radio-value="1"
+                      v-model="form.is_multiple_recipient"
+                      type="Number"
+                      label="Multiple"     
+                    >
+                    </radio-input-component>
+                  </div>
+                </div>
+              </div>  
               <!-- Recipient -->
               <contact-select-component
+                v-show="!form.is_multiple_recipient"
                 v-model="form.contact_id"
                 label="Recipient"
                 placeholder="Choose recipient"
-                rules="required"
+                :rules="{required: !form.is_multiple_recipient}"
                 @add-new="onAddNewContact"
               ></contact-select-component>
               <!-- Description -->
@@ -150,6 +178,7 @@ export default {
         description: '',
         is_excluded_from_full_export: 0,
         note: '',
+        is_multiple_recipient: 0,
       };
     },
 

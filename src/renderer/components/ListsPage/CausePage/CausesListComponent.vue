@@ -17,10 +17,12 @@
           <div class="flex-grow-1 d-flex align-items-center">
             <inactive-badge-component v-if="item.is_inactive"></inactive-badge-component>
             <contact-name-field-component
+              v-if="!item.is_multiple_recipient"
               :company-name="item.contact_company_name"
               :first-name="item.contact_first_name"
               :last-name="item.contact_last_name"
             ></contact-name-field-component>
+            <template v-else>Multiple</template>
           </div>
         </div>
         <div class="flex-grow-1 align-items-center d-flex">
