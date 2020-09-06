@@ -62,7 +62,7 @@
               <text-input-component
                 v-show="form.is_multiple_recipient"
                 v-model="form.name"
-                :rules="{required: form.is_multiple_recipient}"
+                :rules="{required: !!form.is_multiple_recipient}"
                 label="Name"
               ></text-input-component>
               <!-- Description -->

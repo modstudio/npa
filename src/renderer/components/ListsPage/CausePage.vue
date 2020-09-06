@@ -192,10 +192,13 @@ export default {
           .map(item => ({
             ...item,
             causes: item.causes
-              .filter(cause => cause.name.toLowerCase().indexOf(searchString) !== -1
-                || cause.contact_company_name.toLowerCase().indexOf(searchString) !== -1
-                || cause.contact_first_name.toLowerCase().indexOf(searchString) !== -1
-                || cause.contact_last_name.toLowerCase().indexOf(searchString) !== -1),
+              .filter(cause => (cause.name && cause.name.toLowerCase().indexOf(searchString) !== -1)
+                || (cause.contact_id
+                  && cause.contact_company_name.toLowerCase().indexOf(searchString) !== -1)
+                || (cause.contact_id
+                  && cause.contact_first_name.toLowerCase().indexOf(searchString) !== -1)
+                || (cause.contact_id
+                  && cause.contact_last_name.toLowerCase().indexOf(searchString) !== -1)),
             isExpanded: item.isExpanded,
           }))
           .filter(item => item.name.toLowerCase().indexOf(searchString) !== -1
