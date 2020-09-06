@@ -32,7 +32,9 @@ export default {
   computed: {
     shouldBeHidden() {
       if (this.searchText) {
-        return this.item.name.toLowerCase().indexOf(this.searchText.toLowerCase()) === -1;
+        return this.item.label.toLowerCase().indexOf(this.searchText.toLowerCase()) === -1
+          && (!this.item.subtext
+            || this.item.subtext.toLowerCase().indexOf(this.searchText.toLowerCase()) === -1);
       }
       return false;
     },
