@@ -101,7 +101,7 @@
             Category
           </div>
           <div class="flex-table__header-item col-2">
-            Payee
+            Payee/Donor
           </div>
           <div class="flex-table__header-item col-2 justify-content-end pr-4">
             Amount

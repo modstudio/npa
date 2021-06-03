@@ -130,21 +130,22 @@ export default {
         await Vue.db.run('BEGIN TRANSACTION');
         const stm = await Vue.db.run(`INSERT INTO transactions (
           date, transaction_type_id, category_id,
-          amount, created_at, updated_at
+          amount, note, created_at, updated_at
         ) VALUES ($date, $transaction_type_id, $category_id,
-          $amount, DATETIME('now'), DATETIME('now')
+          $amount, $note, DATETIME('now'), DATETIME('now')
         )
         `, {
           $date: moment(data.date).format('YYYY-MM-DD'),
           $transaction_type_id: data.transaction_type_id,
           $category_id: data.category_id,
           $amount: -amount,
+          $note: data.note_from,
         });
         await Vue.db.run(`INSERT INTO transactions (
           date, transaction_type_id, category_id, related_transaction_id,
-          amount, created_at, updated_at
+          amount, note, created_at, updated_at
         ) VALUES ($date, $transaction_type_id, $category_id, $related_transaction_id,
-          $amount, DATETIME('now'), DATETIME('now')
+          $amount, $note, DATETIME('now'), DATETIME('now')
         )
         `, {
           $date: moment(data.date).format('YYYY-MM-DD'),
@@ -152,6 +153,7 @@ export default {
           $category_id: data.transfer_category_id,
           $related_transaction_id: stm.lastID,
           $amount: amount,
+          $note: data.note_to,
         });
         await Vue.db.run('COMMIT');
       });
@@ -228,7 +230,7 @@ export default {
           $transaction_type_id: data.transaction_type_id,
           $category_id: data.category_id,
           $amount: -amount,
-          $note: data.note,
+          $note: data.note_from,
         });
         // if not set related_transaction_id and transfer_transaction_id therefore
         // we update other transaction_type to transfer and we should insert
@@ -236,9 +238,9 @@ export default {
         if (fromTransactionId === toTransactionId) {
           await Vue.db.run(`INSERT INTO transactions (
             date, transaction_type_id, category_id, related_transaction_id,
-            amount, created_at, updated_at
+            amount, note, created_at, updated_at
           ) VALUES ($date, $transaction_type_id, $category_id, $related_transaction_id,
-            $amount, DATETIME('now'), DATETIME('now')
+            $amount, $note, DATETIME('now'), DATETIME('now')
           )
           `, {
             $date: moment(data.date).format('YYYY-MM-DD'),
@@ -246,12 +248,14 @@ export default {
             $category_id: data.transfer_category_id,
             $related_transaction_id: fromTransactionId,
             $amount: amount,
+            $note: data.note_to,
           });
         } else {
           await Vue.db.run(`UPDATE transactions SET
             date = $date,
             category_id = $category_id,
             amount = $amount,
+            note = $note,
             updated_at = DATETIME('now')
             WHERE id = $id
           `, {
@@ -259,6 +263,7 @@ export default {
             $date: moment(data.date).format('YYYY-MM-DD'),
             $category_id: data.transfer_category_id,
             $amount: amount,
+            $note: data.note_to,
           });
         }
         await Vue.db.run('COMMIT');
