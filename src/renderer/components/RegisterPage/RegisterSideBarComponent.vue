@@ -11,7 +11,12 @@
       <div>
         <div class="info-sidebar__body" ref="form" v-show="!isDeleteMode">
             <div class="info-sidebar__block-header">
-              <h4>Transaction</h4>
+              <h4 v-if="!isTransfer">
+                Transaction
+              </h4>
+              <h4 v-else>
+                  Transfer
+              </h4>
               <button type="button" class="btn btn-icon btn-icon--w-text" v-if="!isNewMode"
                 @click="duplicate"
               >
@@ -42,6 +47,13 @@
 
               <!-- Transfer -->
               <template v-if="isTransfer">
+                 <!-- Amount -->
+                <currency-input-component
+                  v-model="form.amount"
+                  label="Amount"
+                  :disable-currency-class="true"
+                ></currency-input-component>
+                  <hr>
                 <!-- Category from -->
                 <category-select-component
                   v-model="form.category_id"
@@ -49,6 +61,12 @@
                   rules="required"
                   :transfer-amount="-form.amount"
                 ></category-select-component>
+                <!-- Note from -->
+                <textarea-component
+                  v-model="form.note_from"
+                  label="Note"
+                ></textarea-component>
+                  <hr>
                 <!-- Category To -->
                 <category-select-component
                   v-model="form.transfer_category_id"
@@ -56,13 +74,11 @@
                   :rules="{required: true, is_not: form.category_id}"
                   :transfer-amount="form.amount"
                 ></category-select-component>
-                <!-- Amount -->
-                <currency-input-component
-                  v-model="form.amount"
-                  label="Amount"
-                  rules="required|is_not:0.00"
-                  :disable-currency-class="true"
-                ></currency-input-component>
+                <!-- Note to -->
+                <textarea-component
+                  v-model="form.note_to"
+                  label="Note"
+                ></textarea-component>
               </template>
               <!-- End Transfer -->
 
@@ -153,10 +169,9 @@
                   ></debit-credit-component>
                   <!-- Payee -->
                   <contact-select-component
-                    v-if="!isPledge && !isStartingBalance && !isAdjustment"
+                    v-if="!isPledge && !isStartingBalance && !isAdjustment && !isGeneralDonation"
                     v-model="form.contact_id"
-                    label="Payee"
-                    :rules="{required: isDistribution}"
+                    :label="this.form.transaction_type_id !== 1 ? 'Payee' : 'Donor'"
                     @add-new="onAddNewContact"
                   ></contact-select-component>
                 </div>
@@ -262,7 +277,22 @@ export default {
       if (this.isStartingBalance) {
         return `Starting Balance | ${this.currentItem.category_name}`;
       }
-      return `${this.currentItem.type_name} | ${this.currentItem.category_name}`;
+      if (this.isTransfer) {
+        let categoryName;
+        let categoryToName;
+        if (this.currentItem.related_transaction_id) {
+          // If we have Transaction To
+          categoryToName = this.currentItem.category_name ? ` to ${this.currentItem.category_name}` : '';
+          categoryName = this.currentItem.related_transaction_category_name ? this.currentItem.related_transaction_category_name : '';
+        } else {
+          // If we have Transaction From
+          categoryName = this.currentItem.category_name ? this.currentItem.category_name : '';
+          categoryToName = this.currentItem.transfer_transation_category_name ? ` to ${this.currentItem.transfer_transation_category_name}` : '';
+        }
+        return categoryName + categoryToName;
+      }
+      const categoryName = this.currentItem.category_name ? ` | ${this.currentItem.category_name}` : '';
+      return `${this.currentItem.type_name + categoryName}`;
     },
 
     isCause() {
@@ -373,6 +403,8 @@ export default {
         amount: null,
         is_deposit: 0,
         note: '',
+        note_from: '',
+        note_to: '',
       };
     },
 
@@ -397,10 +429,14 @@ export default {
             // If we have Transaction To
             this.form.transfer_category_id = this.form.category_id;
             this.form.category_id = this.currentItem.related_transaction_category_id;
+            this.form.note_to = this.currentItem.note;
+            this.form.note_from = this.currentItem.related_transaction_note;
           } else {
             // If we have transaction From
             this.form.amount = -this.form.amount;
             this.form.transfer_category_id = this.currentItem.transfer_transaction_category_id;
+            this.form.note_from = this.currentItem.note;
+            this.form.note_to = this.currentItem.transfer_transaction_note;
           }
         }
 
