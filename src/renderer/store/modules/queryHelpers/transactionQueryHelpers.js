@@ -133,7 +133,7 @@ const querySelect = `SELECT transactions.*,
   related_transaction.category_name as related_transaction_category_name,
   related_transaction.category_type_id as related_transaction_category_type_id,
   related_transaction.category_description as related_transaction_category_description,
-  related_transaction.related_category_name as related_transaction_related_category_name,,
+  related_transaction.related_category_name as related_transaction_related_category_name,
   related_transaction.note as related_transaction_note
 `;
 export { buildWhere, buildLimitOffset, queryFrom, querySelect };

@@ -142,7 +142,7 @@ export default {
           if (this.searchFunc) {
             return this.searchFunc(item, searchString);
           }
-          return item.name.toLowerCase().indexOf(searchString) !== -1;
+          return item.name && item.name.toLowerCase().indexOf(searchString) !== -1;
         },
       );
     },
