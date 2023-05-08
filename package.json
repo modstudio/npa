@@ -70,7 +70,7 @@
     "malihu-custom-scrollbar-plugin": "^3.1.5",
     "moment": "^2.24.0",
     "postcode-validator": "^3.0.0",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.1.5",
     "vee-validate": "^3.2.5",
     "vue": "^2.6.11",
     "vue-electron": "^1.0.6",
